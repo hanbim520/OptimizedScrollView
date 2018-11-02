@@ -14,7 +14,7 @@ using frame8.Logic.Misc.Visual.UI;
 namespace frame8.ScrollRectItemsAdapter.ChatExample
 {
 	/// <summary>This class demonstrates a basic chat implementation. A message can contain a text, image, or both</summary>
-	public class ChatExample : SRIA<MyParams, ChatMessageViewsHolder>
+	public class ChatExample : SmartScrollView<MyParams, ChatMessageViewsHolder>
 	{
 		const string LOREM_IPSUM = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
 		

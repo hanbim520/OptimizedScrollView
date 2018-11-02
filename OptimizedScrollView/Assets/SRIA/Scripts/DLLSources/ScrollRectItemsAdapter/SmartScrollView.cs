@@ -9,35 +9,8 @@ using frame8.Logic.Misc.Visual.UI.MonoBehaviours;
 
 namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 {
-	/// <summary>
-	/// <para>Old name: ScrollRectItemsAdapter8 (renamed in v3.0 to SRIA)</para>
-	/// <para>Base abstract component that you need to extend in order to provide an implementation for <see cref="CreateViewsHolder(int)"/> and <see cref="UpdateViewsHolder(TItemViewsHolder)"/>. 
-	/// Should be attached to the GameObject containing the ScrollRect to be optimized.
-	/// Any views holder should extend <see cref="BaseItemViewsHolder"/>, so you can provide it as the generic parameter <typeparamref name="TItemViewsHolder"/> when implementing SRIA.
-	/// Extending <see cref="BaseParams"/> is optional. Based on your needs. Provide it as generic parameter <typeparamref name="TParams"/> when implementing SRIA</para>
-	/// <para>How it works, in a nutshell (it's recommended to manually go through the example code in order to fully understand the mechanism):</para>
-	/// <para>1. create your own implementation of <see cref="BaseItemViewsHolder"/>, let's name it MyItemViewsHolder</para>
-	/// <para>2. create your own implementation of <see cref="BaseParams"/> (if needed), let's name it MyParams</para>
-	/// <para>3. create your own implementation of SRIA&lt;MyParams, MyItemViewsHolder&gt;, let's name it MyScrollRectItemsAdapter</para>
-	/// <para>4. instantiate MyScrollRectItemsAdapter</para>
-	/// <para>5. call MyScrollRectItemsAdapter.ResetItemsCount(int) once (and any time your dataset is changed) and the following things will happen:</para>
-	/// <para>    5.1. <see cref="CollectItemsSizes(ItemCountChangeMode, int, int, ItemsDescriptor)"/> will be called (which you can optionally implement to provide your own sizes, if known beforehand)</para>
-	/// <para>    5.2. <see cref="CreateViewsHolder(int)"/> will be called for enough items to fill the viewport. Once a ViewsHolder is created, it'll be re-used when it goes off-viewport </para>
-	/// <para>          - newOrRecycledViewsHolder.root will be null, so you need to instantiate your prefab, assign it and call newOrRecycledViewsHolder.CollectViews(). Alternatively, you can call its <see cref="AbstractViewsHolder.Init(GameObject, int, bool, bool)"/> method, which can do a lot of things for you, mainly instantiate the prefab and (if you want) call CollectViews() for you</para>
-	/// <para>          - after creation, only <see cref="UpdateViewsHolder(TItemViewsHolder)"/> will be called for it when its represented item changes and becomes visible</para>
-	/// <para>    5.3. <see cref="UpdateViewsHolder(TItemViewsHolder)"/> will be called when an item is to be displayed or simply needs updating:</para>
-	/// <para>        - use <see cref="AbstractViewsHolder.ItemIndex"/> to get the item index, so you can retrieve its associated model from your data set (most common practice is to store the data list in your Params implementation)</para>
-	/// <para>        - <see cref="AbstractViewsHolder.root"/> is not null here (given the views holder was properly created in CreateViewsHolder(..)). It's assigned a valid object whose UI elements only need their values changed (common practice is to implement helper methods in the views holder that take the model and update the views themselves)</para>
-	/// <para> <see cref="ResetItems(int, bool, bool)"/> is also called when the viewport's size changes (like for orientation changes on mobile or window resizing on sandalone platforms)</para>
-	/// <para></para>
-	/// <para> *NOTE: No LayoutGroup (vertical/horizontal/grid) on content panel are allowed, since all the layouting is delegated to this adapter</para>
-	/// </summary>
-	/// <typeparam name="TParams">The params type to use</typeparam>
-	/// <typeparam name="TItemViewsHolder"></typeparam>
-	/// <seealso cref="ISRIA"/>
-	/// <seealso cref="BaseParams"/>
-	/// <seealso cref="BaseItemViewsHolder"/>
-	public abstract partial class SRIA<TParams, TItemViewsHolder> : MonoBehaviour, ISRIA, IBeginDragHandler, IEndDragHandler
+	
+	public abstract partial class SmartScrollView<TParams, TItemViewsHolder> : MonoBehaviour, ISmartScrollView, IBeginDragHandler, IEndDragHandler
 	where TParams : BaseParams
 	where TItemViewsHolder : BaseItemViewsHolder
 	{
@@ -55,11 +28,11 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 		#region ISRIA events & properties implementaion
 		/// <summary> Fired when the item count changes or the views are refreshed (more exactly, after each <see cref="ChangeItemsCount(ItemCountChangeMode, int, int, bool, bool)"/> call)</summary>
 		public event Action<int, int> ItemsRefreshed;
-		/// <summary>Becomes true after <see cref="SRIA{TParams, TItemViewsHolder}.Init"/> and false in <see cref="SRIA{TParams, TItemViewsHolder}.Dispose"/></summary>
+		/// <summary>Becomes true after <see cref="SmartScrollView{TParams, TItemViewsHolder}.Init"/> and false in <see cref="SmartScrollView{TParams, TItemViewsHolder}.Dispose"/></summary>
 		public bool Initialized { get; private set; }
 		/// <summary>The adapter's params that can be retrieved from anywhere through an <see cref="ISRIA"/> reference to this adapter</summary>
 		public BaseParams BaseParameters { get { return Parameters; } }
-		/// <summary>Simply casts the adapter to a MonoBehaviour and returns it. Guaranteed to be non-null, because <see cref="SRIA{TParams, TItemViewsHolder}"/> implements MonoBehaviour</summary>
+		/// <summary>Simply casts the adapter to a MonoBehaviour and returns it. Guaranteed to be non-null, because <see cref="SmartScrollView{TParams, TItemViewsHolder}"/> implements MonoBehaviour</summary>
 		public MonoBehaviour AsMonoBehaviour { get { return this; } }
 		/// <inheritdoc/>
 		public double ContentVirtualSizeToViewportRatio { get { return _InternalState.contentPanelVirtualSize / _InternalState.viewportSize; } }
@@ -394,7 +367,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 		{ return _InternalState.GetItemVirtualInsetFromParentStartUsingItemIndexInView(_ItemsDesc.GetItemViewIndexFromRealIndex(itemIndex)); }
 		/// <summary>
 		/// <para>Used internally. Returns values in [0f, 1f] interval, 1 meaning the scrollrect is at start, and 0 meaning end.</para>
-		/// <para>It different approach when content size is smaller than viewport's size, so it can yield consistent results for <see cref="SRIA{TParams, TItemViewsHolder}.ComputeVisibility(double)"/></para>
+		/// <para>It different approach when content size is smaller than viewport's size, so it can yield consistent results for <see cref="SmartScrollView{TParams, TItemViewsHolder}.ComputeVisibility(double)"/></para>
 		/// </summary>
 		/// <returns>1 Meaning Start And 0 Meaning End</returns> 
 		public double GetVirtualAbstractNormalizedScrollPosition() { return _InternalState.GetVirtualAbstractNormalizedScrollPosition(); }

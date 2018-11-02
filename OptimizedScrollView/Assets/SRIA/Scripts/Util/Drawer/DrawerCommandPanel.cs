@@ -58,7 +58,7 @@ namespace frame8.ScrollRectItemsAdapter.Util.Drawer
 		const int TARGET_FRAMERATE_FOR_SIMULATING_SLOW_DEVICES = 20;
 
 		ScrollRect _ScrollRect;
-		ISRIA[] _Adapters;
+        ISmartScrollView[] _Adapters;
 		float _LastScreenWidth, _LastScreenHeight;
 
 
@@ -120,16 +120,16 @@ namespace frame8.ScrollRectItemsAdapter.Util.Drawer
 		}
 
 		public void Init(
-			ISRIA adapter,
+            ISmartScrollView adapter,
 			bool addGravityCommand = true,
 			bool addItemEdgeFreezeCommand = true,
 			bool addContentEdgeFreezeCommand = true,
 			bool addServerDelaySetting = true,
 			bool addOneItemAddRemovePanel = true
-		) { Init(new ISRIA[] { adapter }, addGravityCommand, addItemEdgeFreezeCommand, addContentEdgeFreezeCommand, addServerDelaySetting, addOneItemAddRemovePanel); }
+		) { Init(new ISmartScrollView[] { adapter }, addGravityCommand, addItemEdgeFreezeCommand, addContentEdgeFreezeCommand, addServerDelaySetting, addOneItemAddRemovePanel); }
 
 		public void Init(
-			ISRIA[] adapters, 
+            ISmartScrollView[] adapters, 
 			bool addGravityCommand = true, 
 			bool addItemEdgeFreezeCommand = true, 
 			bool addContentEdgeFreezeCommand = true,
@@ -350,7 +350,7 @@ namespace frame8.ScrollRectItemsAdapter.Util.Drawer
 			});
 		}
 
-		public void DoForAllAdapters(Action<ISRIA> action)
+		public void DoForAllAdapters(Action<ISmartScrollView> action)
 		{
 			for (int i = 0; i < _Adapters.Length; i++)
 				action(_Adapters[i]);

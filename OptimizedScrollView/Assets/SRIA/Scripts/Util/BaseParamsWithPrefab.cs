@@ -28,7 +28,7 @@ namespace frame8.ScrollRectItemsAdapter.Util
 		float _PrefabSize = -1f;
 
 		/// <inheritdoc/>
-		public override void InitIfNeeded(ISRIA sria)
+		public override void InitIfNeeded(ISmartScrollView sria)
 		{
 			base.InitIfNeeded(sria);
 

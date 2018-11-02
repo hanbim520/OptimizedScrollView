@@ -286,7 +286,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 
 		internal void UpdateLastProcessedCTVirtualInsetFromParentStart() { lastProcessedCTVirtualInsetFromParentStart = ContentPanelVirtualInsetFromViewportStart; }
 
-		/// <summary> See the <see cref="SRIA{TParams, TItemViewsHolder}.GetVirtualAbstractNormalizedScrollPosition"/> for documentation</summary>
+		/// <summary> See the <see cref="SmartScrollView{TParams, TItemViewsHolder}.GetVirtualAbstractNormalizedScrollPosition"/> for documentation</summary>
 		internal double GetVirtualAbstractNormalizedScrollPosition()
 		{
 			float vpSize = viewportSize;

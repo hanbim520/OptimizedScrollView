@@ -42,7 +42,7 @@ namespace frame8.ScrollRectItemsAdapter.Util.GridView
 
 
 		/// <inheritdoc/>
-		public override void InitIfNeeded(ISRIA sria)
+		public override void InitIfNeeded(ISmartScrollView sria)
 		{
 			base.InitIfNeeded(sria);
 			_DefaultItemSize = scrollRect.horizontal ? cellPrefab.rect.width : cellPrefab.rect.height;

@@ -16,7 +16,7 @@ namespace frame8.ScrollRectItemsAdapter.Util
 
 
 		/// <inheritdoc/>
-		public override void InitIfNeeded(ISRIA sria)
+		public override void InitIfNeeded(ISmartScrollView sria)
 		{
 			base.InitIfNeeded(sria);
 

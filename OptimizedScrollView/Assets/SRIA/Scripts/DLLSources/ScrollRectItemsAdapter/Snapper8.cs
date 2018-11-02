@@ -10,7 +10,7 @@ using frame8.Logic.Misc.Visual.UI.MonoBehaviours;
 namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 {
 	/// <summary>
-	/// Script that enables snapping on a ScrollRect. It's used in conjuction with a <see cref="SRIA{TParams, TItemViewsHolder}"/>. Attach it to the ScrollRect game object.
+	/// Script that enables snapping on a ScrollRect. It's used in conjuction with a <see cref="SmartScrollView{TParams, TItemViewsHolder}"/>. Attach it to the ScrollRect game object.
 	/// </summary>
 	public class Snapper8 : MonoBehaviour
 	{
@@ -27,7 +27,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 		public event Action SnappingEndedOrCancelled;
 
 		/// <summary>This needs to be set externally</summary>
-		public ISRIA Adapter
+		public ISmartScrollView Adapter
 		{
 			set
 			{
@@ -47,9 +47,9 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 		bool IsPointerDraggingOnScrollRect { get { return _Adapter != null && _Adapter.IsDragging; } }
 		//bool IsPointerDraggingOnScrollbar { get { return scrollbar != null && Utils.GetPointerEventDataWithPointerDragGO(scrollbar.gameObject, false) != null; } }
 		bool IsPointerDraggingOnScrollbar { get { return _ScrollbarFixer != null && _ScrollbarFixer.IsDragging; } }
-		
-		ISRIA _Adapter;
-		ScrollRect _ScrollRect;
+
+        ISmartScrollView _Adapter;
+        ScrollRect _ScrollRect;
 		ScrollbarFixer8 _ScrollbarFixer;
 		bool _SnappingDoneAndEndSnappingEventPending;
 		bool _SnapNeeded; // a new snap will only start if after the las snap the scrollrect's scroll position has changed

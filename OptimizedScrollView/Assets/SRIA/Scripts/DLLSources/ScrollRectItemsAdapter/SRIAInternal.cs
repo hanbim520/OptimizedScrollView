@@ -10,8 +10,8 @@ using frame8.Logic.Misc.Visual.UI.MonoBehaviours;
 
 namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 {
-	public abstract partial class SRIA<TParams, TItemViewsHolder> : MonoBehaviour, ISRIA
-	where TParams : BaseParams
+	public abstract partial class SmartScrollView<TParams, TItemViewsHolder> : MonoBehaviour, ISmartScrollView
+    where TParams : BaseParams
 	where TItemViewsHolder : BaseItemViewsHolder
 	{
 		IEnumerator SmoothScrollProgressCoroutine(
@@ -714,7 +714,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 				_InternalState.CorrectPositions(_VisibleItems, alsoCorrectTransversalPositioning);//, itemEndEdgeStationary);
 		}
 
-		/// <summary>The very core of <see cref="SRIA{TParams, TItemViewsHolder}"/>. You must be really brave if you think about trying to understand it :)</summary>
+		/// <summary>The very core of <see cref="SmartScrollView{TParams, TItemViewsHolder}"/>. You must be really brave if you think about trying to understand it :)</summary>
 		void ComputeVisibility(double abstractDelta)
 		{
 			// ALIASES:

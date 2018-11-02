@@ -11,7 +11,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 {
 	public class SRIADebugger : MonoBehaviour
 	{
-		ISRIA _AdapterImpl;
+        ISmartScrollView _AdapterImpl;
 		public Text debugText1, debugText2, debugText3, debugText4;
 		public bool allowReinitializationWithOtherAdapter;
 
@@ -33,7 +33,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 				"skipTriggerCompute: " + GetFieldValue("_SkipComputeVisibilityInUpdateOrOnScroll");
 		}
 
-		internal void InitWithAdapter(ISRIA adapterImpl)
+		internal void InitWithAdapter(ISmartScrollView adapterImpl)
 		{
 			if (_AdapterImpl != null && !allowReinitializationWithOtherAdapter)
 				return;

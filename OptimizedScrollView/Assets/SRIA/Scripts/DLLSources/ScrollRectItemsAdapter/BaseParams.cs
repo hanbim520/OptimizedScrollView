@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 {
 	/// <summary>
-	/// <para>Input params to be passed to <see cref="SRIA{TParams, TItemViewsHolder}.Init()"/></para>
+	/// <para>Input params to be passed to <see cref="SmartScrollView{TParams, TItemViewsHolder}.Init()"/></para>
 	/// <para>This can be used Monobehaviour's field and exposed via inspector (most common case)</para>
 	/// <para>Or can be manually constructed, depending on what's easier in your context</para>
 	/// </summary>
@@ -143,10 +143,10 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 
 
 		/// <summary>
-		/// Called internally in <see cref="SRIA{TParams, TItemViewsHolder}.Init()"/> and every time the scrollview's size changes. 
+		/// Called internally in <see cref="SmartScrollView{TParams, TItemViewsHolder}.Init()"/> and every time the scrollview's size changes. 
 		/// This makes sure the content and viewport have valid values. It can also be overridden to initialize custom data
 		/// </summary>
-		public virtual void InitIfNeeded(ISRIA sria)
+		public virtual void InitIfNeeded(ISmartScrollView sria)
         {
 			// Commented: null-coalescing operator doesn't work with unity's Object
 			//content = content ?? scrollRect.content;
