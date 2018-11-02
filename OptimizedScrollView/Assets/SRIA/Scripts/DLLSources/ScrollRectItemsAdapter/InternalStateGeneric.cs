@@ -13,9 +13,9 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 	/// Contains cached variables, helper methods and generally things that are not exposed to inheritors. Note: the LayoutGroup component on content, if any, will be disabled.
     /// <para>Comments format: value if vertical scrolling/value if horizontal scrolling</para>
 	/// </summary>
-    abstract class InternalStateGeneric<TParams, TItemViewsHolder> 
+    abstract class InternalStateGeneric<TParams, SmartScrollViewItem> 
 		where TParams : BaseParams 
-		where TItemViewsHolder : BaseItemViewsHolder 
+		where SmartScrollViewItem : BaseItemViewsHolder 
 	{
 		#region Fields & Props
 		// Constant params (until the scrollview size changes)
@@ -161,7 +161,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 
 		/// <summary><paramref name="viewsHolder"/> will be null if the item is not visible</summary>
 		/// <returns>the resolved size, as this may be a bit different than the passed <paramref name="requestedSize"/> for huge data sets (>100k items)</returns>
-		internal float ChangeItemSizeAndUpdateContentSizeAccordingly(TItemViewsHolder viewsHolder, int itemIndexInView, float requestedSize, bool itemEndEdgeStationary, bool rebuild = true)
+		internal float ChangeItemSizeAndUpdateContentSizeAccordingly(SmartScrollViewItem viewsHolder, int itemIndexInView, float requestedSize, bool itemEndEdgeStationary, bool rebuild = true)
 		{
 			//LiveDebugger8.logR("ChangeItemCountInternal");
 			//if (itemsSizes == null)
@@ -212,14 +212,14 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 		/// Assuming there vhs.Count is > 0. IMPORTANT: vhs should be in order (their itemIndexInView 
 		/// should be in ascending order - not necesarily consecutive)
 		/// </summary>
-		internal void OnItemsSizesChangedExternally(List<TItemViewsHolder> vhs, float[] sizes, bool itemEndEdgeStationary)
+		internal void OnItemsSizesChangedExternally(List<SmartScrollViewItem> vhs, float[] sizes, bool itemEndEdgeStationary)
 		{
 			if (_ItemsDesc.itemsCount == 0)
 				throw new UnityException("Cannot change item sizes externally if the items count is 0!");
 
 			int vhsCount = vhs.Count;
 			int viewIndex;
-			TItemViewsHolder vh;
+			SmartScrollViewItem vh;
 			//var insetEdge = itemEndEdgeStationary ? endEdge : startEdge;
 			//float currentSize;
 
@@ -250,10 +250,10 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 				CorrectPositions(vhs, true);//, itemEndEdgeStationary);
 		}
 
-		internal void CorrectPositions(List<TItemViewsHolder> vhs, bool alsoCorrectTransversalPositioning)//, bool itemEndEdgeStationary)
+		internal void CorrectPositions(List<SmartScrollViewItem> vhs, bool alsoCorrectTransversalPositioning)//, bool itemEndEdgeStationary)
 		{
 			// Update the positions of the provided vhs so they'll retain their position relative to the viewport
-			TItemViewsHolder vh;
+			SmartScrollViewItem vh;
 			int count = vhs.Count;
 			//var edge = itemEndEdgeStationary ? endEdge : startEdge;
 			//Func<int, float> getInferredRealOffsetFromParentStartOrEndFn;
@@ -286,7 +286,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 
 		internal void UpdateLastProcessedCTVirtualInsetFromParentStart() { lastProcessedCTVirtualInsetFromParentStart = ContentPanelVirtualInsetFromViewportStart; }
 
-		/// <summary> See the <see cref="SmartScrollView{TParams, TItemViewsHolder}.GetVirtualAbstractNormalizedScrollPosition"/> for documentation</summary>
+		/// <summary> See the <see cref="SmartScrollView{TParams, SmartScrollViewItem}.GetVirtualAbstractNormalizedScrollPosition"/> for documentation</summary>
 		internal double GetVirtualAbstractNormalizedScrollPosition()
 		{
 			float vpSize = viewportSize;

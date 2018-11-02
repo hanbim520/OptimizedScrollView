@@ -10,9 +10,9 @@ using frame8.Logic.Misc.Visual.UI.MonoBehaviours;
 
 namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 {
-	public abstract partial class SmartScrollView<TParams, TItemViewsHolder> : MonoBehaviour, ISmartScrollView
+	public abstract partial class SmartScrollView<TParams, SmartScrollViewItem> : MonoBehaviour, ISmartScrollView
     where TParams : BaseParams
-	where TItemViewsHolder : BaseItemViewsHolder
+	where SmartScrollViewItem : BaseItemViewsHolder
 	{
 		IEnumerator SmoothScrollProgressCoroutine(
 			int itemIndex, 
@@ -161,7 +161,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 			}
 		}
 
-		void MarkViewsHoldersForRebuild(List<TItemViewsHolder> vhs)
+		void MarkViewsHoldersForRebuild(List<SmartScrollViewItem> vhs)
 		{
 			if (vhs != null)
 				foreach (var v in vhs)
@@ -468,7 +468,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 
 			// Caching the sizes before disabling the CSF, because Unity 2017.2 suddenly decided that's a good idea to resize the item to its original size after the CSF is disabled
 			float[] sizes = new float[_VisibleItemsCount];
-			TItemViewsHolder v;
+			SmartScrollViewItem v;
 			// 2 fors are more efficient
 			if (_Params.scrollRect.horizontal)
 			{
@@ -714,7 +714,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 				_InternalState.CorrectPositions(_VisibleItems, alsoCorrectTransversalPositioning);//, itemEndEdgeStationary);
 		}
 
-		/// <summary>The very core of <see cref="SmartScrollView{TParams, TItemViewsHolder}"/>. You must be really brave if you think about trying to understand it :)</summary>
+		/// <summary>The very core of <see cref="SmartScrollView{TParams, SmartScrollViewItem}"/>. You must be really brave if you think about trying to understand it :)</summary>
 		void ComputeVisibility(double abstractDelta)
 		{
 			// ALIASES:
@@ -758,7 +758,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 			float allItemsTransversalSizes = _ItemsDesc.itemsConstantTransversalSize;
 
 			// Items variable values
-			TItemViewsHolder nlvHolder = null;
+			SmartScrollViewItem nlvHolder = null;
 			//int currentLVItemIndex;
 			int currentLVItemIndexInView;
 
@@ -813,7 +813,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 			// _VisibleItemsCount is always 0 in the first call of this func after the list is modified.
 
 			// The item that was the last in the _VisibleItems (first, if pos scroll); We're inferring the positions of the other ones after(below/to the right, depending on hor/vert scroll) it this way, since the heights(widths for hor scroll) are known
-			TItemViewsHolder startingLVHolder = null;
+			SmartScrollViewItem startingLVHolder = null;
 
 			// Get a list of items that are before(if neg)/after(if pos) viewport and move them from 
 			// _VisibleItems to itemsOutsideViewport; they'll be candidates for recycling
@@ -885,7 +885,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 				// first in _VisibleItems, if negativeScroll
 				// last in _VisibleItems, else
 				int curRecCandidateVHIndex = neg0_pos1 * (_VisibleItemsCount - 1);
-				TItemViewsHolder curRecCandidateVH = _VisibleItems[curRecCandidateVHIndex];
+				SmartScrollViewItem curRecCandidateVH = _VisibleItems[curRecCandidateVHIndex];
 				double curInsetFromParentEdge = negativeScroll ? _InternalState.GetItemVirtualInsetFromParentStartUsingItemIndexInView(curRecCandidateVH.itemIndexInView)
 																: _InternalState.GetItemVirtualInsetFromParentEndUsingItemIndexInView(curRecCandidateVH.itemIndexInView);
 				while (true)
@@ -1071,7 +1071,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 				// This block remains the same regardless of <negativeScroll> variable, because the items in <itemsOutsideViewport> were already added in an order dependent on <negativeScroll>
 				// (they are always from <closest to [start]> to <closest to [end]>)
 				int i = 0;
-				TItemViewsHolder potentiallyRecyclable;
+				SmartScrollViewItem potentiallyRecyclable;
 				while (true)
 				{
 					if (i < _RecyclableItems.Count)
@@ -1168,7 +1168,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 			// + keep <numVisibleItems + numItemsInRecycleBin> abvove <_InternalParams.maxVisibleItemsSeenSinceLastScrollViewSizeChange>
 			// See GetNumExcessObjects()
 			GameObject go;
-			TItemViewsHolder vh;
+			SmartScrollViewItem vh;
 			for (int i = 0; i < _RecyclableItems.Count;)
 			{
 				vh = _RecyclableItems[i];
@@ -1258,7 +1258,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 		
 
 		/// <inheritdoc/>
-		class InternalState : InternalStateGeneric<TParams, TItemViewsHolder>
+		class InternalState : InternalStateGeneric<TParams, SmartScrollViewItem>
 		{
 			internal static InternalState CreateFromSourceParamsOrThrow(TParams sourceParams, ItemsDescriptor itemsDescriptor)
 			{

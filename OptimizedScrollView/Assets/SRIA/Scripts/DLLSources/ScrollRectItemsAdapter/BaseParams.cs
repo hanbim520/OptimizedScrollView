@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 {
 	/// <summary>
-	/// <para>Input params to be passed to <see cref="SmartScrollView{TParams, TItemViewsHolder}.Init()"/></para>
+	/// <para>Input params to be passed to <see cref="SmartScrollView{TParams, SmartScrollViewItem}.Init()"/></para>
 	/// <para>This can be used Monobehaviour's field and exposed via inspector (most common case)</para>
 	/// <para>Or can be manually constructed, depending on what's easier in your context</para>
 	/// </summary>
@@ -143,7 +143,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 
 
 		/// <summary>
-		/// Called internally in <see cref="SmartScrollView{TParams, TItemViewsHolder}.Init()"/> and every time the scrollview's size changes. 
+		/// Called internally in <see cref="SmartScrollView{TParams, SmartScrollViewItem}.Init()"/> and every time the scrollview's size changes. 
 		/// This makes sure the content and viewport have valid values. It can also be overridden to initialize custom data
 		/// </summary>
 		public virtual void InitIfNeeded(ISmartScrollView sria)
@@ -244,7 +244,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 
 		///// <summary> 
 		///// 2 possible meanings: the default size will be set to items for which: 
-		///// <para>a. <see cref="ACTUAL_SIZE"/>: the size was not explicitly set in <see cref="SRIA{TParams, TItemViewsHolder}.CollectItemsSizes(ItemCountChangeMode, int, int, ItemsDescriptor)"/> or <see cref="SRIA{TParams, TItemViewsHolder}.RequestChangeItemSizeAndUpdateLayout(int, float, bool, bool)"/></para>
+		///// <para>a. <see cref="ACTUAL_SIZE"/>: the size was not explicitly set in <see cref="SRIA{TParams, SmartScrollViewItem}.CollectItemsSizes(ItemCountChangeMode, int, int, ItemsDescriptor)"/> or <see cref="SRIA{TParams, SmartScrollViewItem}.RequestChangeItemSizeAndUpdateLayout(int, float, bool, bool)"/></para>
 		///// <para>b. <see cref="PLACEHOLDER_SIZE"/>: the size is unknown</para>
 		///// </summary>
 		//public enum DefaultSizeUsage
@@ -252,7 +252,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 		//	/// <summary>All items will have the default size, until otherwise specified</summary>
 		//	ACTUAL_SIZE,
 
-		//	/// <summary>This works in conjunction with <see cref="SRIA{TParams, TItemViewsHolder}.ScheduleComputeVisibilityTwinPass(bool)"/>. Mostly used when a ContentSizeFitter is needed on each item</summary>
+		//	/// <summary>This works in conjunction with <see cref="SRIA{TParams, SmartScrollViewItem}.ScheduleComputeVisibilityTwinPass(bool)"/>. Mostly used when a ContentSizeFitter is needed on each item</summary>
 		//	PLACEHOLDER_SIZE
 		//}
 	}

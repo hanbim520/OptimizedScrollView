@@ -10,7 +10,7 @@ using frame8.Logic.Misc.Visual.UI.MonoBehaviours;
 namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 {
 	/// <summary>
-	/// Script that enables snapping on a ScrollRect. It's used in conjuction with a <see cref="SmartScrollView{TParams, TItemViewsHolder}"/>. Attach it to the ScrollRect game object.
+	/// Script that enables snapping on a ScrollRect. It's used in conjuction with a <see cref="SmartScrollView{TParams, SmartScrollViewItem}"/>. Attach it to the ScrollRect game object.
 	/// </summary>
 	public class Snapper8 : MonoBehaviour
 	{

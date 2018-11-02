@@ -11,13 +11,13 @@ namespace frame8.ScrollRectItemsAdapter.Util.GridView
 {
     /// <summary>
     /// <para>An optimized adapter for a GridView </para>
-    /// <para>Implements <see cref="SmartScrollView{TParams, TItemViewsHolder}"/> to simulate a grid by using</para>
+    /// <para>Implements <see cref="SmartScrollView{TParams, SmartScrollViewItem}"/> to simulate a grid by using</para>
     /// <para>a runtime-generated "row" prefab (or "colum" prefab, if horizontal ScrollRect), having a Horizontal (or Vertical, respectively) LayoutGroup component, inside which its corresponding cells will lie.</para>
     /// <para>This prefab is represented by a <see cref="CellGroupViewsHolder{TCellVH}"/>, which nicely abstractizes the mechanism to using cell prefabs. This views holder is managed internally and is no concern for most users.</para> 
     /// <para>The cell prefab is used the same way as the "item prefab", for those already familiarized with the ListView examples. It is represented</para>
     /// <para>by a <see cref="CellViewsHolder"/>, which are the actual views holders you need to create/update and nothing else. </para>
     /// </summary>
-    /// <typeparam name="TParams">Must inherit from GridParams. See also <see cref="SmartScrollView{TParams, TItemViewsHolder}.Parameters"/></typeparam>
+    /// <typeparam name="TParams">Must inherit from GridParams. See also <see cref="SmartScrollView{TParams, SmartScrollViewItem}.Parameters"/></typeparam>
     /// <typeparam name="TCellVH">The views holder type to use for the cell. Must inherit from CellViewsHolder</typeparam>
     public abstract class GridAdapter<TParams, TCellVH> : SmartScrollView<TParams, CellGroupViewsHolder<TCellVH>> 
         where TParams : GridParams
@@ -42,7 +42,7 @@ namespace frame8.ScrollRectItemsAdapter.Util.GridView
 		{ throw new InvalidOperationException("Cannot use RemoveItems() with a GridAdapter yet. Use ResetItemsCount() instead."); }
 
 		/// <summary> Overridden in order to convert the cellsCount to groupsCount before passing it to the base's implementation</summary>
-		/// <seealso cref="SmartScrollView{TParams, TItemViewsHolder}.ChangeItemsCount(ItemCountChangeMode, int, int, bool, bool)"/>
+		/// <seealso cref="SmartScrollView{TParams, SmartScrollViewItem}.ChangeItemsCount(ItemCountChangeMode, int, int, bool, bool)"/>
 		public override void ChangeItemsCount(
 			ItemCountChangeMode changeMode, 
 			int cellsCount /*param name changed from itemsCount*/, 
@@ -93,7 +93,7 @@ namespace frame8.ScrollRectItemsAdapter.Util.GridView
 		public virtual void Refresh(bool contentPanelEndEdgeStationary, bool keepVelocity = false) { ChangeItemsCount(ItemCountChangeMode.RESET, _CellsCount, -1, contentPanelEndEdgeStationary, keepVelocity); }
 
 		/// <summary>Overriding base's implementation to return the cells count, instead of the groups count</summary>
-		/// <seealso cref="SmartScrollView{TParams, TItemViewsHolder}.GetItemsCount"/>
+		/// <seealso cref="SmartScrollView{TParams, SmartScrollViewItem}.GetItemsCount"/>
 		public sealed override int GetItemsCount() { return _CellsCount; }
 
 		#region Cell views holders helpers
@@ -126,12 +126,12 @@ namespace frame8.ScrollRectItemsAdapter.Util.GridView
 
 		/// <summary>
 		/// <para>Retrieve the views holder of a cell whose associated model's index in your data list is <paramref name="withCellItemIndex"/>.</para>
-		/// <para>Not to be mistaken for <see cref="GetCellViewsHolder(int)"/> which retrieves a cell by its index <see cref="SmartScrollView{TParams, TItemViewsHolder}._VisibleItems"/></para>
+		/// <para>Not to be mistaken for <see cref="GetCellViewsHolder(int)"/> which retrieves a cell by its index <see cref="SmartScrollView{TParams, SmartScrollViewItem}._VisibleItems"/></para>
 		/// </summary>
 		/// <returns>null, if the item is outside the viewport (and thus no view is associated with it)</returns>
 		public virtual TCellVH GetCellViewsHolderIfVisible(int withCellItemIndex)
 		{
-			var groupVH = GetItemViewsHolderIfVisible(_Params.GetGroupIndex(withCellItemIndex));
+			var groupVH = GeSmartScrollViewItemIfVisible(_Params.GetGroupIndex(withCellItemIndex));
 			if (groupVH == null)
 				return null;
 
@@ -144,7 +144,7 @@ namespace frame8.ScrollRectItemsAdapter.Util.GridView
 		}
 
 		/// <summary>Scroll to the specified GROUP. Use <see cref="ScrollTo(int, float, float)"/> if scrolling to a CELL was intended instead</summary>
-		/// <seealso cref="SmartScrollView{TParams, TItemViewsHolder}.ScrollTo(int, float, float)"/>
+		/// <seealso cref="SmartScrollView{TParams, SmartScrollViewItem}.ScrollTo(int, float, float)"/>
 		public virtual void ScrollToGroup(int groupIndex, float normalizedOffsetFromViewportStart = 0f, float normalizedPositionOfItemPivotToUse = 0f)
 		{ base.ScrollTo(groupIndex, normalizedOffsetFromViewportStart, normalizedPositionOfItemPivotToUse); }
 
@@ -153,8 +153,8 @@ namespace frame8.ScrollRectItemsAdapter.Util.GridView
 		{ return base.SmoothScrollTo(groupIndex, duration, normalizedOffsetFromViewportStart, normalizedPositionOfItemPivotToUse, onProgress, overrideAnyCurrentScrollingAnimation); }
 		#endregion
 		
-        /// <summary> Creates the Group viewsholder which instantiates the group prefab using the provided params in <see cref="ScrollRectItemsAdapter8{TParams, TItemViewsHolder}.Init(TParams)"/></summary>
-        /// <seealso cref="ScrollRectItemsAdapter8{TParams, TItemViewsHolder}.CreateViewsHolder(int)"/>
+        /// <summary> Creates the Group viewsholder which instantiates the group prefab using the provided params in <see cref="ScrollRectItemsAdapter8{TParams, SmartScrollViewItem}.Init(TParams)"/></summary>
+        /// <seealso cref="ScrollRectItemsAdapter8{TParams, SmartScrollViewItem}.CreateViewsHolder(int)"/>
         /// <param name="itemIndex">the index of the GROUP (attention, not the CELL) that needs creation</param>
         /// <returns>The created group views holder </returns>
         protected override CellGroupViewsHolder<TCellVH> CreateViewsHolder(int itemIndex)
@@ -166,7 +166,7 @@ namespace frame8.ScrollRectItemsAdapter.Util.GridView
         }
 
         /// <summary>Here the grid adapter checks if new groups need to be created or if old ones need to be disabled or destroyed, after which it calls <see cref="UpdateCellViewsHolder(TCellVH)"/> for each remaining cells</summary>
-        /// <seealso cref="SmartScrollView{TParams, TItemViewsHolder}.UpdateViewsHolder(TItemViewsHolder)"/>
+        /// <seealso cref="SmartScrollView{TParams, SmartScrollViewItem}.UpdateViewsHolder(SmartScrollViewItem)"/>
         /// <param name="newOrRecycled">The viewsholder of the group that needs updated</param>
         protected sealed override void UpdateViewsHolder(CellGroupViewsHolder<TCellVH> newOrRecycled)
         {
@@ -200,7 +200,7 @@ namespace frame8.ScrollRectItemsAdapter.Util.GridView
 		/// <summary>
 		/// Overridden in order to call <see cref="OnBeforeRecycleOrDisableCellViewsHolder(TCellVH, int)"/> for each active cell in the group
 		/// </summary>
-		/// <seealso cref="SmartScrollView{TParams, TItemViewsHolder}.OnBeforeRecycleOrDisableViewsHolder(TItemViewsHolder, int)"/>
+		/// <seealso cref="SmartScrollView{TParams, SmartScrollViewItem}.OnBeforeRecycleOrDisableViewsHolder(SmartScrollViewItem, int)"/>
 		protected sealed override void OnBeforeRecycleOrDisableViewsHolder(CellGroupViewsHolder<TCellVH> inRecycleBinOrVisible, int newItemIndex)
 		{
 			base.OnBeforeRecycleOrDisableViewsHolder(inRecycleBinOrVisible, newItemIndex);

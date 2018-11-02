@@ -10,9 +10,9 @@ using frame8.Logic.Misc.Visual.UI.MonoBehaviours;
 namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 {
 	
-	public abstract partial class SmartScrollView<TParams, TItemViewsHolder> : MonoBehaviour, ISmartScrollView, IBeginDragHandler, IEndDragHandler
+	public abstract partial class SmartScrollView<TParams, SmartScrollViewItem> : MonoBehaviour, ISmartScrollView, IBeginDragHandler, IEndDragHandler
 	where TParams : BaseParams
-	where TItemViewsHolder : BaseItemViewsHolder
+	where SmartScrollViewItem : BaseItemViewsHolder
 	{
 		#region Configuration
 		/// <summary>Parameters displayed in inspector, which can be tweaked based on your needs</summary>
@@ -28,11 +28,11 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 		#region ISRIA events & properties implementaion
 		/// <summary> Fired when the item count changes or the views are refreshed (more exactly, after each <see cref="ChangeItemsCount(ItemCountChangeMode, int, int, bool, bool)"/> call)</summary>
 		public event Action<int, int> ItemsRefreshed;
-		/// <summary>Becomes true after <see cref="SmartScrollView{TParams, TItemViewsHolder}.Init"/> and false in <see cref="SmartScrollView{TParams, TItemViewsHolder}.Dispose"/></summary>
+		/// <summary>Becomes true after <see cref="SmartScrollView{TParams, SmartScrollViewItem}.Init"/> and false in <see cref="SmartScrollView{TParams, SmartScrollViewItem}.Dispose"/></summary>
 		public bool Initialized { get; private set; }
 		/// <summary>The adapter's params that can be retrieved from anywhere through an <see cref="ISRIA"/> reference to this adapter</summary>
 		public BaseParams BaseParameters { get { return Parameters; } }
-		/// <summary>Simply casts the adapter to a MonoBehaviour and returns it. Guaranteed to be non-null, because <see cref="SmartScrollView{TParams, TItemViewsHolder}"/> implements MonoBehaviour</summary>
+		/// <summary>Simply casts the adapter to a MonoBehaviour and returns it. Guaranteed to be non-null, because <see cref="SmartScrollView{TParams, SmartScrollViewItem}"/> implements MonoBehaviour</summary>
 		public MonoBehaviour AsMonoBehaviour { get { return this; } }
 		/// <inheritdoc/>
 		public double ContentVirtualSizeToViewportRatio { get { return _InternalState.contentPanelVirtualSize / _InternalState.viewportSize; } }
@@ -40,7 +40,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 		public double ContentVirtualInsetFromViewportStart { get { return _InternalState.ContentPanelVirtualInsetFromViewportStart; } }
 		/// <inheritdoc/>
 		public double ContentVirtualInsetFromViewportEnd { get { return _InternalState.ContentPanelVirtualInsetFromViewportEnd; } }
-		/// <summary> The number of currently visible items (views holders). Can be used to iterate through all of them using <see cref="GetItemViewsHolder(int)"/></summary>
+		/// <summary> The number of currently visible items (views holders). Can be used to iterate through all of them using <see cref="GeSmartScrollViewItem(int)"/></summary>
 		public int VisibleItemsCount { get { return _VisibleItemsCount; } }
 		/// <summary> The number of items that are cached and waiting to be recycled </summary>
 		public int RecyclableItemsCount { get { return _RecyclableItems.Count; } }
@@ -52,9 +52,9 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 		/// <summary>The adapter's parameters as seen in inspector</summary>
 		public TParams Parameters { get { return _Params; } }
 
-		protected List<TItemViewsHolder> _VisibleItems;
+		protected List<SmartScrollViewItem> _VisibleItems;
 		protected int _VisibleItemsCount;
-		protected List<TItemViewsHolder> _RecyclableItems = new List<TItemViewsHolder>();
+		protected List<SmartScrollViewItem> _RecyclableItems = new List<SmartScrollViewItem>();
 
 		InternalState _InternalState;
         ItemsDescriptor _ItemsDesc;
@@ -119,7 +119,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 			_ItemsDesc = new ItemsDescriptor(_Params.DefaultItemSize);//, _Params.DefaultItemSizeUsage == BaseParams.DefaultSizeUsage.PLACEHOLDER_SIZE);
             _InternalState = InternalState.CreateFromSourceParamsOrThrow(_Params, _ItemsDesc);
 
-			_VisibleItems = new List<TItemViewsHolder>();
+			_VisibleItems = new List<SmartScrollViewItem>();
 			_AVGVisibleItemsCount = 0;
 
 			Refresh();
@@ -165,11 +165,11 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 		/// <summary>
 		/// <para>Get the viewsHolder with a specific index in the "visible items" list.</para>
 		/// <para>Example: if you pass 0, the first visible ViewsHolder will be returned (if there's any)</para>
-		/// <para>Not to be mistaken to the other method 'GetItemViewsHolderIfVisible(int withItemIndex)', which uses the itemIndex, i.e. the index in the list of data models.</para>
+		/// <para>Not to be mistaken to the other method 'GeSmartScrollViewItemIfVisible(int withItemIndex)', which uses the itemIndex, i.e. the index in the list of data models.</para>
 		/// <para>Returns null if the supplied parameter is >= <see cref="VisibleItemsCount"/></para>
 		/// </summary>
 		/// <param name="vhIndex"> the index of the ViewsHolder in the visible items array</param>
-		public TItemViewsHolder GetItemViewsHolder(int vhIndex)
+		public SmartScrollViewItem GeSmartScrollViewItem(int vhIndex)
 		{
 			if (vhIndex >= _VisibleItemsCount)
 				return null;
@@ -178,11 +178,11 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 
 		/// <summary>Gets the views holder representing the <paramref name="withItemIndex"/>'th item in the list of data models, if it's visible.</summary>
 		/// <returns>null, if not visible</returns>
-		public TItemViewsHolder GetItemViewsHolderIfVisible(int withItemIndex)
+		public SmartScrollViewItem GeSmartScrollViewItemIfVisible(int withItemIndex)
 		{
 			int curVisibleIndex = 0;
 			int curIndexInList;
-			TItemViewsHolder curItemViewsHolder;
+			SmartScrollViewItem curItemViewsHolder;
 			for (curVisibleIndex = 0; curVisibleIndex < _VisibleItemsCount; ++curVisibleIndex)
 			{
 				curItemViewsHolder = _VisibleItems[curVisibleIndex];
@@ -197,11 +197,11 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 			return null;
 		}
 
-		/// <summary>Same as GetItemViewsHolderIfVisible(int withItemIndex), but searches by the root RectTransform reference, rather than the item index</summary>
+		/// <summary>Same as GeSmartScrollViewItemIfVisible(int withItemIndex), but searches by the root RectTransform reference, rather than the item index</summary>
 		/// <param name="withRoot">RectTransform reference to the searched viw holder's root</param>
-		public TItemViewsHolder GetItemViewsHolderIfVisible(RectTransform withRoot)
+		public SmartScrollViewItem GeSmartScrollViewItemIfVisible(RectTransform withRoot)
 		{
-			TItemViewsHolder curItemViewsHolder;
+			SmartScrollViewItem curItemViewsHolder;
 			for (int i = 0; i < _VisibleItemsCount; ++i)
 			{
 				curItemViewsHolder = _VisibleItems[i];
@@ -291,13 +291,13 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 		}
 
 		/// <summary> See <see cref="RequestChangeItemSizeAndUpdateLayout(int, float, bool, bool)"/> for additional info or if you want to resize an item which isn't visible</summary>
-		/// <param name="withVH">the views holder. A common usage for an "expand on click" behavior is to have a button on a view whose onClick fires a method in the adapter where it retrieves the views holder via <see cref="GetItemViewsHolderIfVisible(RectTransform)"/> </param>
-		public float RequestChangeItemSizeAndUpdateLayout(TItemViewsHolder withVH, float requestedSize, bool itemEndEdgeStationary = false, bool computeVisibility = true)
+		/// <param name="withVH">the views holder. A common usage for an "expand on click" behavior is to have a button on a view whose onClick fires a method in the adapter where it retrieves the views holder via <see cref="GeSmartScrollViewItemIfVisible(RectTransform)"/> </param>
+		public float RequestChangeItemSizeAndUpdateLayout(SmartScrollViewItem withVH, float requestedSize, bool itemEndEdgeStationary = false, bool computeVisibility = true)
 		{ return RequestChangeItemSizeAndUpdateLayout(withVH.ItemIndex, requestedSize, itemEndEdgeStationary, computeVisibility); }
 
 		/// <summary>
 		/// <para>An item width/height can be changed with this method. </para>
-		/// <para>Should NOT be called during <see cref="ComputeVisibilityForCurrentPosition(bool, bool, bool)"/>, <see cref="UpdateViewsHolder(TItemViewsHolder)"/>, <see cref="CreateViewsHolder(int)"/> or from any critical view-recycling code. Suggestion: call it from MonBehaviour.Update()</para>
+		/// <para>Should NOT be called during <see cref="ComputeVisibilityForCurrentPosition(bool, bool, bool)"/>, <see cref="UpdateViewsHolder(SmartScrollViewItem)"/>, <see cref="CreateViewsHolder(int)"/> or from any critical view-recycling code. Suggestion: call it from MonBehaviour.Update()</para>
 		/// <para>Will change the size of the item's RectTransform to <paramref name="requestedSize"/> and will shift the other items accordingly, if needed.</para>
 		/// </summary>
 		/// <param name="itemIndex">the index of the item to be resized. It doesn't need to be visible(case in which only the cached size will be updated and, obviously, the visible items will shift accordingly) </param>
@@ -314,7 +314,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 			_Params.scrollRect.StopMovement(); // we don't want a ComputeVisibility() during changing an item's size, so we cut off any inertia 
 
 			int itemIndexInView = _ItemsDesc.GetItemViewIndexFromRealIndex(itemIndex);
-			var viewsHolderIfVisible = GetItemViewsHolderIfVisible(itemIndex);
+			var viewsHolderIfVisible = GeSmartScrollViewItemIfVisible(itemIndex);
 			float oldSize = _ItemsDesc[itemIndexInView];
 			bool vrtContentPanelIsAtOrBeforeEnd = _InternalState.ContentPanelVirtualInsetFromViewportEnd >= 0d;
 			if (requestedSize <= oldSize) // collapsing
@@ -367,7 +367,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 		{ return _InternalState.GetItemVirtualInsetFromParentStartUsingItemIndexInView(_ItemsDesc.GetItemViewIndexFromRealIndex(itemIndex)); }
 		/// <summary>
 		/// <para>Used internally. Returns values in [0f, 1f] interval, 1 meaning the scrollrect is at start, and 0 meaning end.</para>
-		/// <para>It different approach when content size is smaller than viewport's size, so it can yield consistent results for <see cref="SmartScrollView{TParams, TItemViewsHolder}.ComputeVisibility(double)"/></para>
+		/// <para>It different approach when content size is smaller than viewport's size, so it can yield consistent results for <see cref="SmartScrollView{TParams, SmartScrollViewItem}.ComputeVisibility(double)"/></para>
 		/// </summary>
 		/// <returns>1 Meaning Start And 0 Meaning End</returns> 
 		public double GetVirtualAbstractNormalizedScrollPosition() { return _InternalState.GetVirtualAbstractNormalizedScrollPosition(); }
@@ -412,7 +412,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 		/// <para>via <see cref="AbstractViewsHolder.Init(GameObject, int, bool, bool)"/> shortcut or manually set its itemIndex, instantiate the prefab and call its <see cref="AbstractViewsHolder.CollectViews"/></para>
 		/// </summary>
 		/// <param name="itemIndex">the index of the model that'll be presented by this views holder</param>
-		protected abstract TItemViewsHolder CreateViewsHolder(int itemIndex);
+		protected abstract SmartScrollViewItem CreateViewsHolder(int itemIndex);
 
 		/// <summary>
 		/// <para>Here the data in your model should be bound to the views. Use newOrRecycled.ItemIndex (<see cref="AbstractViewsHolder.ItemIndex"/>) to retrieve its associated model</para>
@@ -420,17 +420,17 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 		/// <para>for example, you're downloading an image to be set as an icon, it makes sense to first clear the previous one (and probably temporarily replace it with a generic "Loading" image)</para>
 		/// </summary>
 		/// <param name="newOrRecycled"></param>
-		protected abstract void UpdateViewsHolder(TItemViewsHolder newOrRecycled);
+		protected abstract void UpdateViewsHolder(SmartScrollViewItem newOrRecycled);
 
 		/// <summary> Self-explanatory. The default implementation returns true each time</summary>
 		/// <returns>If the provided views holder is compatible with the item with index <paramref name="indexOfItemThatWillBecomeVisible"/></returns>
-		protected virtual bool IsRecyclable(TItemViewsHolder potentiallyRecyclable, int indexOfItemThatWillBecomeVisible, float heightOfItemThatWillBecomeVisible)
+		protected virtual bool IsRecyclable(SmartScrollViewItem potentiallyRecyclable, int indexOfItemThatWillBecomeVisible, float heightOfItemThatWillBecomeVisible)
 		{ return true; }
 
 		/// <summary> Self-explanatory. The default implementation returns true if <paramref name="isInExcess"/> is true </summary>
 		/// <param name="inRecycleBin">an item in the recycle bin (not visible, disabled)</param>
 		/// <param name="isInExcess">this will be true if the current number of items exceeded the allowed one (as inferred from the parameters given at initialization)</param>
-		protected virtual bool ShouldDestroyRecyclableItem(TItemViewsHolder inRecycleBin, bool isInExcess)
+		protected virtual bool ShouldDestroyRecyclableItem(SmartScrollViewItem inRecycleBin, bool isInExcess)
 		{ return isInExcess; }
 
 		/// <summary>
@@ -438,7 +438,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 		/// </summary>
 		/// <param name="inRecycleBinOrVisible"></param>
 		/// <param name="newItemIndex">-1 means it'll only be disabled and/or destroyed, not recycled ATM</param>
-		protected virtual void OnBeforeRecycleOrDisableViewsHolder(TItemViewsHolder inRecycleBinOrVisible, int newItemIndex)
+		protected virtual void OnBeforeRecycleOrDisableViewsHolder(SmartScrollViewItem inRecycleBinOrVisible, int newItemIndex)
 		{ }
 
 		/// <summary>Destroying any remaining game objects in the <see cref="_RecyclableItems"/> list and clearing it</summary>
@@ -533,16 +533,16 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 		/// Only called for vertical ScrollRects. Called just before a "Twin" ComputeVisibility will execute. 
 		/// This can be used, for example, to disable a ContentSizeFitter on the item which was used to externally calculate the item's size in the current Twin ComputeVisibility pass</summary>
 		/// <seealso cref="ScheduleComputeVisibilityTwinPass(bool)"/>
-		protected virtual void OnItemHeightChangedPreTwinPass(TItemViewsHolder viewsHolder) { }
+		protected virtual void OnItemHeightChangedPreTwinPass(SmartScrollViewItem viewsHolder) { }
 
-		/// <summary> Same as <see cref="OnItemHeightChangedPreTwinPass(TItemViewsHolder)"/>, but for horizontal ScrollRects</summary>
+		/// <summary> Same as <see cref="OnItemHeightChangedPreTwinPass(SmartScrollViewItem)"/>, but for horizontal ScrollRects</summary>
 		/// <seealso cref="ScheduleComputeVisibilityTwinPass(bool)"/>
-		protected virtual void OnItemWidthChangedPreTwinPass(TItemViewsHolder viewsHolder) { }
+		protected virtual void OnItemWidthChangedPreTwinPass(SmartScrollViewItem viewsHolder) { }
 
 		/// <summary>
 		/// <para>This can be called in order to schedule a "Twin" ComputeVisibility() call after exactly 1 frame.</para> 
 		/// <para>A use case is to enable a ContentSizeFitter on your item, call this, </para> 
-		/// <para>and then disable the ContentSizeFitter in <see cref="OnItemHeightChangedPreTwinPass(TItemViewsHolder)"/> (or <see cref="OnItemWidthChangedPreTwinPass(TItemViewsHolder)"/> if horizontal ScrollRect)</para> 
+		/// <para>and then disable the ContentSizeFitter in <see cref="OnItemHeightChangedPreTwinPass(SmartScrollViewItem)"/> (or <see cref="OnItemWidthChangedPreTwinPass(SmartScrollViewItem)"/> if horizontal ScrollRect)</para> 
 		/// </summary>
 		/// <param name="preferContentEndEdgeStationaryIfSizeChanges">this will only be considered if the scroll position didn't change since the last visibility computation</param>
 		protected void ScheduleComputeVisibilityTwinPass(bool preferContentEndEdgeStationaryIfSizeChanges = false)
@@ -557,13 +557,13 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 
 		/// <summary>See <see cref="GetViewsHolderOfClosestItemToViewportPoint(float, float, out float)"/></summary>
 		protected AbstractViewsHolder GetViewsHolderOfClosestItemToViewportPoint(
-			ICollection<TItemViewsHolder> viewsHolders,
+			ICollection<SmartScrollViewItem> viewsHolders,
 			Func<RectTransform, float, RectTransform, float, float> getDistanceFn,
 			float viewportPoint01,
 			float itemPoint01,
 			out float distance
 		){
-			TItemViewsHolder result = null;
+			SmartScrollViewItem result = null;
 			float minDistance = float.MaxValue;
 			float curDistance;
 
