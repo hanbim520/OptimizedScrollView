@@ -13,7 +13,6 @@ namespace UnityEngine.UI.Extension
             Transform t = null;
             if (path == null)
             {
-                // Return the component of the first child that have that type of component
                 foreach (Transform child in transform)
                 {
                     T comp = child.GetComponent<T>();
@@ -53,9 +52,6 @@ namespace UnityEngine.UI.Extension
             return result;
         }
 
-        /// <summary> Returns a number of 'array.Length' children </summary>
-        /// <param name="tr"></param>
-        /// <param name="array"></param>
         public static void GetEnoughChildrenToFitInArray(this Transform tr, Transform[] array)
         {
             int numToReturn = array.Length;
@@ -63,9 +59,6 @@ namespace UnityEngine.UI.Extension
                 array[i] = tr.GetChild(i);
         }
 
-        /// <summary></summary>
-        /// <param name="tr"> the root to use; it'll be excluded from results</param>
-        /// <returns>the entire hierarchy</returns>
         public static List<Transform> GetDescendants(this Transform tr)
         {
             Transform[] children = tr.GetChildren();
