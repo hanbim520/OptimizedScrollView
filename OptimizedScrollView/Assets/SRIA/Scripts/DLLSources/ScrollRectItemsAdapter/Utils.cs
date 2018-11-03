@@ -47,7 +47,7 @@ namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter
 			if (eventSystemAsPointerInputModule == null)
 				throw new InvalidOperationException("currentInputModule is not a PointerInputModule");
 
-			var asCompatInterface = eventSystemAsPointerInputModule as ISRIAPointerInputModule;
+			var asCompatInterface = eventSystemAsPointerInputModule as ISmartScrollViewPointerInputModule;
 			Dictionary<int, PointerEventData> pointerEvents;
 			if (asCompatInterface == null)
 			{
