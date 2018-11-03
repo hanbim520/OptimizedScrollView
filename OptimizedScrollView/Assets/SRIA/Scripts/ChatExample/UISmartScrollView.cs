@@ -24,14 +24,12 @@ namespace UnityEngine.UI.Extension
             cellType = typeof(T);
             OnItemCountChangeRequested(_datas.Count);
         }
-		/// <inheritdoc/>
 		protected override void Update()
 		{
 			base.Update();
 
 		}
 
-		/// <inheritdoc/>
 		protected override UILoopSmartItem CreateViewsHolder(int itemIndex)
 		{
             var instance = Activator.CreateInstance(cellType) as UILoopSmartItem;
@@ -44,27 +42,22 @@ namespace UnityEngine.UI.Extension
 		protected override void OnItemHeightChangedPreTwinPass(UILoopSmartItem vh)
 		{
 			base.OnItemHeightChangedPreTwinPass(vh);
-
-		//	vh.contentSizeFitter.enabled = false;
 		}
 
 		/// <inheritdoc/>
 		protected override void UpdateViewsHolder(UILoopSmartItem newOrRecycled)
 		{
-			// Initialize the views from the associated model
 
 			newOrRecycled.UpdateFromModel(_datas, newOrRecycled.ItemIndex);
 
 
-            newOrRecycled.MarkForRebuild(); // will enable the content size fitter
-                                            //newOrRecycled.contentSizeFitter.enabled = true;
+            newOrRecycled.MarkForRebuild();
             ScheduleComputeVisibilityTwinPass(true);
 
-            if (!newOrRecycled.IsPopupAnimationActive && newOrRecycled.cellIndex == GetItemsCount() - 1) // only animating the last one
+            if (!newOrRecycled.IsPopupAnimationActive && newOrRecycled.cellIndex == GetItemsCount() - 1) 
 				newOrRecycled.IsPopupAnimationActive = true;
 		}
 
-		/// <inheritdoc/>
 		protected override void OnBeforeRecycleOrDisableViewsHolder(UILoopSmartItem inRecycleBinOrVisible, int newItemIndex)
 		{
 			inRecycleBinOrVisible.IsPopupAnimationActive = false;
@@ -72,7 +65,6 @@ namespace UnityEngine.UI.Extension
 			base.OnBeforeRecycleOrDisableViewsHolder(inRecycleBinOrVisible, newItemIndex);
 		}
 
-		/// <inheritdoc/>
 		protected override void RebuildLayoutDueToScrollViewSizeChange()
 		{
 			base.RebuildLayoutDueToScrollViewSizeChange();
@@ -87,7 +79,6 @@ namespace UnityEngine.UI.Extension
 		}
 		void OnItemCountChangeRequested(int newCount)
 		{
-			// Generating some random models
 			ResetItems(_datas.Count, true);
 		}
         #endregion
