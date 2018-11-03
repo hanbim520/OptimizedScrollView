@@ -54,9 +54,9 @@ namespace frame8.ScrollRectItemsAdapter.Util.GridView
         /// <para>Called by <see cref="Init(GameObject, int, RectTransform, int)"/>, after the GameObjects for the group and all containing cells are instantiated</para>
         /// <para>Creates the cells' views holders and initializes them, also setting their itemIndex based on this group's <see cref="ItemIndex"/></para>
         /// </summary>
-        public override void CollectViews()
+        public override void InitialChild()
         {
-            base.CollectViews();
+            base.InitialChild();
 
             //if (capacity == -1) // not initialized
             //    throw new InvalidOperationException("ItemAsLayoutGroupViewsHolder.CollectViews(): call InitGroup(...) before!");
@@ -95,7 +95,7 @@ namespace frame8.ScrollRectItemsAdapter.Util.GridView
                 cellInstance.gameObject.SetActive(true); // just in case the prefab was disabled
                 cellInstance.SetParent(root);
             }
-            CollectViews();
+            InitialChild();
         }
 
 		/// <summary>This happens when the views holder is recycled or first created</summary>

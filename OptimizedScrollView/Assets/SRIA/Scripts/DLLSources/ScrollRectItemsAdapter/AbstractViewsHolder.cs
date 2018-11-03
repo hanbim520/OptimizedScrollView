@@ -33,11 +33,11 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
             this.ItemIndex = itemIndex;
 
             if (callCollectViews)
-                CollectViews();
+                InitialChild();
         }
 
         /// <summary>If instead of calling <see cref="Init(GameObject, int, bool, bool)"/>, the initializaton is done manually, this should be called lastly as part of the initialization phase</summary>
-        public virtual void CollectViews()
+        public virtual void InitialChild()
         { }
 
 		/// <summary>

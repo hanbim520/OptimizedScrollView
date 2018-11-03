@@ -29,13 +29,13 @@ namespace frame8.ScrollRectItemsAdapter.Util.GridView
         {
             this.root = root;
             ItemIndex = -1; // initially, undefined
-            CollectViews();
+            InitialChild();
         }
 
         /// <summary>Calls base's implementation, after which calls <see cref="GetViews"/> whose result is stored in <see cref="views"/></summary>
-        public override void CollectViews()
+        public override void InitialChild()
         {
-            base.CollectViews();
+            base.InitialChild();
 
             views = GetViews();
             if (views == root)
