@@ -44,6 +44,6 @@ namespace UnityEngine.UI.Extension.Tools
 		/// <summary>See <see cref="SmartScrollView{TParams, UILoopSmartItem}.SmoothScrollTo(int, float, float, float, Func{float, bool}, bool)"/></summary>
 		bool SmoothScrollTo(int itemIndex, float duration, float normalizedOffsetFromViewportStart = 0f, float normalizedPositionOfItemPivotToUse = 0f, Func<float, bool> onProgress = null, bool overrideCurrentScrollingAnimation = false);
 		/// <summary>See <see cref="SmartScrollView{TParams, UILoopSmartItem}.GetViewsHolderOfClosestItemToViewportPoint(float, float, out float)"/></summary>
-		AbstractViewsHolder GetViewsHolderOfClosestItemToViewportPoint(float viewportPoint01, float itemPoint01, out float distance);
+		AbstractViewsBase GetViewsHolderOfClosestItemToViewportPoint(float viewportPoint01, float itemPoint01, out float distance);
 	}
 }

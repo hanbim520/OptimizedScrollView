@@ -8,7 +8,7 @@ namespace UnityEngine.UI.Extension.Tools
     /// Class representing the concept of a Views Holder, i.e. a class that references some views and the id of the data displayed by those views. 
     /// Usually, the root and its child views, once created, don't change, but <see cref="ItemIndex"/> does, after which the views will change their data.
     /// </summary>
-    public abstract class AbstractViewsHolder
+    public abstract class AbstractViewsBase
     {
         /// <summary>The root of the view instance (which contains the actual views)</summary>
         public RectTransform root;

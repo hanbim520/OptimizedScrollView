@@ -5,7 +5,7 @@ namespace UnityEngine.UI.Extension.Tools.Util.GridView
     /// <summary>
     /// By design, each cell should have exactly one child and it should hold the views. This is because the cell's GameObject must always be active, while the views may not be.
     /// </summary>
-    public abstract class CellViewsHolder : AbstractViewsHolder
+    public abstract class CellViewsHolder : AbstractViewsBase
     {
         /// <summary>The child containing the views, which will be enabled/disabled depending on the layout rules</summary>
         public RectTransform views;
@@ -15,7 +15,7 @@ namespace UnityEngine.UI.Extension.Tools.Util.GridView
         { throw new InvalidOperationException("A cell cannot be initialized this way. Use InitWithExistingRootPrefab(RectTransform) instead"); }
 
         /// <summary>
-        /// <para>Assigns the root, sets <see cref="AbstractViewsHolder.ItemIndex"/> to -1 and calls <see cref="CollectViews"/>. Note that this uses an already-instantiated cell</para>
+        /// <para>Assigns the root, sets <see cref="AbstractViewsBase.ItemIndex"/> to -1 and calls <see cref="CollectViews"/>. Note that this uses an already-instantiated cell</para>
         /// <para>root (by the parent group), as opposed to how <see cref="Init(GameObject, int, bool, bool)"/> works. This is because the group itself manages its cells and their layouting</para>
         /// </summary>
         /// <param name="root">The cell's already-instantiated root (not the prefab, as it's done in <see cref="Init(GameObject, int, bool, bool)"/>)</param>

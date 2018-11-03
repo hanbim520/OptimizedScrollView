@@ -211,7 +211,7 @@ namespace UnityEngine.UI.Extension.Tools
 		}
 
 		/// <summary><paramref name="distance"/> will be set to <see cref="float.MaxValue"/> if no ViewsHolder is found. The point's format is in range [0=startEdge .. 1=endEdge]</summary>
-		public virtual AbstractViewsHolder GetViewsHolderOfClosestItemToViewportPoint(float viewportPoint01, float itemPoint01, out float distance)
+		public virtual AbstractViewsBase GetViewsHolderOfClosestItemToViewportPoint(float viewportPoint01, float itemPoint01, out float distance)
 		{
 			Func<RectTransform, float, RectTransform, float, float> getDistanceFn;
 			if (_Params.scrollRect.horizontal)
@@ -399,7 +399,7 @@ namespace UnityEngine.UI.Extension.Tools
 		/// don't forget to call the base implementation! Otherwise, call <see cref="ItemsDescriptor.ReinitializeSizes(ItemCountChangeMode, int, int, float?)"/> with the new default size as parameter.
 		/// Use <see cref="ItemsDescriptor.BeginChangingItemsSizes(int)"/> before and <see cref="ItemsDescriptor.EndChangingItemsSizes()"/> after
 		/// setting sizes. The indices of items for which you set custom sizes must be one after another (4,5,6,7.. etc). Gaps are not allowed.
-		/// Use "itemsDesc[cellIndex] = size" syntax for setting custom sizes. In this call, <see cref="AbstractViewsHolder.ItemIndex"/> will be the same as <see cref="UILoopSmartItemBase.cellIndex"/>, even if looping is enabled.
+		/// Use "itemsDesc[cellIndex] = size" syntax for setting custom sizes. In this call, <see cref="AbstractViewsBase.ItemIndex"/> will be the same as <see cref="UILoopSmartItemBase.cellIndex"/>, even if looping is enabled.
 		/// </summary>
 		/// <param name="itemsDesc">The container for all the info related to items' sizes</param>
 		protected virtual void CollectItemsSizes(ItemCountChangeMode changeMode, int count, int indexIfInsertingOrRemoving, ItemsDescriptor itemsDesc)
@@ -407,13 +407,13 @@ namespace UnityEngine.UI.Extension.Tools
 
 		/// <summary> 
 		/// <para>Called when there are no recyclable views for itemIndex. Provide a new viewsholder instance for itemIndex. This is the place where you must initialize the viewsholder </para>
-		/// <para>via <see cref="AbstractViewsHolder.Init(GameObject, int, bool, bool)"/> shortcut or manually set its itemIndex, instantiate the prefab and call its <see cref="AbstractViewsHolder.CollectViews"/></para>
+		/// <para>via <see cref="AbstractViewsBase.Init(GameObject, int, bool, bool)"/> shortcut or manually set its itemIndex, instantiate the prefab and call its <see cref="AbstractViewsBase.CollectViews"/></para>
 		/// </summary>
 		/// <param name="itemIndex">the index of the model that'll be presented by this views holder</param>
 		protected abstract UILoopSmartItem CreateViewsHolder(int itemIndex);
 
 		/// <summary>
-		/// <para>Here the data in your model should be bound to the views. Use newOrRecycled.ItemIndex (<see cref="AbstractViewsHolder.ItemIndex"/>) to retrieve its associated model</para>
+		/// <para>Here the data in your model should be bound to the views. Use newOrRecycled.ItemIndex (<see cref="AbstractViewsBase.ItemIndex"/>) to retrieve its associated model</para>
 		/// <para>Note that views holders are re-used (this is the main purpose of this adapter), so a views holder's views will contain data from its previously associated model and if, </para>
 		/// <para>for example, you're downloading an image to be set as an icon, it makes sense to first clear the previous one (and probably temporarily replace it with a generic "Loading" image)</para>
 		/// </summary>
@@ -485,7 +485,7 @@ namespace UnityEngine.UI.Extension.Tools
 
 		/// <summary>
 		/// <para>Called mainly when it's detected that the scroll view's size has changed. Marks everything for a layout rebuild and then calls Canvas.ForceUpdateCanvases(). </para>
-		/// <para>IMPORTANT: Make sure to override <see cref="AbstractViewsHolder.MarkForRebuild"/> in your views holder implementation if you have child layout groups and call LayoutRebuilder.MarkForRebuild() on them</para> 
+		/// <para>IMPORTANT: Make sure to override <see cref="AbstractViewsBase.MarkForRebuild"/> in your views holder implementation if you have child layout groups and call LayoutRebuilder.MarkForRebuild() on them</para> 
 		/// </summary>
 		protected virtual void RebuildLayoutDueToScrollViewSizeChange()
 		{
@@ -554,7 +554,7 @@ namespace UnityEngine.UI.Extension.Tools
 		}
 
 		/// <summary>See <see cref="GetViewsHolderOfClosestItemToViewportPoint(float, float, out float)"/></summary>
-		protected AbstractViewsHolder GetViewsHolderOfClosestItemToViewportPoint(
+		protected AbstractViewsBase GetViewsHolderOfClosestItemToViewportPoint(
 			ICollection<UILoopSmartItem> viewsHolders,
 			Func<RectTransform, float, RectTransform, float, float> getDistanceFn,
 			float viewportPoint01,
