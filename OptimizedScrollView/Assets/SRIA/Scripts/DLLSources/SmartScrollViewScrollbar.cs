@@ -194,8 +194,6 @@ namespace UnityEngine.UI.Extension
 							Show();
 					}
 				}
-				// Handling the case when the scrollbar was hidden but its autoHide property was set to false afterwards 
-				// and hideWhenNotNeeded is also false, meaning the scrollbar won't ever be shown
 				else if (!hideWhenNotNeeded)
 				{
 					if (_Hidden)
@@ -215,9 +213,9 @@ namespace UnityEngine.UI.Extension
 				scrollRect.onValueChanged.RemoveListener(ScrollRect_OnValueChangedCalled);
 		}
 
-		#region IScrollRectProxy implementation (used if _PositionChangesProxy is not manually assigned)
-		public event Action<float> ScrollPositionChanged = null; // not used at all in this default interface implementation
-		public void SetNormalizedPosition(float normalizedPosition) { if (_HorizontalScrollBar) scrollRect.horizontalNormalizedPosition = normalizedPosition; else scrollRect.verticalNormalizedPosition = normalizedPosition; }
+        #region IScrollRectProxy implementation (used if _PositionChangesProxy is not manually assigned)
+        public event Action<float> ScrollPositionChanged = null;
+        public void SetNormalizedPosition(float normalizedPosition) { if (_HorizontalScrollBar) scrollRect.horizontalNormalizedPosition = normalizedPosition; else scrollRect.verticalNormalizedPosition = normalizedPosition; }
 		public float GetNormalizedPosition() { return _HorizontalScrollBar ? scrollRect.horizontalNormalizedPosition : scrollRect.verticalNormalizedPosition; }
 		public float GetContentSize() { return _HorizontalScrollBar ? scrollRect.content.rect.width : scrollRect.content.rect.height; }
 		#endregion
@@ -260,8 +258,6 @@ namespace UnityEngine.UI.Extension
                     else
                         size = Mathf.Clamp(viewportSize / contentSize, minSize, 1f);
 
-					//Debug.Log(viewportSize + ", ct=" + contentSize);
-
                     _Scrollbar.size = size;
                     if (hideWhenNotNeeded)
                     {
@@ -275,15 +271,13 @@ namespace UnityEngine.UI.Extension
                         }
                         else
                         {
-                            if (_Hidden && !_AutoHidden) // if autohidden, we don't interfere with the process
+                            if (_Hidden && !_AutoHidden) 
                             {
 
                                 Show();
                             }
                         }
                     }
-                    // Handling the case when the scrollbar was hidden but its hideWhenNotNeeded property was set to false afterwards
-                    // and autoHide is also false, meaning the scrollbar won't ever be shown
                     else if (!autoHide)
                     {
                         if (_Hidden)
@@ -333,7 +327,6 @@ namespace UnityEngine.UI.Extension
 
 		void ScrollRect_OnValueChangedCalled(Vector2 _)
 		{
-			// Only consider this callback if there's no external proxy provided, which is supposed to call ExternalScrollRectProxy_OnScrollPositionChanged()
 			if (externalScrollRectProxy == null)
 				OnScrollRectValueChanged(true);
 		}
@@ -352,15 +345,6 @@ namespace UnityEngine.UI.Extension
 					_FrameCountOnLastPositionUpdate = Time.frameCount;
 				}
 			}
-
-			//var normPos = ScrollRectProxy.GetNormalizedPosition();
-			//if (_HorizontalScrollBar)
-			//	normPos.x = _Scrollbar.value;
-			//else
-			//	normPos.y = _Scrollbar.value;
-
-			//if (!fromScrollRect)
-			//	ScrollRectProxy.SetNormalizedPosition(_Scrollbar.value);
 
 			_TimeOnLastValueChange = Time.time;
 			if (autoHide)
