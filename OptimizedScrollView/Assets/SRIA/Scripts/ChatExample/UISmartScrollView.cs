@@ -4,35 +4,13 @@ using System;
 
 namespace UnityEngine.UI.Extension
 {
-	/// <summary>This class demonstrates a basic chat implementation. A message can contain a text, image, or both</summary>
 	public class UISmartScrollView : SmartScrollView<BaseParams>
 	{
-        //  public RectTransform itemPrefab;
         private IList _datas;
         private GameObject _itemPrefab;
         private Type cellType;
 
         #region UISmartScrollView implementation
-        /// <inheritdoc/>
-        void Start()
-		{
-
-// 			DrawerCommandPanel.Instance.Init(this, false, false, false, false, true);
-// 			DrawerCommandPanel.Instance.galleryEffectSetting.slider.value = .04f;
-// 
-// 			// No adding/removing at the head of the list
-// 			DrawerCommandPanel.Instance.addRemoveOnePanel.button2.gameObject.SetActive(false);
-// 			DrawerCommandPanel.Instance.addRemoveOnePanel.button4.gameObject.SetActive(false);
-// 
-// 			// No removing whatsoever. Only adding
-// 			DrawerCommandPanel.Instance.addRemoveOnePanel.button3.gameObject.SetActive(false);
-// 
-// 			//DrawerCommandPanel.Instance.ItemCountChangeRequested += OnItemCountChangeRequested;
-// 			DrawerCommandPanel.Instance.AddItemRequested += OnAddItemRequested;
-// 			//DrawerCommandPanel.Instance.RemoveItemRequested += OnRemoveItemRequested;
-
-			
-		}
 
         public void UpdateScrollView<T>(IList datas,GameObject prefab)where T: UILoopSmartItem
         {
