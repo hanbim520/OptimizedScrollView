@@ -23,11 +23,11 @@ namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter
 		#region IScrollRectProxy events implementaion
 		/// <inheritdoc/>
 		public event Action<float> ScrollPositionChanged;
-		#endregion
+        #endregion
 
-		#region ISRIA events & properties implementaion
-		/// <summary> Fired when the item count changes or the views are refreshed (more exactly, after each <see cref="ChangeItemsCount(ItemCountChangeMode, int, int, bool, bool)"/> call)</summary>
-		public event Action<int, int> ItemsRefreshed;
+        #region SmartScrollView events & properties implementaion
+        /// <summary> Fired when the item count changes or the views are refreshed (more exactly, after each <see cref="ChangeItemsCount(ItemCountChangeMode, int, int, bool, bool)"/> call)</summary>
+        public event Action<int, int> ItemsRefreshed;
 		/// <summary>Becomes true after <see cref="SmartScrollView{TParams, SmartScrollViewItem}.Init"/> and false in <see cref="SmartScrollView{TParams, SmartScrollViewItem}.Dispose"/></summary>
 		public bool Initialized { get; private set; }
 		/// <summary>The adapter's params that can be retrieved from anywhere through an <see cref="ISRIA"/> reference to this adapter</summary>

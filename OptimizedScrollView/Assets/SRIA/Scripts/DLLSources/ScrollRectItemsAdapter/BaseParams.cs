@@ -97,8 +97,8 @@ namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter
 			"consider slightly increasing recyclingToleranceFactor", true)]
 		public int minNumberOfObjectsToKeepInMemory = -1;
 
-		/// <summary>The ScrollRect that'll be optimized. It's set in <see cref="InitIfNeeded(ISRIA)"/></summary>
-		[NonSerialized]
+        /// <summary>The ScrollRect that'll be optimized. It's set in <see cref="InitIfNeeded(SmartScrollView)"/></summary>
+        [NonSerialized]
 		public ScrollRect scrollRect;
 
 		///// <summary>If null, will be the same as <see cref="ScrollRect.content"/></summary>
