@@ -4,10 +4,10 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
 
-namespace UnityEngine.UI.Extension.MonoBehaviours
+namespace UnityEngine.UI.Extension
 {
     [RequireComponent(typeof(Scrollbar))]
-    public class ScrollbarFixer8 : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerDownHandler, IScrollRectProxy
+    public class SmartScrollViewScrollbar : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerDownHandler, IScrollRectProxy
 	{
         public bool hideWhenNotNeeded = true;
         public bool autoHide = true;
@@ -81,7 +81,7 @@ namespace UnityEngine.UI.Extension.MonoBehaviours
             {
                 scrollRect = GetComponentInParent<ScrollRect>();
                 //if (!scrollRect)
-                //    throw new UnityException("Please provide a ScrollRect for ScrollbarFixer8 to work");
+                //    throw new UnityException("Please provide a ScrollRect for SmartScrollViewScrollbar to work");
             }
 
             if (scrollRect)
@@ -97,12 +97,12 @@ namespace UnityEngine.UI.Extension.MonoBehaviours
 
                     if (scrollRect.horizontalScrollbar)
                     {
-                        Debug.Log("ScrollbarFixer8: setting scrollRect.horizontalScrollbar to null (the whole point of using ScrollbarFixer8 is to NOT have any scrollbars assigned)");
+                        Debug.Log("SmartScrollViewScrollbar: setting scrollRect.horizontalScrollbar to null (the whole point of using SmartScrollViewScrollbar is to NOT have any scrollbars assigned)");
                         scrollRect.horizontalScrollbar = null;
                     }
                     if (scrollRect.verticalScrollbar == _Scrollbar)
                     {
-                        Debug.Log("ScrollbarFixer8: Can't use the same scrollbar for both vert and hor");
+                        Debug.Log("SmartScrollViewScrollbar: Can't use the same scrollbar for both vert and hor");
                         scrollRect.verticalScrollbar = null;
                     }
                 }
@@ -113,12 +113,12 @@ namespace UnityEngine.UI.Extension.MonoBehaviours
 
                     if (scrollRect.verticalScrollbar)
                     {
-                        Debug.Log("ScrollbarFixer8: setting scrollRect.verticalScrollbar to null (the whole point of using ScrollbarFixer8 is to NOT have any scrollbars assigned)");
+                        Debug.Log("SmartScrollViewScrollbar: setting scrollRect.verticalScrollbar to null (the whole point of using SmartScrollViewScrollbar is to NOT have any scrollbars assigned)");
                         scrollRect.verticalScrollbar = null;
                     }
                     if (scrollRect.horizontalScrollbar == _Scrollbar)
                     {
-                        Debug.Log("ScrollbarFixer8: Can't use the same scrollbar for both vert and hor");
+                        Debug.Log("SmartScrollViewScrollbar: Can't use the same scrollbar for both vert and hor");
                         scrollRect.horizontalScrollbar = null;
                     }
                 }

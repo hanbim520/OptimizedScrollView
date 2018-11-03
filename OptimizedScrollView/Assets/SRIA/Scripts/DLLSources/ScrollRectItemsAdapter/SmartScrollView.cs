@@ -4,7 +4,6 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using System;
-using UnityEngine.UI.Extension.MonoBehaviours;
 using UnityEngine.UI.Extension;
 
 namespace UnityEngine.UI.Extension.Tools
@@ -85,7 +84,7 @@ namespace UnityEngine.UI.Extension.Tools
 			_Params.InitIfNeeded(this);
  
 			if (_Params.scrollRect.horizontalScrollbar != null || _Params.scrollRect.verticalScrollbar != null)
-				throw new UnityException("SRIA only works with a "+typeof(ScrollbarFixer8).Name + " component added to the Scrollbar and the ScrollRect shouldn't have any scrollbar set up in the inspector (it hooks up automatically)");
+				throw new UnityException("SmartScrollView only works with a "+typeof(SmartScrollViewScrollbar).Name + " component added to the Scrollbar and the ScrollRect shouldn't have any scrollbar set up in the inspector (it hooks up automatically)");
 
 			_ItemsDesc = new ItemsDescriptor(_Params.DefaultItemSize);
             _InternalState = InternalState.CreateFromSourceParamsOrThrow(_Params, _ItemsDesc);
