@@ -15,7 +15,7 @@ namespace UnityEngine.UI.Extension.Tools
 	{
 		/// <summary>
 		/// The items count will be set to the specified count.
-		/// The cached list of sizes will be cleared and all items will initially have the default size <see cref="BaseParams.DefaultItemSize"/>
+		/// The cached list of sizes will be cleared and all items will initially have the default size 
 		/// </summary>
 		RESET,
 

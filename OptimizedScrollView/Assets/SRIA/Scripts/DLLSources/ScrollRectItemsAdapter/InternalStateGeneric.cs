@@ -8,17 +8,11 @@ using UnityEngine.UI.Extension;
 
 namespace UnityEngine.UI.Extension.Tools
 {
-    /// <summary>
-	/// Contains cached variables, helper methods and generally things that are not exposed to inheritors. Note: the LayoutGroup component on content, if any, will be disabled.
-    /// <para>Comments format: value if vertical scrolling/value if horizontal scrolling</para>
-	/// </summary>
     abstract class InternalStateGeneric<TParams> 
 		where TParams : BaseParams 
 	{
 		#region Fields & Props
-		// Constant params (until the scrollview size changes)
-		//public readonly double proximityToLimitNeeded01ToResetPos = .95d;
-		internal const double proximityToLimitNeeded01ToResetPos = 1d; // todo replace this with the avtual value if everything works fine
+		internal const double proximityToLimitNeeded01ToResetPos = 1d; 
 		internal readonly Vector2 constantAnchorPosForAllItems = new Vector2(0f, 1f); // top-left
 		internal float viewportSize;
 		internal float paddingContentStart; // top/left
@@ -139,7 +133,6 @@ namespace UnityEngine.UI.Extension.Tools
 
 			spacing = _SourceParams.contentSpacing;
 
-			// There's no concept of content start/end padding. instead, the spacing amount is appended before+after the first+last item
 			if (_SourceParams.loopItems)
 				paddingContentStart = paddingContentEnd = spacing;
 
@@ -150,21 +143,12 @@ namespace UnityEngine.UI.Extension.Tools
 		{
 			OnCumulatedSizesOfAllItemsChanged(contentPanelEndEdgeStationary, true);
 
-			//// Schedule a new ComputeVisibility iteration
-			//onScrollPositionChangedFiredAndVisibilityComputedForCurrentItems = false;
-
 			computeVisibilityTwinPassScheduled = false;
 			lastComputeVisibilityHadATwinPass = false;
 		}
 
-		/// <summary><paramref name="viewsHolder"/> will be null if the item is not visible</summary>
-		/// <returns>the resolved size, as this may be a bit different than the passed <paramref name="requestedSize"/> for huge data sets (>100k items)</returns>
 		internal float ChangeItemSizeAndUpdateContentSizeAccordingly(UILoopSmartItem viewsHolder, int cellIndex, float requestedSize, bool itemEndEdgeStationary, bool rebuild = true)
 		{
-			//LiveDebugger8.logR("ChangeItemCountInternal");
-			//if (itemsSizes == null)
-			//	throw new UnityException("Wait for initialization first");
-
 			float resolvedSize;
 			if (viewsHolder == null)
 				resolvedSize = requestedSize;
@@ -187,29 +171,17 @@ namespace UnityEngine.UI.Extension.Tools
 				}
 				viewsHolder.root.SetInsetAndSizeFromParentEdgeWithCurrentAnchors(_SourceParams.content, edge, realInsetToSet, requestedSize);
 
-				// Even though we know the desired size, the one actually set by the UI system may be different, so we cache that one
 				resolvedSize = _GetRTCurrentSizeFn(viewsHolder.root);
 				//viewsHolder.cachedSize = resolvedSize;
 			}
 
             _ItemsDesc.BeginChangingItemsSizes(cellIndex);
-			//var bef = _ItemsDesc.GetItemSizeCumulative(cellIndex+1);
             _ItemsDesc[cellIndex] = resolvedSize;
             _ItemsDesc.EndChangingItemsSizes();
-			//var aft = _ItemsDesc.GetItemSizeCumulative(cellIndex+1);
-
-			//Debug.Log(bef + "; aft=" + aft);
-
-
 			OnCumulatedSizesOfAllItemsChanged(itemEndEdgeStationary, rebuild);
 
 			return resolvedSize;
 		}
-
-		/// <summary>
-		/// Assuming there vhs.Count is > 0. IMPORTANT: vhs should be in order (their cellIndex 
-		/// should be in ascending order - not necesarily consecutive)
-		/// </summary>
 		internal void OnItemsSizesChangedExternally(List<UILoopSmartItem> vhs, float[] sizes, bool itemEndEdgeStationary)
 		{
 			if (_ItemsDesc.itemsCount == 0)
@@ -218,47 +190,27 @@ namespace UnityEngine.UI.Extension.Tools
 			int vhsCount = vhs.Count;
 			int viewIndex;
             UILoopSmartItem vh;
-			//var insetEdge = itemEndEdgeStationary ? endEdge : startEdge;
-			//float currentSize;
 
 			_ItemsDesc.BeginChangingItemsSizes(vhs[0].cellIndex);
 			for (int i = 0; i < vhsCount; ++i)
 			{
 				vh = vhs[i];
 				viewIndex = vh.cellIndex;
-				// Adapting to Unity 2017.2 breaking the ContentSizeFitter for us... when it's disabled, the object's size returns to the one before resizing. Pretty bad. Oh well..
-				// Now the sizes are retrieved before disabling the CSF and passed to this method
-				//currentSize = _GetRTCurrentSizeFn(vh.root);
-				//_ItemsDesc[viewIndex] = currentSize;
 
 				_ItemsDesc[viewIndex] = sizes[i];
-				//_ItemsDesc.UpdateCumulatedSomehow();
 			}
 			_ItemsDesc.EndChangingItemsSizes();
-
-			// Update the remaining cumulative values until end
-			//for (int i = num; i < itemsCount; ++i)
-			//	itemsSizesCumulative[i] = itemsSizesCumulative[i - 1] + itemsSizes[i];
-			//_ItemsDesc.UpdateCumulatedSomehow();
 
 			OnCumulatedSizesOfAllItemsChanged(itemEndEdgeStationary, true);
 
 			if (vhsCount > 0)
-				// Bugfix: updating their positions after the content's, because the content's size would shift the items without OUR consent :)
 				CorrectPositions(vhs, true);//, itemEndEdgeStationary);
 		}
 
 		internal void CorrectPositions(List<UILoopSmartItem> vhs, bool alsoCorrectTransversalPositioning)//, bool itemEndEdgeStationary)
 		{
-            // Update the positions of the provided vhs so they'll retain their position relative to the viewport
             UILoopSmartItem vh;
 			int count = vhs.Count;
-			//var edge = itemEndEdgeStationary ? endEdge : startEdge;
-			//Func<int, float> getInferredRealOffsetFromParentStartOrEndFn;
-			//if (itemEndEdgeStationary)
-			//	getInferredRealOffsetFromParentStartOrEndFn = GetItemInferredRealOffsetFromParentEnd;
-			//else
-			//	getInferredRealOffsetFromParentStartOrEndFn = GetItemInferredRealOffsetFromParentStart;
 
 			double insetStartOfCurItem = GetItemVirtualInsetFromParentStartUsingcellIndex(vhs[0].cellIndex);
 			float curSize;
@@ -268,10 +220,7 @@ namespace UnityEngine.UI.Extension.Tools
 				curSize = _ItemsDesc[vh.cellIndex];
 				vh.root.SetInsetAndSizeFromParentEdgeWithCurrentAnchors(
 					_SourceParams.content,
-					//edge,
 					startEdge,
-					//getInferredRealOffsetFromParentStartOrEndFn(vh.cellIndex),
-					//GetItemInferredRealInsetFromParentStart(vh.cellIndex),
 					ConvertItemInsetFromParentStart_FromVirtualToReal(insetStartOfCurItem),
 					curSize
 				);
@@ -299,9 +248,8 @@ namespace UnityEngine.UI.Extension.Tools
 		internal bool SetVirtualAbstractNormalizedScrollPosition(double pos)
 		{
 			if (viewportSize > contentPanelVirtualSize)
-				return false; // N/A
+				return false; 
 
-			// The new real inset for the content is not set as accuratly as possible (needs too much thinking :) ), but in practice the small error is not visible
 			double virtualScrollArea = contentPanelVirtualSize - viewportSize;
 			double newVirtualInsetIfRealOffsetIsZero = (1d - pos) * virtualScrollArea;
 
@@ -319,7 +267,6 @@ namespace UnityEngine.UI.Extension.Tools
 			return true;
 		}
 
-		//public double ttt;
 		internal void SetContentVirtualInsetFromViewportStart(double virtualInset)
 		{
 			double vsa = VirtualScrollableArea;
@@ -338,46 +285,20 @@ namespace UnityEngine.UI.Extension.Tools
 			}
 
 			double newRealCTInsetFromVPS;
-			//double h = -12345d;
-			//int iu = 0;
 			float rsa = 12345f;
 			double insetDistance = 12345f;
-			//double cpsBef = contentPanelSize;
-			//double cpsMaxBef = MaxContentPanelRealSize;
-
-			// TODO use "contentPanelSize < MaxContentPanelRealSize" again when resolved the bug where max size slightly differs from the real one, even though the skip mode is "on")
-			// TODO use "contentPanelSize < MaxContentPanelRealSize" again when resolved the bug where max size slightly differs from the real one, even though the skip mode is "on")
-			// TODO use "contentPanelSize < MaxContentPanelRealSize" again when resolved the bug where max size slightly differs from the real one, even though the skip mode is "on")
-			// TODO use "contentPanelSize < MaxContentPanelRealSize" again when resolved the bug where max size slightly differs from the real one, even though the skip mode is "on")
-			// TODO use "contentPanelSize < MaxContentPanelRealSize" again when resolved the bug where max size slightly differs from the real one, even though the skip mode is "on")
-			// TODO use "contentPanelSize < MaxContentPanelRealSize" again when resolved the bug where max size slightly differs from the real one, even though the skip mode is "on")
-
-			//if (contentPanelSize < MaxContentPanelRealSize) // the easy case
-			//	newRealCTInsetFromVPS = virtualInset;
-			//else
-			//{
-			//	iu = 1;
 				rsa = RealScrollableArea; // real scrollable area
 				insetDistance = Math.Abs(virtualInset);
-				//h = insetDistance % rsa;
 				newRealCTInsetFromVPS = Math.Sign(virtualInset) * (insetDistance % rsa);
 				if (insetDistance < rsa) // the content panel can handle it without the need to skip inset
 					contentPanelSkippedInsetDueToVirtualization = 0;
 				else
 					contentPanelSkippedInsetDueToVirtualization = virtualInset - newRealCTInsetFromVPS;
 
-				//Debug.Log("insetDistance="+ insetDistance + ", rsa=" + rsa + ", newRealCTInsetFromVPS=" + newRealCTInsetFromVPS + ", sk=" + contentPanelSkippedInsetDueToVirtualization);
-			//}
 			_SourceParams.content.SetInsetAndSizeFromParentEdgeWithCurrentAnchors(startEdge, (float)newRealCTInsetFromVPS, contentPanelSize);
 
 			Canvas.ForceUpdateCanvases();
 
-			//if (ttt > ContentPanelVirtualInsetFromViewportStart)
-			//{
-			//	int x = 0;
-			//	int xww = 0;
-
-			//}
 		}
 
 		internal double GetItemVirtualInsetFromParentStartUsingcellIndex(int cellIndex)
@@ -423,25 +344,12 @@ namespace UnityEngine.UI.Extension.Tools
 			}
 			else
 				newContentPanelSize = MaxContentPanelRealSize;
-			//maxStored = MaxContentPanelRealSize;
-
-			//Debug.Log("MaxContentPanelRealSize="+MaxContentPanelRealSize 
-			//	+ ", newContentPanelSize=" + newContentPanelSize
-			//	+ ", contentPanelSize=" + contentPanelSize
-			//	+ ", contentPanelVirtualSize=" + contentPanelVirtualSize
-			//	+ ", contentPanelPrevVirtualSize=" + contentPanelPrevVirtualSize
-			//	);
-
-
-			//Debug.Log("(befvp)"+_SourceParams.viewport.rect.width + ", h=" + _SourceParams.viewport.rect.height);
 			float prevContentPanelSize = contentPanelSize;
 			contentPanelSize = newContentPanelSize;
 			float ctRealSizeChange = contentPanelSize - prevContentPanelSize;
 			var edgeToUse = contentPanelEndEdgeStationary ? endEdge : startEdge;
 			float insetToUse = _SourceParams.content.GetInsetFromParentEdge(_SourceParams.viewport, edgeToUse);
 			_SourceParams.content.SetInsetAndSizeFromParentEdgeWithCurrentAnchors(_SourceParams.viewport, edgeToUse, insetToUse, contentPanelSize);
-
-			//Debug.Log("(bef)"+contentPanelSize.ToString("#.######") + ", rs=" + _SourceParams.content.rect.width.ToString("#.######") + ", max=" + MaxContentPanelRealSize.ToString("#.######"));
 
 			if (rebuild)
 			{
@@ -451,62 +359,12 @@ namespace UnityEngine.UI.Extension.Tools
 
 			if (contentPanelNewVirtualSizeIsSmallerThanMaxRealSize)
 				return;
-
-			//Debug.Log("(aftvp)"+_SourceParams.viewport.rect.width + ", h=" + _SourceParams.viewport.rect.height);
-
-			//Debug.Log(contentPanelSize.ToString("#.######") + ", rs=" + _SourceParams.content.rect.width.ToString("#.######") + ", max=" + MaxContentPanelRealSize.ToString("#.######"));
-
-			// IMPORTANT: it's assumed that when the scrollview's size changes, this method is called with contentPanelEndEdgeStationary=false, 
-			// so that if the ct size and ct vrt size both should change, this will be done by fixing the start edge, in order to preserve the skip amount (easier implementation. works for now)
-
-			// TODO only do this if the virtual size didn't change + if it did, include code that also takes the real size change needed into account 
 			double ctVirtualSizeChange = contentPanelVirtualSize - contentPanelPrevVirtualSize;
-			//Debug.Log("ctVirtualSizeChange=" + ctVirtualSizeChange);
 			float cutRealAmountFoundBeforeVPE_IfEndStat_RealSizeHasShrunk = 0f;
-			//if (ctRealSizeChange != 0f)
-			//{
-			//	// Commented: changing content real size due to scrollview size change is assumed will always call this method with contentPanelEndEdgeStationary=false;
-			//	//if (contentPanelEndEdgeStationary)
-			//	//	contentPanelSkippedInsetDueToVirtualization += ctRealSizeChange;
-
-			//	if (!contentPanelEndEdgeStationary)
-			//	{
-			//		if (ctRealSizeChange < 0d) // smaller real content
-			//		{
-			//			float prevCTEDistanceFromVPE = Math.Abs(viewportSize - insetToUse /*inset from start*/ - prevContentPanelSize);
-			//			// The content prev dist from vpe is smaller than the cut in its size => it needs to be shifted DOWN/RIGHT
-			//			var cutInRealSize = -ctRealSizeChange;
-			//			if (prevCTEDistanceFromVPE < cutInRealSize)
-			//			{
-			//				cutRealAmountFoundBeforeVPE_IfEndStat_RealSizeHasShrunk = cutInRealSize - prevCTEDistanceFromVPE;
-			//				contentPanelSkippedInsetDueToVirtualization += cutRealAmountFoundBeforeVPE_IfEndStat_RealSizeHasShrunk;
-
-			//				//if (ctVirtualSizeChange != 0d)
-			//				//{
-			//				//	// Set it back because the next call should also have ctVirtualSizeChange != 0 in order to continue as if the content's real size was already correct
-			//				//	contentPanelVirtualSize = contentPanelPrevVirtualSize; 
-			//				//	OnCumulatedSizesOfAllItemsPlusSpacingChanged(contentPanelEndEdgeStationary, true);
-			//				//}
-			//				//return;
-			//			}
-			//		}
-			//	}
-
-			//	//if (ctVirtualSizeChange != 0d)
-			//	//	throw new UnityException("Both the content size and the content virtual size had changed. This is not allowed");
-			//}
-			//Debug.Log("willdo " + (ctVirtualSizeChange != 0d));
 
 			if (ctVirtualSizeChange != 0d || ctRealSizeChange != 0f)
 			{
-				//Debug.LogError("Here3");
 				var cutInVirtualSize = -ctVirtualSizeChange;
-
-				// TODO also test this case when the vp shrinks and the virtual size also shrinks
-				// TODO also test this case when the vp shrinks and the virtual size also shrinks
-				// TODO also test this case when the vp shrinks and the virtual size also shrinks
-				// TODO also test this case when the vp shrinks and the virtual size also shrinks
-				// TODO also test this case when the vp shrinks and the virtual size also shrinks
 				if (contentPanelEndEdgeStationary)
 				{
 					contentPanelSkippedInsetDueToVirtualization -= ctVirtualSizeChange;
@@ -514,7 +372,6 @@ namespace UnityEngine.UI.Extension.Tools
 					if (ctVirtualSizeChange < 0d) // smaller content
 					{
 						double prevCTSVrtDistanceFromVPS = Math.Abs(contentPrevVrtInsetFromVPStart);
-						// The content prev amount before vp is smaller than the cut in its size => it needs to be shifted UP/LEFT
 						if (prevCTSVrtDistanceFromVPS < cutInVirtualSize)
 						{
 							var cutAmountFoundAfterVPE = cutInVirtualSize - prevCTSVrtDistanceFromVPS;
@@ -524,7 +381,6 @@ namespace UnityEngine.UI.Extension.Tools
 					else
 					{
 						if (contentPanelSize > prevContentPanelSize)
-							// If the content panel's real size increased, take that difference out from the skipped inset
 							contentPanelSkippedInsetDueToVirtualization += ctRealSizeChange;
 					}
 				}
@@ -537,32 +393,21 @@ namespace UnityEngine.UI.Extension.Tools
 						if (ctRealSizeChange < 0f)
 							cutInVrtAndRealSize -= ctRealSizeChange;
 
-						// The content prev vrt dist from vpe is smaller than the cut in its size => it needs to be shifted DOWN/RIGHT
 						if (prevCTEVrtDistanceFromVPE < cutInVrtAndRealSize) 
 						{
 							var cutVrtAmountFoundBeforeVPE = cutInVrtAndRealSize - prevCTEVrtDistanceFromVPE;
 							contentPanelSkippedInsetDueToVirtualization +=
 								(cutVrtAmountFoundBeforeVPE); 
-								//- cutRealAmountFoundBeforeVPE_IfEndStat_RealSizeHasShrunk); // this was already added above, don't add it again
 						}
 					}
 					else if (ctRealSizeChange < 0d) // smaller real content
 					{
 						float prevCTEDistanceFromVPE = Math.Abs(viewportSize - insetToUse /*inset from start*/ - prevContentPanelSize);
-						// The content prev dist from vpe is smaller than the cut in its size => it needs to be shifted DOWN/RIGHT
 						var cutInRealSize = -ctRealSizeChange;
 						if (prevCTEDistanceFromVPE < cutInRealSize)
 						{
 							cutRealAmountFoundBeforeVPE_IfEndStat_RealSizeHasShrunk = cutInRealSize - prevCTEDistanceFromVPE;
 							contentPanelSkippedInsetDueToVirtualization += cutRealAmountFoundBeforeVPE_IfEndStat_RealSizeHasShrunk;
-
-							//if (ctVirtualSizeChange != 0d)
-							//{
-							//	// Set it back because the next call should also have ctVirtualSizeChange != 0 in order to continue as if the content's real size was already correct
-							//	contentPanelVirtualSize = contentPanelPrevVirtualSize; 
-							//	OnCumulatedSizesOfAllItemsPlusSpacingChanged(contentPanelEndEdgeStationary, true);
-							//}
-							//return;
 						}
 					}
 				}

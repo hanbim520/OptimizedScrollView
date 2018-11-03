@@ -8,23 +8,15 @@ using System.Linq;
 
 namespace UnityEngine.UI.Extension.Tools
 {
-    /// Comments format: value if vertical scrolling/value if horizontal scrolling
     public class ItemsDescriptor
 	{
-		// Constant params (until the scrollview size changes)
-		public float itemsConstantTransversalSize; // widths/heights
-
+		public float itemsConstantTransversalSize;
 		public int itemsCount;
 		public double cumulatedSizesOfAllItemsPlusSpacing;
 		public int realIndexOfFirstItemInView;
-		// Heuristic used to prevent destroying too much objects.
-		// It's reset back to 0 when the NotifyScrollViewSizeChanged is called
 		public int maxVisibleItemsSeenSinceLastScrollViewSizeChange = 0;
-		// Heuristic similar to the above one. The bigger this is, the more items will be held in the recycle bin, leading to fewer GC calls in the long run.
-		// It's reset back to 0 when the NotifyScrollViewSizeChanged is called
 		public int destroyedItemsSinceLastScrollViewSizeChange = 0;
 
-		//public float DefaultSize { get; private set; }
 		public double CumulatedSizeOfAllItems { get { return itemsCount == 0 ? 0d : GetItemSizeCumulative(itemsCount - 1, false); } }
 
 		public float this[int cellIndex]
@@ -43,22 +35,6 @@ namespace UnityEngine.UI.Extension.Tools
 				{
 					if (cellIndex != _IndexInViewOfLastItemThatChangedSizeDuringSizesChange + 1)
 						throw new UnityException("Sizes can only be changed for items one by one, one after another(e.g. 3,4,5,6,7..), starting with the one passed to BeginChangingItemsSizes(int)!");
-
-
-					//if (this[cellIndex] == value)
-					//	return;
-
-					//if (_IndexInViewOfLastItemThatChangedSize == -1 // the first size being set => add a new entry
-					//		|| cellIndex > _IndexInViewOfLastItemThatChangedSize + 1) // the current index skips some intermediary indices => analogous
-					//	_RangesOfIndicesInViewOfItemsWhichChangedSize.Add(cellIndex);
-					//else // the current idx is immediately after
-					//{
-					//	if (cellIndex < _IndexInViewOfLastItemThatChangedSize + 1)
-					//		throw new UnityException("Can only set sizes from smaller indices to bigger indices (3, 5, 8, 10.. not 5, 3, 6, 7, 1, 28)");
-
-					//	_RangesOfIndicesInViewOfItemsWhichChangedSize[_RangesOfIndicesInViewOfItemsWhichChangedSize.Count - 1] = cellIndex;
-					//}
-					//_IndexInViewOfLastItemThatChangedSize = cellIndex;
 					BinaryAddKeyToSortedListIfDoesntExist(cellIndex);
 					_CumulatedSizesUntilNowDuringSizesChange += value;
 					_Sizes[cellIndex] = value;
@@ -70,8 +46,6 @@ namespace UnityEngine.UI.Extension.Tools
 			}
 		}
 
-		// Important: if an item's index it's not here, it's assumed that its size is the default one, NOT that it's unknown
-		/// <summary>indices in view of items of non-default sizes</summary>
 		List<int> _Keys = new List<int>();
 		Dictionary<int, float> _Sizes = new Dictionary<int, float>(); // heights/widths
 		Dictionary<int, double> _SizesCumulative = new Dictionary<int, double>(); // heights/widths
@@ -80,13 +54,9 @@ namespace UnityEngine.UI.Extension.Tools
 		int _IndexInViewOfFirstItemThatChangesSizeDuringSizesChange;
 		int _IndexInViewOfLastItemThatChangedSizeDuringSizesChange = -1;
 		double _CumulatedSizesUntilNowDuringSizesChange;
-		//double _AverageSize;
-		//bool _IgnoreItemsWithDefaultSizesWhenCalculatingAVGSize; 
-
-
-		public ItemsDescriptor(float defaultSize)//, bool ignoreItemsWithDefaultSizesWhenCalculatingAVGSize)
+		
+		public ItemsDescriptor(float defaultSize)
 		{
-			//_IgnoreItemsWithDefaultSizesWhenCalculatingAVGSize = ignoreItemsWithDefaultSizesWhenCalculatingAVGSize;
 			ReinitializeSizes(ItemCountChangeMode.RESET, 0, -1, defaultSize);
 		}
 
@@ -101,7 +71,6 @@ namespace UnityEngine.UI.Extension.Tools
 						throw new UnityException("Cannot preserve old sizes if the newDefaultSize is different!");
 
 					_DefaultSize = newDefaultSize.Value;
-					//_AverageSize = _DefaultSize = newDefaultSize.Value;
 				}
 			}
 
@@ -124,13 +93,6 @@ namespace UnityEngine.UI.Extension.Tools
 				ShiftSizesKeys(indexIfInsertingOrRemoving, count);
 
 				newCount = itemsCount + count;
-				//if (newCount == 0)
-				//	_AverageSize = 0d;
-				//else if (!_IgnoreItemsWithDefaultSizesWhenCalculatingAVGSize)
-				//{
-
-				//	_AverageSize = ((double)itemsCount / newCount) * _AverageSize + ((double)count / newCount) * _DefaultSize;
-				//}
 			}
 			else
 			{
@@ -143,10 +105,6 @@ namespace UnityEngine.UI.Extension.Tools
 				count = -count;
 				ShiftSizesKeys(indexIfInsertingOrRemoving, count);
 				newCount = itemsCount + count;
-				//if (newCount == 0)
-				//	_AverageSize = 0d;
-				//else if (!_IgnoreItemsWithDefaultSizesWhenCalculatingAVGSize)
-				//	_AverageSize = ((double)itemsCount / newCount) * _AverageSize + ((double)count / newCount) * _DefaultSize;
 			}
 			itemsCount = newCount;
 		}
@@ -154,7 +112,7 @@ namespace UnityEngine.UI.Extension.Tools
 		void BinaryAddKeyToSortedListIfDoesntExist(int key)
 		{
 			int indexOfKey = _Keys.BinarySearch(key);
-			if (indexOfKey < 0) // will be negative if it doesn't already exist
+			if (indexOfKey < 0) 
 				_Keys.Insert(~indexOfKey, key);
 		}
 
@@ -163,35 +121,19 @@ namespace UnityEngine.UI.Extension.Tools
 			_Keys.RemoveAt(_Keys.BinarySearch(key));
 		}
 
-		//void Debug_ListSizesAndSizesCumulative()
-		//{
-		//	foreach (var k in _Keys)
-		//		Debug.Log(k + ": " + _Sizes[k] + ", c=" + _SizesCumulative[k]);
-		//}
-
 		void ShiftSizesKeys(int startingKey, int amount)
 		{
 			if (_Sizes.Count != _SizesCumulative.Count || _Sizes.Count != _Keys.Count)
 				throw new InvalidOperationException("The sizes state was corrupted");
-
-			//Debug.Log("Bef, startingKey= " + startingKey + ", amount="+ amount + ", oldCount=" + itemsCount);
-			//Debug_ListSizesAndSizesCumulative();
 			
 			var indexOfStartingKeyOrFirstKeyAfter = _Keys.BinarySearch(startingKey);
-			if (indexOfStartingKeyOrFirstKeyAfter < 0) // doesn't exist => see if there's a key after
+			if (indexOfStartingKeyOrFirstKeyAfter < 0) 
 				indexOfStartingKeyOrFirstKeyAfter = ~indexOfStartingKeyOrFirstKeyAfter;
 
-			//var itemsKV = _Sizes.ToList();
-			//int i = -1;
-			//KeyValuePair<int, float> kv;
 			int i = indexOfStartingKeyOrFirstKeyAfter;
-			//while (++i < itemsKV.Count && itemsKV[i].Key < startingKey) ; // skip until at- or after the startingKey
 
 			double contentSizeChange = 0d; // the shifting amount
 
-			//Debug.Log("Adjust after:");
-
-			// Negative amount means the items are being removed => remove existing items from startingKey to <startingKey+amount-1>
 			int key;
 			float size;
 			double sizeCumm;
@@ -200,8 +142,6 @@ namespace UnityEngine.UI.Extension.Tools
 				int countBefore = _Keys.Count;
 				int amountAbs = -amount;
 				int lastItemIndexExclusive = startingKey + amountAbs;
-				//--i;
-				//while (++i < _Keys.Count && (key=_Keys[i]) < lastItemIndexExclusive)
 				while (i < _Keys.Count && (key=_Keys[i]) < lastItemIndexExclusive)
 				{
 					contentSizeChange -= _Sizes[key];
@@ -213,8 +153,6 @@ namespace UnityEngine.UI.Extension.Tools
 				int itemsRemoved = countBefore - _Keys.Count;
 				contentSizeChange -= (amountAbs - itemsRemoved) * _DefaultSize;
 
-				// Shift the indices following after to the left, starting with the left-most index (to prevent overwriting existing keys). 
-				// i = index of the first stored key after the last removed one
 				for (; i < _Keys.Count; ++i)
 				{
 					key = _Keys[i];
@@ -225,23 +163,22 @@ namespace UnityEngine.UI.Extension.Tools
 					_SizesCumulative.Remove(key);
 
 					var newKey = key + amount;
-					if (newKey < 0) // the item will be removed from the head of the list => don't add it 
+					if (newKey < 0) 
 					{
 						Debug.Log("here");
 						_Keys.RemoveAt(i);
 						continue;
 					}
-					_Keys[i] = newKey; // change the key to the new value
+					_Keys[i] = newKey;
 					_Sizes[newKey] = size;
 					_SizesCumulative[newKey] = sizeCumm + contentSizeChange;
 				}
 			}
 			else
 			{
-				contentSizeChange = amount * _DefaultSize; // new items are supposed to have default size
+				contentSizeChange = amount * _DefaultSize; 
 
-				// Shift the indices following after to the right, but start from the right-most (to prevent overwriting existing keys). 
-				// i = index of startingKey or (if starting key is not stored) the first stored key after it
+	
 				int indexOfLeftMostKeyToBeShifted = i;
 				for (i = _Keys.Count - 1; i >= indexOfLeftMostKeyToBeShifted; --i)
 				{
@@ -253,19 +190,14 @@ namespace UnityEngine.UI.Extension.Tools
 					_SizesCumulative.Remove(key);
 
 					var newKey = key + amount;
-					_Keys[i] = newKey; // change the key to the new value
+					_Keys[i] = newKey;
 					_Sizes[newKey] = size;
 					_SizesCumulative[newKey] = sizeCumm + contentSizeChange;
 				}
 			}
 
-			//Debug.Log("Aft");
-			//Debug_ListSizesAndSizesCumulative();
 		}
 
-		/// <summary>
-		/// UPDATE: Only consecutive indices are allowed now! 
-		/// </summary>
 		public void BeginChangingItemsSizes(int indexInViewOfFirstItemThatWillChangeSize)
 		{
 			if (_ChangingItemsSizesInProgress)
@@ -275,8 +207,6 @@ namespace UnityEngine.UI.Extension.Tools
             _IndexInViewOfFirstItemThatChangesSizeDuringSizesChange = indexInViewOfFirstItemThatWillChangeSize;
 			_IndexInViewOfLastItemThatChangedSizeDuringSizesChange = _IndexInViewOfFirstItemThatChangesSizeDuringSizesChange - 1;
 			_CumulatedSizesUntilNowDuringSizesChange = _IndexInViewOfFirstItemThatChangesSizeDuringSizesChange == 0 ? 0d : GetItemSizeCumulative(_IndexInViewOfFirstItemThatChangesSizeDuringSizesChange - 1);
-			//_IndexInViewOfLastItemThatChangedSize = -1;
-			//_RangesOfIndicesInViewOfItemsWhichChangedSize.Clear();
 		}
 
 		public void EndChangingItemsSizes()
@@ -284,7 +214,7 @@ namespace UnityEngine.UI.Extension.Tools
 			_ChangingItemsSizesInProgress = false;
 
 			if (_IndexInViewOfLastItemThatChangedSizeDuringSizesChange == _IndexInViewOfFirstItemThatChangesSizeDuringSizesChange - 1)
-				return; // this[int] wasn't assigned between BeginChangingItemsSizes() and EndChangingItemsSizes(), i.e. nothing has changed
+				return; 
 
 			var indexOfLastKeyThatChanged = _Keys.BinarySearch(_IndexInViewOfLastItemThatChangedSizeDuringSizesChange);
 			if (indexOfLastKeyThatChanged < 0) // doesn't exist
@@ -307,8 +237,7 @@ namespace UnityEngine.UI.Extension.Tools
 
 		public double GetItemSizeCumulative(int cellIndex, bool allowInferringFromNeighborAfter = true)
 		{
-			// No key in the dictionary. This also means that there's no size in 
-			// _Sizes either (assuming the things are done correctly - when a size is set, the cumm size is also set)
+			
 			if (_Keys.Count > 0)
 			{
 				double result;
@@ -321,35 +250,22 @@ namespace UnityEngine.UI.Extension.Tools
 
 				indexOfNextKey = ~indexOfNextKey;
 				int indexOfPrevKey = indexOfNextKey - 1;
-				//int itemsCountDeltaLeft;
-
-				// Case where there's a key after (bigger) AND "can use next neighbor to infer size"
 				if (indexOfNextKey < _Keys.Count && allowInferringFromNeighborAfter)
 				{
 					int indexInViewOfNextItemWithKnownSize = _Keys[indexOfNextKey];
 					int itemsCountDeltaRight = indexInViewOfNextItemWithKnownSize - cellIndex;
 
-					// .. and: (size for none of prev items was set OR the next one is closer)  => searched item's cumm. size is 
-					// the current item's cumm. size minus <currentItemSize + numItemsBetween * defaultSize>
 					if ((indexOfPrevKey < 0 || itemsCountDeltaRight < (/*itemsCountDeltaLeft =*/ cellIndex - _Keys[indexOfPrevKey])))
 						return _SizesCumulative[indexInViewOfNextItemWithKnownSize] - (this[indexInViewOfNextItemWithKnownSize] + (itemsCountDeltaRight - 1) * _DefaultSize);
 				}
-				// Case where there's no key after or can't use it, but there may be some before
 
 				if (indexOfPrevKey >= 0)
 				{
 					int indexInViewOfPrevItemWithKnownSize = _Keys[indexOfPrevKey];
-					// Found an item before it that provides a starting point in calculating the searched cumm. size:
-					// It's biggestPrevCummSize + itemsCountDelta * defaultSize; 3 possible reasons for this:
-					// a. inferring from next keys are not allowed (allowInferringFromNeighborAfter=false)
-					// b. there's no next key
-					// c. there's a prev key that's closer than the next key
-					// .. in all cases, => the prev item's data is generally more reliable
 					return _SizesCumulative[indexInViewOfPrevItemWithKnownSize] + (cellIndex - indexInViewOfPrevItemWithKnownSize) * _DefaultSize;
 				}
 			}
 
-			// At this point, there are no keys stored OR the inferring can't or shouldn't be done using the next key => return based on the default size
 
 			return (cellIndex + 1) * _DefaultSize; // same as if there were no keys
 		}

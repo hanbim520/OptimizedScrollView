@@ -7,39 +7,15 @@ namespace UnityEngine.UI.Extension.Tools
 {
     public static class Utils
 	{
-		/// <summary>Returns the delta reported in the <see cref="PointerEventData"/></summary>
-		//public static Vector2? ForceSetPointerEventDistanceToZero(GameObject pointerDragGOToLookFor)
-		//{
-		//	var pev = GetPointerEventDataWithPointerDragGO(pointerDragGOToLookFor);
-		//	if (pev == null)
-		//		return null;
-
-		//	return ForceSetPointerEventDistanceToZero(pev);
-		//}
-
-		public static Vector2? ForceSetPointerEventDistanceToZero(PointerEventData pev)
+		public static Vector2? SetPointerEventDistanceToZero(PointerEventData pev)
 		{
-			// Modify the original pointer to look like it was pressed at the current position and it didn't move
-			//PointerEventData originalPED = null;
-			//Debug.Log("delta="+pointer.delta + ", scrollDelta=" + pointer.scrollDelta + ", dragging=" + pointer.dragging + ", pressPosition=" + pointer.pressPosition + ", position=" + pointer.position);
-			//pointer.pointerPressRaycast = pointer.pointerCurrentRaycast;
-			//pointer.pressPosition = pointer.position;
 			var delta = pev.delta;
-			//pointer.delta = Vector2.zero;
 			pev.dragging = false;
-			//pointer.scrollDelta = Vector2.zero;
-
-			//// TODO test
-			////pointer.Use();
-			////originalPED = pointer;
-			//break;
 			return delta;
 		}
 
-		/// <summary> This is needed because the PointerEventData received in OnDrag, OnEndDrag etc. is a copy of the original one </summary>
-		public static PointerEventData GetOriginalPointerEventDataWithPointerDragGO(GameObject pointerDragGOToLookFor)
+		public static PointerEventData GetOriginalPointerEventDataByDrag(GameObject pointerDragGOToLookFor)
 		{
-			// Current input module not initialized yet
 			if (EventSystem.current.currentInputModule == null)
 				return null;
 
@@ -51,10 +27,9 @@ namespace UnityEngine.UI.Extension.Tools
 			Dictionary<int, PointerEventData> pointerEvents;
 			if (asCompatInterface == null)
 			{
-#if UNITY_WSA || UNITY_WSA_10_0 // WSA uses .net core, which doesn't have reflection. in this case we expect the current input module to implement ISmartScrollViewPointerInputModule
+#if UNITY_WSA || UNITY_WSA_10_0 
 				throw new UnityException("Your InputModule should extend ISmartScrollViewPointerInputModule. See Instructions.pdf");
 #else
-                // Dig into reflection and get the original pointer data
                 pointerEvents = eventSystemAsPointerInputModule
 					.GetType()
 					.GetField("m_PointerData", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
