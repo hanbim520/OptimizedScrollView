@@ -11,8 +11,9 @@ namespace UnityEngine.UI.Extension
         private Type cellType;
 
         #region UISmartScrollView implementation
+       
 
-        public void UpdateScrollView<T>(IList datas,GameObject prefab,bool isScrollToBottom = true)where T: UILoopSmartItem
+        public void UpdateScrollView<T>(IList datas,GameObject prefab)where T: UILoopSmartItem
         {
             if(datas == null || prefab == null)
             {
@@ -23,10 +24,7 @@ namespace UnityEngine.UI.Extension
             _itemPrefab = prefab;
             cellType = typeof(T);
             OnItemCountChangeRequested(_datas.Count);
-            if(isScrollToBottom)
-            {
-                ScrollTo(0);
-            }
+          
         }
 		protected override void Update()
 		{
@@ -50,8 +48,10 @@ namespace UnityEngine.UI.Extension
 		protected override void UpdateViewsHolder(UILoopSmartItem newOrRecycled)
 		{
 			newOrRecycled.UpdateFromModel(_datas, newOrRecycled.ItemIndex);
+
             newOrRecycled.MarkForRebuild();
             ScheduleComputeVisibilityTwinPass(true);
+
 
             if (!newOrRecycled.IsPopupAnimationActive && newOrRecycled.cellIndex == GetItemsCount() - 1) 
 				newOrRecycled.IsPopupAnimationActive = true;

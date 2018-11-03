@@ -17,7 +17,7 @@ public class Test : MonoBehaviour {
     public GameObject prefab;
     private List<DataStruct> datas = new List<DataStruct>();
     // Use this for initialization
-    void Start () {
+    void Start() {
         Data _datas = Datas.GetComponent<Data>();
         for(int i=0;i< 100;++i)
         {
@@ -45,12 +45,15 @@ public class Test : MonoBehaviour {
             datas.Add(dt);
         }
 
-        uiSmartScrollView.UpdateScrollView<UICelltItem>(datas, prefab,false);
-
-	}
+        uiSmartScrollView.UpdateScrollView<UICelltItem>(datas, prefab);
+    }
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public void ScrollToUp()
+    {
+        uiSmartScrollView.SmoothScrollTo(0,0.5f);
+    }
+    public void ScrollToDown()
+    {
+        uiSmartScrollView.SmoothScrollTo(datas.Count - 1, 0.5f);
+    }
 }

@@ -52,7 +52,7 @@ namespace UnityEngine.UI.Extension.Tools
 
 		#region Unity methods
 		protected virtual void Awake() { Init(); }
-		protected virtual void Update() { MyUpdate(); }
+        protected virtual void Update() { MyUpdate(); }
 		protected virtual void OnDestroy() { Dispose(); }
 		#endregion
 
