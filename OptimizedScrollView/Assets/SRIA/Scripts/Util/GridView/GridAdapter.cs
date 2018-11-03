@@ -7,7 +7,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace frame8.ScrollRectItemsAdapter.Util.GridView
+namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter.Util.GridView
 {
     /// <summary>
     /// <para>An optimized adapter for a GridView </para>

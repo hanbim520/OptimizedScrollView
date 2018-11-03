@@ -6,7 +6,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace frame8.ScrollRectItemsAdapter.Util.GridView
+namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter.Util.GridView
 {
 	/// <summary> <para>Base class for params to beused with a <see cref="GridAdapter{TParams, TCellVH}"/></para>
 	/// </summary>

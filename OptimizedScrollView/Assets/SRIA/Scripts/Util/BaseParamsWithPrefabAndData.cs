@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace frame8.ScrollRectItemsAdapter.Util
+namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter.Util
 {
 	/// <typeparam name="TData">The model type to be used</typeparam>
 	public class BaseParamsWithPrefabAndData<TData> : BaseParamsWithPrefab

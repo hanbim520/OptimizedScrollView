@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
+namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter
 {
 	/// <summary>
 	/// Contains commonly used members so that an <see cref="SmartScrollView{TParams, SmartScrollViewItem}"/> instance 

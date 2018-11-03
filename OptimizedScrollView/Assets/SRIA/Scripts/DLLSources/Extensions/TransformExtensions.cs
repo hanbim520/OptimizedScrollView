@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace frame8.Logic.Misc.Other.Extensions
+namespace UnityEngine.UI.Extension.Other.Extensions
 {
     public static class TransformExtensions
     {

@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
-namespace frame8.ScrollRectItemsAdapter.Util
+namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter.Util
 {
 	/// <summary>Added to a GameObject that has a Button component, it loads <see cref="sceneName"/> scene when the button is clicked</summary>
 	public class LoadSceneOnClick : MonoBehaviour

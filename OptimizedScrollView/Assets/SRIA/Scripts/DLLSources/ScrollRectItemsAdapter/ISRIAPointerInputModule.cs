@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 
-namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
+namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter
 {
 	/// <summary>
 	/// Used if you have your own custom input module. Otherwise, see <see cref="SRIAStandaloneInputModule"/> and <see cref="SRIATouchInputModule"/>.

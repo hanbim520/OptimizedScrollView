@@ -5,10 +5,9 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using System;
 using frame8.Logic.Misc.Other.Extensions;
-using frame8.Logic.Misc.Visual.UI.MonoBehaviours;
 using System.Linq;
 
-namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
+namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter
 {
     /// Comments format: value if vertical scrolling/value if horizontal scrolling
     public class ItemsDescriptor

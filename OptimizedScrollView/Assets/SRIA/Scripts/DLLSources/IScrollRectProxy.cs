@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace frame8.Logic.Misc.Visual.UI
+namespace UnityEngine.UI.Extension
 {
 	/// <summary> A delegate used to communicate with a ScrollRect</summary>
 	public interface IScrollRectProxy

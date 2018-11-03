@@ -5,9 +5,8 @@ using System;
 using frame8.Logic.Misc.Other.Extensions;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
-using frame8.Logic.Misc.Visual.UI.MonoBehaviours;
-using frame8.Logic.Misc.Visual.UI;
-using frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter;
+using UnityEngine.UI.Extension;
+using UnityEngine.UI.Extension.ScrollRectItemsAdapter;
 
 namespace frame8.ScrollRectItemsAdapter.Util.PullToRefresh
 {

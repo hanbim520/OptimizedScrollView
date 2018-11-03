@@ -1,15 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
-using System;
-using System.Collections.Generic;
-using frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter;
-using frame8.Logic.Misc.Other.Extensions;
-using frame8.ScrollRectItemsAdapter.Util;
-using frame8.ScrollRectItemsAdapter.Util.Drawer;
-using frame8.Logic.Misc.Visual.UI.MonoBehaviours;
-using UnityEngine.EventSystems;
-using frame8.Logic.Misc.Visual.UI;
+﻿using System.Collections;
+using UnityEngine.UI.Extension.ScrollRectItemsAdapter.Util.Drawer;
+using UnityEngine.UI.Extension.ScrollRectItemsAdapter;
+using UnityEngine.UI.Extension.ScrollRectItemsAdapter.Util;
+using UnityEngine.UI.Extension.Other.Extensions;
 
 namespace UnityEngine.UI.Extension
 {

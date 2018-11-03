@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
 
-namespace frame8.Logic.Misc.Visual.UI.MonoBehaviours
+namespace UnityEngine.UI.Extension.MonoBehaviours
 {
     /// <summary>
     /// <para>Fixes ScrollView inertia when the content grows too big. The default method cuts off the inertia in most cases.</para>

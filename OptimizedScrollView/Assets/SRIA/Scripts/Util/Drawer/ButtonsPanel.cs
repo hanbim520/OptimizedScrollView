@@ -3,10 +3,10 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using System;
-using frame8.Logic.Misc.Other.Extensions;
 using UnityEngine.Events;
+using UnityEngine.UI.Extension.Other.Extensions;
 
-namespace frame8.ScrollRectItemsAdapter.Util.Drawer
+namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter.Util.Drawer
 {
 	public class ButtonsPanel : MonoBehaviour
 	{

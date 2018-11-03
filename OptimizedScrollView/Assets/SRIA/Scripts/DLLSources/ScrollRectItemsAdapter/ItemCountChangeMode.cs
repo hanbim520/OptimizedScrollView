@@ -6,9 +6,9 @@ using UnityEngine.EventSystems;
 using System;
 
 using frame8.Logic.Misc.Other.Extensions;
-using frame8.Logic.Misc.Visual.UI.MonoBehaviours;
+ 
 
-namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
+namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter
 {
 	public enum ItemCountChangeMode
 	{

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using UnityEditor;
 
-namespace frame8.ScrollRectItemsAdapter.Editor.CustomEditors
+namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter.Editor.CustomEditors
 {
 	[CustomEditor(typeof(SRIATouchInputModule))]
 	public class SRIATouchInputModuleCustomEditor : UnityEditor.Editor

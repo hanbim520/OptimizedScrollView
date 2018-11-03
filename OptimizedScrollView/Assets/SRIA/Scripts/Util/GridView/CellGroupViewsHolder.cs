@@ -6,7 +6,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace frame8.ScrollRectItemsAdapter.Util.GridView
+namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter.Util.GridView
 {
     /// <summary>
     /// <para>A views holder representing a group of cells (row or column). It instantiates the maximum number of cells it can contain,</para>

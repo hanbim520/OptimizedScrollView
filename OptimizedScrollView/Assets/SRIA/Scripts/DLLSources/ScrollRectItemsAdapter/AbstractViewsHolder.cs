@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
+namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter
 {
     /// <summary>
     /// Class representing the concept of a Views Holder, i.e. a class that references some views and the id of the data displayed by those views. 

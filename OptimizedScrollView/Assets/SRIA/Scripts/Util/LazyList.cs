@@ -6,7 +6,7 @@ using System.Text;
 using UnityEngine;
 using System.Collections;
 
-namespace frame8.ScrollRectItemsAdapter.Util
+namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter.Util
 {
 	/// <summary>
 	/// <para>Very handy List implementation that delays object creation until it's accessed,</para>

@@ -4,10 +4,10 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using System;
-using frame8.Logic.Misc.Other.Extensions;
-using frame8.Logic.Misc.Visual.UI.MonoBehaviours;
+using UnityEngine.UI.Extension.MonoBehaviours;
+using UnityEngine.UI.Extension.Other.Extensions;
 
-namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
+namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter
 {
 	
 	public abstract partial class SmartScrollView<TParams, SmartScrollViewItem> : MonoBehaviour, ISmartScrollView, IBeginDragHandler, IEndDragHandler
@@ -110,7 +110,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 			_Params.InitIfNeeded(this);
 			if (_Params.Snapper)
 				_Params.Snapper.Adapter = this;
-
+ 
 			if (_Params.scrollRect.horizontalScrollbar != null || _Params.scrollRect.verticalScrollbar != null)
 				throw new UnityException("SRIA only works with a "+typeof(ScrollbarFixer8).Name + " component added to the Scrollbar and the ScrollRect shouldn't have any scrollbar set up in the inspector (it hooks up automatically)");
 

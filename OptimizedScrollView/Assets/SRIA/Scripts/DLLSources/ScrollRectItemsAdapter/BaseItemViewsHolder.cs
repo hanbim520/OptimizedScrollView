@@ -1,5 +1,5 @@
 ﻿
-namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
+namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter
 {
     /// <summary>The minimal implementation of a Views Holder that can be used with <see cref="SmartScrollView{TParams, SmartScrollViewItem}"/></summary>
     public class BaseItemViewsHolder : AbstractViewsHolder

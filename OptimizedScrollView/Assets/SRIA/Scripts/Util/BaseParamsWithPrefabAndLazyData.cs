@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace frame8.ScrollRectItemsAdapter.Util
+namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter.Util
 {
 	/// <summary><see cref="LazyList{T}"/></summary>
 	/// <typeparam name="TData">The model type to be used</typeparam>

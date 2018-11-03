@@ -6,7 +6,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace frame8.ScrollRectItemsAdapter.Util.GridView
+namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter.Util.GridView
 {
     /// <summary>
     /// By design, each cell should have exactly one child and it should hold the views. This is because the cell's GameObject must always be active, while the views may not be.

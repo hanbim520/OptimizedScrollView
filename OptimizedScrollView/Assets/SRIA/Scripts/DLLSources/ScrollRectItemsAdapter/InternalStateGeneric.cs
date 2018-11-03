@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using System;
 using frame8.Logic.Misc.Other.Extensions;
-using frame8.Logic.Misc.Visual.UI.MonoBehaviours;
+using UnityEngine.UI.Extension.Other.Extensions;
 
-namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
+namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter
 {
     /// <summary>
 	/// Contains cached variables, helper methods and generally things that are not exposed to inheritors. Note: the LayoutGroup component on content, if any, will be disabled.
