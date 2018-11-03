@@ -13,7 +13,7 @@ namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter.Editor.CustomEditors
 		public override void OnInspectorGUI()
 		{
 			DrawDefaultInspector();
-			EditorGUILayout.HelpBox("SRIA: In case a TouchInputModule is needed (older unity versions require both Standard- and Touch InputModules) and building for Universal Windows Platform, this component is mandatory (and just 'recommended' for other platforms)", MessageType.Info);
+			EditorGUILayout.HelpBox("SmartScrollView: In case a TouchInputModule is needed (older unity versions require both Standard- and Touch InputModules) and building for Universal Windows Platform, this component is mandatory (and just 'recommended' for other platforms)", MessageType.Info);
 		}
 	}
 }

@@ -13,7 +13,7 @@ namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter.Editor.CustomEditors
 		public override void OnInspectorGUI()
 		{
 			DrawDefaultInspector();
-			EditorGUILayout.HelpBox("SRIA: This component is mandatory if building for Universal Windows Platform, but recommended in all cases", MessageType.Info);
+			EditorGUILayout.HelpBox("SmartScrollView: This component is mandatory if building for Universal Windows Platform, but recommended in all cases", MessageType.Info);
 		}
 	}
 }
