@@ -9,9 +9,8 @@ using UnityEngine.UI.Extension.Other.Extensions;
 
 namespace UnityEngine.UI.Extension.Tools
 {
-	public abstract partial class SmartScrollView<TParams, SmartScrollViewItem> : MonoBehaviour, ISmartScrollView
+	public abstract partial class SmartScrollView<TParams> : MonoBehaviour, ISmartScrollView
     where TParams : BaseParams
-	where SmartScrollViewItem : BaseItemViewsHolder
 	{
 		IEnumerator SmoothScrollProgressCoroutine(
 			int itemIndex, 
@@ -160,7 +159,7 @@ namespace UnityEngine.UI.Extension.Tools
 			}
 		}
 
-		void MarkViewsHoldersForRebuild(List<SmartScrollViewItem> vhs)
+		void MarkViewsHoldersForRebuild(List<UILoopSmartItem> vhs)
 		{
 			if (vhs != null)
 				foreach (var v in vhs)
@@ -467,7 +466,7 @@ namespace UnityEngine.UI.Extension.Tools
 
 			// Caching the sizes before disabling the CSF, because Unity 2017.2 suddenly decided that's a good idea to resize the item to its original size after the CSF is disabled
 			float[] sizes = new float[_VisibleItemsCount];
-			SmartScrollViewItem v;
+			UILoopSmartItem v;
 			// 2 fors are more efficient
 			if (_Params.scrollRect.horizontal)
 			{
@@ -713,7 +712,7 @@ namespace UnityEngine.UI.Extension.Tools
 				_InternalState.CorrectPositions(_VisibleItems, alsoCorrectTransversalPositioning);//, itemEndEdgeStationary);
 		}
 
-		/// <summary>The very core of <see cref="SmartScrollView{TParams, SmartScrollViewItem}"/>. You must be really brave if you think about trying to understand it :)</summary>
+		/// <summary>The very core of <see cref="SmartScrollView{TParams, UILoopSmartItem}"/>. You must be really brave if you think about trying to understand it :)</summary>
 		void ComputeVisibility(double abstractDelta)
 		{
 			// ALIASES:
@@ -757,7 +756,7 @@ namespace UnityEngine.UI.Extension.Tools
 			float allItemsTransversalSizes = _ItemsDesc.itemsConstantTransversalSize;
 
 			// Items variable values
-			SmartScrollViewItem nlvHolder = null;
+			UILoopSmartItem nlvHolder = null;
 			//int currentLVItemIndex;
 			int currentLVItemIndexInView;
 
@@ -812,7 +811,7 @@ namespace UnityEngine.UI.Extension.Tools
 			// _VisibleItemsCount is always 0 in the first call of this func after the list is modified.
 
 			// The item that was the last in the _VisibleItems (first, if pos scroll); We're inferring the positions of the other ones after(below/to the right, depending on hor/vert scroll) it this way, since the heights(widths for hor scroll) are known
-			SmartScrollViewItem startingLVHolder = null;
+			UILoopSmartItem startingLVHolder = null;
 
 			// Get a list of items that are before(if neg)/after(if pos) viewport and move them from 
 			// _VisibleItems to itemsOutsideViewport; they'll be candidates for recycling
@@ -884,7 +883,7 @@ namespace UnityEngine.UI.Extension.Tools
 				// first in _VisibleItems, if negativeScroll
 				// last in _VisibleItems, else
 				int curRecCandidateVHIndex = neg0_pos1 * (_VisibleItemsCount - 1);
-				SmartScrollViewItem curRecCandidateVH = _VisibleItems[curRecCandidateVHIndex];
+				UILoopSmartItem curRecCandidateVH = _VisibleItems[curRecCandidateVHIndex];
 				double curInsetFromParentEdge = negativeScroll ? _InternalState.GetItemVirtualInsetFromParentStartUsingItemIndexInView(curRecCandidateVH.itemIndexInView)
 																: _InternalState.GetItemVirtualInsetFromParentEndUsingItemIndexInView(curRecCandidateVH.itemIndexInView);
 				while (true)
@@ -1070,7 +1069,7 @@ namespace UnityEngine.UI.Extension.Tools
 				// This block remains the same regardless of <negativeScroll> variable, because the items in <itemsOutsideViewport> were already added in an order dependent on <negativeScroll>
 				// (they are always from <closest to [start]> to <closest to [end]>)
 				int i = 0;
-				SmartScrollViewItem potentiallyRecyclable;
+				UILoopSmartItem potentiallyRecyclable;
 				while (true)
 				{
 					if (i < _RecyclableItems.Count)
@@ -1167,7 +1166,7 @@ namespace UnityEngine.UI.Extension.Tools
 			// + keep <numVisibleItems + numItemsInRecycleBin> abvove <_InternalParams.maxVisibleItemsSeenSinceLastScrollViewSizeChange>
 			// See GetNumExcessObjects()
 			GameObject go;
-			SmartScrollViewItem vh;
+			UILoopSmartItem vh;
 			for (int i = 0; i < _RecyclableItems.Count;)
 			{
 				vh = _RecyclableItems[i];
@@ -1257,7 +1256,7 @@ namespace UnityEngine.UI.Extension.Tools
 		
 
 		/// <inheritdoc/>
-		class InternalState : InternalStateGeneric<TParams, SmartScrollViewItem>
+		class InternalState : InternalStateGeneric<TParams>
 		{
 			internal static InternalState CreateFromSourceParamsOrThrow(TParams sourceParams, ItemsDescriptor itemsDescriptor)
 			{

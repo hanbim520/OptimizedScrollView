@@ -16,7 +16,7 @@ public class Test : MonoBehaviour {
             datas.Add(i);
         }
 
-        uiSmartScrollView.UpdateScrollView(datas, prefab);
+        uiSmartScrollView.UpdateScrollView<UILoopSmartItem>(datas, prefab);
 
 	}
 	

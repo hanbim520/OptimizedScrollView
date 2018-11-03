@@ -3,20 +3,22 @@ using UnityEngine.UI.Extension.Tools.Util.Drawer;
 using UnityEngine.UI.Extension.Tools;
 using UnityEngine.UI.Extension.Tools.Util;
 using UnityEngine.UI.Extension.Other.Extensions;
+using System;
 
 namespace UnityEngine.UI.Extension
 {
 	/// <summary>This class demonstrates a basic chat implementation. A message can contain a text, image, or both</summary>
-	public class UISmartScrollView : SmartScrollView<BaseParamsWithPrefab, UILoopSmartItem>
+	public class UISmartScrollView : SmartScrollView<BaseParamsWithPrefab>
 	{
 		const string LOREM_IPSUM = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
         //  public RectTransform itemPrefab;
         private IList _datas;
         private GameObject _itemPrefab;
+        private Type cellType;
 
-		#region SRIA implementation
-		/// <inheritdoc/>
-		void Start()
+        #region UISmartScrollView implementation
+        /// <inheritdoc/>
+        void Start()
 		{
 
 			DrawerCommandPanel.Instance.Init(this, false, false, false, false, true);
@@ -36,7 +38,7 @@ namespace UnityEngine.UI.Extension
 			
 		}
 
-        public void UpdateScrollView(IList datas,GameObject prefab)
+        public void UpdateScrollView<T>(IList datas,GameObject prefab)where T: UILoopSmartItem
         {
             if(datas == null || prefab == null)
             {
@@ -45,6 +47,7 @@ namespace UnityEngine.UI.Extension
             }
             _datas = datas;
             _itemPrefab = prefab;
+            cellType = typeof(T);
             OnItemCountChangeRequested(_datas.Count);
         }
 		/// <inheritdoc/>
@@ -57,7 +60,7 @@ namespace UnityEngine.UI.Extension
 		/// <inheritdoc/>
 		protected override UILoopSmartItem CreateViewsHolder(int itemIndex)
 		{
-			var instance = new UILoopSmartItem();
+            var instance = Activator.CreateInstance(cellType) as UILoopSmartItem;
 			instance.Init(_itemPrefab, itemIndex);
 
 			return instance;
@@ -117,53 +120,5 @@ namespace UnityEngine.UI.Extension
 		static string GetRandomContent() { return LOREM_IPSUM.Substring(0, UnityEngine.Random.Range(LOREM_IPSUM.Length / 50 + 1, LOREM_IPSUM.Length / 2)); }
 	}
 
-    public class UILoopSmartItem : BaseItemViewsHolder
-    {
-        bool _IsAnimating;
-        private ContentSizeFitter contentSizeFitter;
-        public bool IsPopupAnimationActive
-        {
-            get { return _IsAnimating; }
-            set
-            {
-                _IsAnimating = value;
-            }
-        }
-
-        VerticalLayoutGroup _RootLayoutGroup, _MessageContentLayoutGroup;
-        int paddingAtIconSide, paddingAtOtherSide;
-        Color colorAtInit;
-        Text timeText, text;
-        Image leftIcon, rightIcon;
-        Image image;
-        Image messageContentPanelImage;
-
-
-        public override void InitialChild()
-        {
-            base.InitialChild();
-            _RootLayoutGroup = root.GetComponent<VerticalLayoutGroup>();
-            paddingAtIconSide = _RootLayoutGroup.padding.right;
-            paddingAtOtherSide = _RootLayoutGroup.padding.left;
-
-            contentSizeFitter = root.GetComponent<ContentSizeFitter>();
-            contentSizeFitter.enabled = false; // the content size fitter should not be enabled during normal lifecycle, only in the "Twin" pass frame
-            root.GetComponentAtPath("MessageContentPanel", out _MessageContentLayoutGroup);
-            messageContentPanelImage = _MessageContentLayoutGroup.GetComponent<Image>();
-            messageContentPanelImage.transform.GetComponentAtPath("Image", out image);
-            messageContentPanelImage.transform.GetComponentAtPath("TimeText", out timeText);
-            messageContentPanelImage.transform.GetComponentAtPath("Text", out text);
-            root.GetComponentAtPath("LeftIconImage", out leftIcon);
-            root.GetComponentAtPath("RightIconImage", out rightIcon);
-            colorAtInit = messageContentPanelImage.color;
-        }
-
-        public void UpdateFromModel(IList datas, int index)
-        {
-
-            timeText.text = datas[index].ToString();
-
-           
-        }
-    }
+ 
 }
