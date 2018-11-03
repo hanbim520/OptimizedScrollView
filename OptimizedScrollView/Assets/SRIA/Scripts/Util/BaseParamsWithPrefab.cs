@@ -7,11 +7,13 @@ using UnityEngine;
 
 namespace frame8.ScrollRectItemsAdapter.Util
 {
-	/// <summary>
-	/// Custom params containing a single prefab. <see cref="ItemPrefabSize"/> is calculated on first accessing and invalidated each time <see cref="InitIfNeeded(ISRIA)"/> is called.
-	/// </summary>
-	public class BaseParamsWithPrefab : BaseParams
+    [Serializable]
+    /// <summary>
+    /// Custom params containing a single prefab. <see cref="ItemPrefabSize"/> is calculated on first accessing and invalidated each time <see cref="InitIfNeeded(ISRIA)"/> is called.
+    /// </summary>
+    public class BaseParamsWithPrefab : BaseParams
 	{
+        [SerializeField]
 		public RectTransform itemPrefab;
 
 		public float ItemPrefabSize

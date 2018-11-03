@@ -66,8 +66,7 @@ namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
 
 
 		#region Unity methods
-		protected virtual void Awake() { }
-		protected virtual void Start() { Init(); }
+		protected virtual void Awake() { Init(); }
 		protected virtual void Update() { MyUpdate(); }
 		protected virtual void OnDestroy() { Dispose(); }
 		#endregion

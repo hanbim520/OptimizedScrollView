@@ -107,7 +107,7 @@ These remove the need to manually instantiate the prefab, assign the viewholder'
 ScrollRectItemsAdapter8:
 - added ItemsRefreshed event that has 2 ints params: first is the old count, and the second is the new count
 - added VisibleItemsCount
-- removed VisibleItemsCopy property, because it's not efficient to create a list each time. Instead, GetItemViewsHolder(int viewHolderIndex) was added together with VisibleItemsCount to allow iterating through the visible items
+- removed VisibleItemsCopy property, because it's not efficient to create a list each time. Instead, GeSmartScrollViewItem(int viewHolderIndex) was added together with VisibleItemsCount to allow iterating through the visible items
 - Init(): calling Dispose here, if the previous value of _Params is not null (i.e. the adapter is re-used).
 Although it wasn't intensively tested, since it's easier to just reload the entire scene or at least destroy the scroll view & re-instantiate it (a prefab can be used for it)
 - Added Refresh() that just calls ChangeItemsCountTo(<current count>), which is equivalent to a refresh.
