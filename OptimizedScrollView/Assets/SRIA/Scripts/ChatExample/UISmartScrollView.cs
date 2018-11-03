@@ -12,7 +12,7 @@ namespace UnityEngine.UI.Extension
 
         #region UISmartScrollView implementation
 
-        public void UpdateScrollView<T>(IList datas,GameObject prefab)where T: UILoopSmartItem
+        public void UpdateScrollView<T>(IList datas,GameObject prefab,bool isScrollToBottom = true)where T: UILoopSmartItem
         {
             if(datas == null || prefab == null)
             {
@@ -23,6 +23,10 @@ namespace UnityEngine.UI.Extension
             _itemPrefab = prefab;
             cellType = typeof(T);
             OnItemCountChangeRequested(_datas.Count);
+            if(isScrollToBottom)
+            {
+                ScrollTo(0);
+            }
         }
 		protected override void Update()
 		{
@@ -38,19 +42,14 @@ namespace UnityEngine.UI.Extension
 			return instance;
 		}
 
-		/// <inheritdoc/>
 		protected override void OnItemHeightChangedPreTwinPass(UILoopSmartItem vh)
 		{
 			base.OnItemHeightChangedPreTwinPass(vh);
 		}
 
-		/// <inheritdoc/>
 		protected override void UpdateViewsHolder(UILoopSmartItem newOrRecycled)
 		{
-
 			newOrRecycled.UpdateFromModel(_datas, newOrRecycled.ItemIndex);
-
-
             newOrRecycled.MarkForRebuild();
             ScheduleComputeVisibilityTwinPass(true);
 

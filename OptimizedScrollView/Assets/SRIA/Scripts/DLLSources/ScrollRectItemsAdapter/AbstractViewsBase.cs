@@ -19,7 +19,7 @@ namespace UnityEngine.UI.Extension.Tools
             if (activateRootGameObject)
                 root.gameObject.SetActive(true);
             this.ItemIndex = itemIndex;
-
+            root.name = "CellItem";
             if (callCollectViews)
                 InitialChild();
         }
