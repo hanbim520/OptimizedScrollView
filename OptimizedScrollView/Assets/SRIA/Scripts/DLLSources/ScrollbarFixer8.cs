@@ -6,10 +6,6 @@ using System;
 
 namespace UnityEngine.UI.Extension.MonoBehaviours
 {
-    /// <summary>
-    /// <para>Fixes ScrollView inertia when the content grows too big. The default method cuts off the inertia in most cases.</para>
-    /// <para>Attach it to the Scrollbar and make sure no scrollbars are assigned to the ScrollRect</para>
-    /// </summary>
     [RequireComponent(typeof(Scrollbar))]
     public class ScrollbarFixer8 : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerDownHandler, IScrollRectProxy
 	{
