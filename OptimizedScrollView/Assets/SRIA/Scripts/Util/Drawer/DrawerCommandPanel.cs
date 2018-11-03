@@ -3,11 +3,10 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using System;
-using frame8.Logic.Misc.Other.Extensions;
 using UnityEngine.Events;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
-using UnityEngine.UI.Extension.Other.Extensions;
+using UnityEngine.UI.Extension;
 
 namespace UnityEngine.UI.Extension.Tools.Util.Drawer
 {

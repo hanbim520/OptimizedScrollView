@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using System;
 using UnityEngine.EventSystems;
 
-namespace frame8.ThirdParty.UI
+namespace UnityEngine.UI.Extension
 {
 	/// <summary>
 	/// ScrollRect that supports being nested inside another ScrollRect.

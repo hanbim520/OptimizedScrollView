@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace frame8.Logic.Misc.Other.Extensions
+namespace UnityEngine.UI.Extension
 {
     public static class StructsInfinityValuesExtensions
     {

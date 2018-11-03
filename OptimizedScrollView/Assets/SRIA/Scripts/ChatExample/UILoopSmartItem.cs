@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UI.Extension.Other.Extensions;
+using UnityEngine.UI.Extension;
 using UnityEngine.UI.Extension.Tools;
 
 public class UILoopSmartItem : BaseItemViewsHolder

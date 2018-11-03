@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace UnityEngine.UI.Extension.Other.Extensions
+namespace UnityEngine.UI.Extension
 {
     public static class RectTransformExtensions
 	{

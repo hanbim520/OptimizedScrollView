@@ -5,8 +5,9 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using System;
 
-using frame8.Logic.Misc.Other.Extensions;
- 
+using UnityEngine.UI.Extension;
+
+
 
 namespace UnityEngine.UI.Extension.Tools
 {

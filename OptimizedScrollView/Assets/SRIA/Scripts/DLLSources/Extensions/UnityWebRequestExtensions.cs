@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace frame8.Logic.Misc.Other.Extensions
+namespace UnityEngine.UI.Extension
 {
 #if UNITY_5_2 || UNITY_5_3_OR_NEWER
     public static class UnityWebRequestExtensions

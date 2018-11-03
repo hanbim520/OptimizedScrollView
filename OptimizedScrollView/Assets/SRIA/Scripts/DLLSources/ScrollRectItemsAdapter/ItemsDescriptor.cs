@@ -4,7 +4,6 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using System;
-using frame8.Logic.Misc.Other.Extensions;
 using System.Linq;
 
 namespace UnityEngine.UI.Extension.Tools

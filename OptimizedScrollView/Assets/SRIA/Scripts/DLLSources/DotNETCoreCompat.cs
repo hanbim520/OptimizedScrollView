@@ -1,11 +1,10 @@
-﻿using frame8.Logic.Misc.Other.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace frame8.Logic.Misc.Other
+namespace UnityEngine.UI.Extension.Tools
 {
     public static class DotNETCoreCompat
 	{

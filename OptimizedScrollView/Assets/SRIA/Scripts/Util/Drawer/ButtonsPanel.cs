@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine.UI;
 using System;
 using UnityEngine.Events;
-using UnityEngine.UI.Extension.Other.Extensions;
+using UnityEngine.UI.Extension;
 
 namespace UnityEngine.UI.Extension.Tools.Util.Drawer
 {

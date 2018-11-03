@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using System;
-using frame8.Logic.Misc.Other.Extensions;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 

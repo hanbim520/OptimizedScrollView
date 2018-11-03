@@ -1,12 +1,10 @@
-﻿using frame8.Logic.Misc.Other;
-using frame8.Logic.Misc.Other.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using UnityEngine.UI.Extension.Other.Extensions;
+using UnityEngine.UI.Extension;
 
 namespace UnityEngine.UI.Extension.Tools
 {

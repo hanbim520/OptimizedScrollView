@@ -1,4 +1,4 @@
-﻿using frame8.Logic.Misc.Other.Extensions;
+﻿using UnityEngine.UI.Extension;
 using System;
 using UnityEngine;
 using UnityEngine.UI;

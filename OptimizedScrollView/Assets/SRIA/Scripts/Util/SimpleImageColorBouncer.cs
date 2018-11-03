@@ -2,7 +2,6 @@
 using System.Collections;
 using UnityEngine.UI;
 using System;
-using frame8.Logic.Misc.Other.Extensions;
 
 namespace UnityEngine.UI.Extension.Tools.Util
 {
