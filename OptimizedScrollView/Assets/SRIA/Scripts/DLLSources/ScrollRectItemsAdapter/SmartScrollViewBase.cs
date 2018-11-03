@@ -175,7 +175,7 @@ namespace UnityEngine.UI.Extension.Tools
 			float itemSize = _ItemsDesc[itemViewIdex];
 			float insetToAdd = _InternalState.viewportSize * normalizedItemOffsetFromStart - itemSize * normalizedPositionOfItemPivotToUse;
 
-			double itemVrtInsetFromStart = _InternalState.GetItemVirtualInsetFromParentStartUsingItemIndexInView(itemViewIdex);
+			double itemVrtInsetFromStart = _InternalState.GetItemVirtualInsetFromParentStartUsingcellIndex(itemViewIdex);
 			double ctInsetFromStart_Clamped = Math.Max(
 						minContentVirtualInsetFromVPAllowed,
 						Math.Min(maxContentInsetFromVPAllowed, -itemVrtInsetFromStart + insetToAdd)
@@ -228,9 +228,9 @@ namespace UnityEngine.UI.Extension.Tools
 
 			//if (_VisibleItemsCount > 0)
 			//{
-			//	vo = _InternalState.GetItemVirtualOffsetFromParentEndUsingItemIndexInView(_VisibleItems[_VisibleItemsCount - 1].itemIndexInView);
+			//	vo = _InternalState.GetItemVirtualOffsetFromParentEndUsingcellIndex(_VisibleItems[_VisibleItemsCount - 1].cellIndex);
 			//	ctVIVPE = _InternalState.ContentPanelVirtualInsetFromViewportEnd;
-			//	inferredRO = _InternalState.GetItemInferredRealOffsetFromParentEnd(_VisibleItems[_VisibleItemsCount - 1].itemIndexInView);
+			//	inferredRO = _InternalState.GetItemInferredRealOffsetFromParentEnd(_VisibleItems[_VisibleItemsCount - 1].cellIndex);
 			//	actualRO = _VisibleItems[_VisibleItemsCount - 1].root.GetInsetFromParentEdge(_Params.content, _InternalState.endEdge);
 			//	Debug.Log("BEF:"
 			//		+ " ctSz=" + (vsz=_InternalState.contentPanelVirtualSize)
@@ -264,8 +264,8 @@ namespace UnityEngine.UI.Extension.Tools
 
 			//if (_VisibleItemsCount > 0)
 			//{
-			//	var vo2 = _InternalState.GetItemVirtualOffsetFromParentEndUsingItemIndexInView(_VisibleItems[_VisibleItemsCount - 1].itemIndexInView);
-			//	var inferredRO2 = _InternalState.GetItemInferredRealOffsetFromParentEnd(_VisibleItems[_VisibleItemsCount - 1].itemIndexInView);
+			//	var vo2 = _InternalState.GetItemVirtualOffsetFromParentEndUsingcellIndex(_VisibleItems[_VisibleItemsCount - 1].cellIndex);
+			//	var inferredRO2 = _InternalState.GetItemInferredRealOffsetFromParentEnd(_VisibleItems[_VisibleItemsCount - 1].cellIndex);
 			//	var actualRO2 = _VisibleItems[_VisibleItemsCount - 1].root.GetInsetFromParentEdge(_Params.content, _InternalState.endEdge);
 			//	Debug.Log("CHNG2:"
 			//		+ " ctSz=" + (_InternalState.contentPanelVirtualSize - vsz)
@@ -322,8 +322,8 @@ namespace UnityEngine.UI.Extension.Tools
 
 			//if (_VisibleItemsCount > 0)
 			//{
-			//	var vo2 = _InternalState.GetItemVirtualOffsetFromParentEndUsingItemIndexInView(_VisibleItems[_VisibleItemsCount - 1].itemIndexInView);
-			//	var inferredRO2 = _InternalState.GetItemInferredRealOffsetFromParentEnd(_VisibleItems[_VisibleItemsCount - 1].itemIndexInView);
+			//	var vo2 = _InternalState.GetItemVirtualOffsetFromParentEndUsingcellIndex(_VisibleItems[_VisibleItemsCount - 1].cellIndex);
+			//	var inferredRO2 = _InternalState.GetItemInferredRealOffsetFromParentEnd(_VisibleItems[_VisibleItemsCount - 1].cellIndex);
 			//	var actualRO2 = _VisibleItems[_VisibleItemsCount - 1].root.GetInsetFromParentEdge(_Params.content, _InternalState.endEdge);
 			//	Debug.Log("CHNG3:"
 			//		+ " ctSz=" + (_InternalState.contentPanelVirtualSize - vsz)
@@ -512,7 +512,7 @@ namespace UnityEngine.UI.Extension.Tools
 
 			int potentialResetDir = delta > 0d /*positive scroll -> going to start*/ ? 2 : 1;
 			float curRealAbstrNormPos = _Params.scrollRect.horizontal ? 1f - _Params.scrollRect.horizontalNormalizedPosition : _Params.scrollRect.verticalNormalizedPosition;
-			int firstVisibleItem_IndexInView = _VisibleItems[0].itemIndexInView, lastVisibleItem_IndexInView = firstVisibleItem_IndexInView + _VisibleItemsCount - 1;
+			int firstVisibleItem_IndexInView = _VisibleItems[0].cellIndex, lastVisibleItem_IndexInView = firstVisibleItem_IndexInView + _VisibleItemsCount - 1;
 			bool firstVisibleIsFirstIndexInView = firstVisibleItem_IndexInView == 0;
 			bool lastVisibleIsLastIndexInView = lastVisibleItem_IndexInView == _ItemsDesc.itemsCount - 1;
 			float contentInsetFromVPStart_Prev = _Params.content.GetInsetFromParentEdge(_Params.viewport, _InternalState.startEdge);
@@ -648,7 +648,7 @@ namespace UnityEngine.UI.Extension.Tools
 			bool looped = false;
 			if (_Params.loopItems)
 			{
-				//Debug.Log("first=" + firstVisibleItem_IndexInView + ", " + _VisibleItems[0].itemIndexInView + "; last=" + lastVisibleItem_IndexInView + ", " + _VisibleItems[_VisibleItemsCount-1].itemIndexInView);
+				//Debug.Log("first=" + firstVisibleItem_IndexInView + ", " + _VisibleItems[0].cellIndex + "; last=" + lastVisibleItem_IndexInView + ", " + _VisibleItems[_VisibleItemsCount-1].cellIndex);
 				int newRealIndexOfFirstItemInView = -1;
 				if (potentialResetDir == 1) // going towards end
 				{
@@ -660,9 +660,9 @@ namespace UnityEngine.UI.Extension.Tools
 						newRealIndexOfFirstItemInView = _VisibleItems[0].ItemIndex;
 						//newRealIndexOfFirstItemInView = _InternalState.GetItemRealIndexFromViewIndex(0);
 
-						// Adjust the itemIndexInView for the visible items. they'll be the last ones, so the last one of them will have, for example, viewIndex = itemsCount-1
+						// Adjust the cellIndex for the visible items. they'll be the last ones, so the last one of them will have, for example, viewIndex = itemsCount-1
 						for (int i = 0; i < _VisibleItemsCount; ++i)
-							_VisibleItems[i].itemIndexInView = i;
+							_VisibleItems[i].cellIndex = i;
 					}
 				}
 				else // going towards start
@@ -676,9 +676,9 @@ namespace UnityEngine.UI.Extension.Tools
 						newRealIndexOfFirstItemInView = _ItemsDesc.GetItemRealIndexFromViewIndex(lastVisibleItem_IndexInView + 1);
 						//newRealIndexOfFirstItemInView = _InternalState.GetItemRealIndexFromViewIndex(_ItemsDescriptor.itemsCount - 1);
 
-						// Adjust the itemIndexInView for the visible items
+						// Adjust the cellIndex for the visible items
 						for (int i = 0; i < _VisibleItemsCount; ++i)
-							_VisibleItems[i].itemIndexInView = _ItemsDesc.itemsCount - _VisibleItemsCount + i;
+							_VisibleItems[i].cellIndex = _ItemsDesc.itemsCount - _VisibleItemsCount + i;
 					}
 				}
 
@@ -757,7 +757,7 @@ namespace UnityEngine.UI.Extension.Tools
 			// Items variable values
 			UILoopSmartItem nlvHolder = null;
 			//int currentLVItemIndex;
-			int currentLVItemIndexInView;
+			int currentLVcellIndex;
 
 			double negCurrentVrtInsetFromCTSToUseForNLV_posCurrentVrtInsetFromCTEToUseForNLV;
 			//RectTransform.Edge negStartEdge_posEndEdge;
@@ -765,7 +765,7 @@ namespace UnityEngine.UI.Extension.Tools
 
 			//int negEndItemIndex_posStartItemIndex,
 			//int endItemIndex, // TODO pending removal
-			int endItemIndexInView,
+			int endcellIndex,
 				  neg1_posMinus1,
 				  //negMinus1_pos1,
 				  neg1_pos0,
@@ -794,13 +794,13 @@ namespace UnityEngine.UI.Extension.Tools
 			// ELSE
 			//		indexInView of last visible, if negativeScroll
 			//		indexInView of first visible, else
-			currentLVItemIndexInView = neg0_pos1 * (_ItemsDesc.itemsCount - 1) - neg1_posMinus1;
+			currentLVcellIndex = neg0_pos1 * (_ItemsDesc.itemsCount - 1) - neg1_posMinus1;
 			bool thereWereVisibletems = _VisibleItemsCount > 0;
 			//int indexInViewOfFirstVH, indexInViewOfLastVH;
 
 			// _InternalParams.itemsCount - 1, if negativeScroll
 			// 0, else
-			endItemIndexInView = neg1_pos0 * (_ItemsDesc.itemsCount - 1);
+			endcellIndex = neg1_pos0 * (_ItemsDesc.itemsCount - 1);
 
 			//float negCTVrtInsetFromVPS_posCTVrtInsetFromVPE = _Params.content.GetInsetFromParentEdge(_Params.viewport, negStartEdge_posEndEdge);
 			double ctVrtInsetFromVPS = _InternalState.ContentPanelVirtualInsetFromViewportStart;
@@ -825,8 +825,8 @@ namespace UnityEngine.UI.Extension.Tools
 				int startingLVHolderIndex;
 				//RectTransform startingLVRT;
 
-				//indexInViewOfFirstVH = _VisibleItems[0].itemIndexInView;
-				//indexInViewOfLastVH = _VisibleItems[_VisibleItemsCount - 1].itemIndexInView;
+				//indexInViewOfFirstVH = _VisibleItems[0].cellIndex;
+				//indexInViewOfLastVH = _VisibleItems[_VisibleItemsCount - 1].cellIndex;
 
 				// startingLVHolderIndex will be:
 				// _VisibleItemsCount - 1, if negativeScroll
@@ -872,7 +872,7 @@ namespace UnityEngine.UI.Extension.Tools
 				//    negCurrentInsetFromCTSToUseForNLV_posCurrentInsetFromCTEToUseForNLV = _InternalParams.contentPanelSize - _InternalParams.GetItemOffsetFromParentStart(startingLVHolder.itemIndex);
 
 				// Items variable values; initializing them to the current LV
-				currentLVItemIndexInView = startingLVHolder.itemIndexInView;
+				currentLVcellIndex = startingLVHolder.cellIndex;
 
 				bool currentIsOutside;
 				//RectTransform curRecCandidateRT;
@@ -883,8 +883,8 @@ namespace UnityEngine.UI.Extension.Tools
 				// last in _VisibleItems, else
 				int curRecCandidateVHIndex = neg0_pos1 * (_VisibleItemsCount - 1);
 				UILoopSmartItem curRecCandidateVH = _VisibleItems[curRecCandidateVHIndex];
-				double curInsetFromParentEdge = negativeScroll ? _InternalState.GetItemVirtualInsetFromParentStartUsingItemIndexInView(curRecCandidateVH.itemIndexInView)
-																: _InternalState.GetItemVirtualInsetFromParentEndUsingItemIndexInView(curRecCandidateVH.itemIndexInView);
+				double curInsetFromParentEdge = negativeScroll ? _InternalState.GetItemVirtualInsetFromParentStartUsingcellIndex(curRecCandidateVH.cellIndex)
+																: _InternalState.GetItemVirtualInsetFromParentEndUsingcellIndex(curRecCandidateVH.cellIndex);
 				while (true)
 				{
 					//// vItemHolder is:
@@ -894,19 +894,19 @@ namespace UnityEngine.UI.Extension.Tools
 
 					//curRecCandidateRT = curRecCandidateVH.root;
 					//float lvSize = _InternalParams.itemsSizes[currentLVItemIndex];
-					curRecCandidateSizePlusSpacing = _ItemsDesc[curRecCandidateVH.itemIndexInView] + ctSpacing; // major bugfix: 18.12.2016 1:20: must use vItemHolder.ItemIndex INSTEAD of currentLVItemIndex
+					curRecCandidateSizePlusSpacing = _ItemsDesc[curRecCandidateVH.cellIndex] + ctSpacing; // major bugfix: 18.12.2016 1:20: must use vItemHolder.ItemIndex INSTEAD of currentLVItemIndex
 
 					//s.Reset(); s.Start();
 					//var cv = s.ElapsedMilliseconds;
 					//Debug.Log("cv=" + cv);
 
-					////// Commented the comment: this is actually better now, as GetItemVirtualInsetFromParentStartUsingItemIndexInView() is sometimes expensive
+					////// Commented the comment: this is actually better now, as GetItemVirtualInsetFromParentStartUsingcellIndex() is sometimes expensive
 					////Commented: using a more efficient way of doing this by using cumulative sizes, even if we need to use an "if"
 					////currentIsOutside = negCTInsetFromVPS_posCTInsetFromVPE + (curRecCandidateVH.root.GetInsetFromParentEdge(_Params.content, negStartEdge_posEndEdge) + curRecCandidateSizePlusSpacing) <= 0f;
 					//if (negativeScroll)
-					//	curInsetFromParentEdge = _InternalState.GetItemVirtualInsetFromParentStartUsingItemIndexInView(curRecCandidateVH.itemIndexInView);
+					//	curInsetFromParentEdge = _InternalState.GetItemVirtualInsetFromParentStartUsingcellIndex(curRecCandidateVH.cellIndex);
 					//else
-					//	curInsetFromParentEdge = _InternalState.GetItemVirtualOffsetFromParentEndUsingItemIndexInView(curRecCandidateVH.itemIndexInView);
+					//	curInsetFromParentEdge = _InternalState.GetItemVirtualOffsetFromParentEndUsingcellIndex(curRecCandidateVH.cellIndex);
 					currentIsOutside = negCTVrtInsetFromVPS_posCTVrtInsetFromVPE + (curInsetFromParentEdge + curRecCandidateSizePlusSpacing) <= 0d;
 
 					if (currentIsOutside)
@@ -936,7 +936,7 @@ namespace UnityEngine.UI.Extension.Tools
 
 
 			// Optimization: saving a lot of computations (especially visible when fast-scrolling using SmoothScrollTo or dragging the scrollbar) by skipping 
-			// GetItemVirtualOffsetFromParent[Start/End]UsingItemIndexInView() calls and instead, inferring the offset along the way after calling that method only for the first item
+			// GetItemVirtualOffsetFromParent[Start/End]UsingcellIndex() calls and instead, inferring the offset along the way after calling that method only for the first item
 			// Optimization2: trying to estimate the new FIRST visible item by the current scroll position when jumping large distances
 			double currentItemVrtInset_negStart_posEnd = double.PositiveInfinity;
 			int estimatedAVGVisibleItems = -1;
@@ -955,7 +955,7 @@ namespace UnityEngine.UI.Extension.Tools
 				float itemSize = _ItemsDesc[index];
 				double negInsetStart_posInsetEnd =
 						neg0_pos1 * (_InternalState.contentPanelVirtualSize - itemSize)
-						+ neg1_posMinus1 * _InternalState.GetItemVirtualInsetFromParentStartUsingItemIndexInView(index);
+						+ neg1_posMinus1 * _InternalState.GetItemVirtualInsetFromParentStartUsingcellIndex(index);
 
 				while (negInsetStart_posInsetEnd <= /*minEstimatedItemInsetFrom_negStart_posEnd*/ negCTVrtAmountBeforeVP_posCTVrtAmountAfterVP - itemSize)
 				{
@@ -986,11 +986,11 @@ namespace UnityEngine.UI.Extension.Tools
 				}
 
 				if (!thereWereVisibletems ||
-					negativeScroll && index > currentLVItemIndexInView || // the index should be bigger if going down/right. if the infered one is <=, then startingLV.itemIndexInview is reliable 
-					!negativeScroll && index < currentLVItemIndexInView // analogous explanation for pos scroll
+					negativeScroll && index > currentLVcellIndex || // the index should be bigger if going down/right. if the infered one is <=, then startingLV.cellIndex is reliable 
+					!negativeScroll && index < currentLVcellIndex // analogous explanation for pos scroll
 				){
-					//Debug.Log("est=" + estimatedIndexInViewOfNewFirstVisible + ", def=" + currentLVItemIndexInView + ", actual=" + index);
-					currentLVItemIndexInView = index;
+					//Debug.Log("est=" + estimatedIndexInViewOfNewFirstVisible + ", def=" + currentLVcellIndex + ", actual=" + index);
+					currentLVcellIndex = index;
 					currentItemVrtInset_negStart_posEnd = negInsetStart_posInsetEnd;
 				}
 			}
@@ -998,13 +998,13 @@ namespace UnityEngine.UI.Extension.Tools
 			// Infinity means it was not set; if set, it means the position was inferred or this is not the 
 			// first iteration (since this variable is updated to keep up with the progress)
 			if (double.IsInfinity(currentItemVrtInset_negStart_posEnd) 
-				&& currentLVItemIndexInView != endItemIndexInView) // this check is the same as in the loop below. there won't be no "next" item if the current LV is the last in view (first if positive scroll) 
+				&& currentLVcellIndex != endcellIndex) // this check is the same as in the loop below. there won't be no "next" item if the current LV is the last in view (first if positive scroll) 
 			{
-				int nextValueOf_NLVIndexInView = currentLVItemIndexInView + neg1_posMinus1; // next value in the loop below
+				int nextValueOf_NLVIndexInView = currentLVcellIndex + neg1_posMinus1; // next value in the loop below
 				if (negativeScroll)
-					currentItemVrtInset_negStart_posEnd = _InternalState.GetItemVirtualInsetFromParentStartUsingItemIndexInView(nextValueOf_NLVIndexInView);
+					currentItemVrtInset_negStart_posEnd = _InternalState.GetItemVirtualInsetFromParentStartUsingcellIndex(nextValueOf_NLVIndexInView);
 				else
-					currentItemVrtInset_negStart_posEnd = _InternalState.GetItemVirtualInsetFromParentEndUsingItemIndexInView(nextValueOf_NLVIndexInView);
+					currentItemVrtInset_negStart_posEnd = _InternalState.GetItemVirtualInsetFromParentEndUsingcellIndex(nextValueOf_NLVIndexInView);
 			}
 
 			// Searching for next item(s) that might get visible in order to update them: towards vpEnd on negativeScroll OR towards vpStart else
@@ -1012,11 +1012,11 @@ namespace UnityEngine.UI.Extension.Tools
 			{
 				// negativeScroll vert/hor: there are no items below/to-the-right-of-the current LV that might need to be made visible
 				// positive vert/hor: there are no items above/o-the-left-of-the current LV that might need to be made visible
-				if (currentLVItemIndexInView == endItemIndexInView)
+				if (currentLVcellIndex == endcellIndex)
 					break;
 
-				//int nlvIndex = currentLVItemIndexInView; // TODO pending removal
-				int nlvIndexInView = currentLVItemIndexInView;
+				//int nlvIndex = currentLVcellIndex; // TODO pending removal
+				int nlvIndexInView = currentLVcellIndex;
 				float nlvSize;
 				bool breakBigLoop = false,
 					 negNLVCandidateIsBeforeVP_posNLVCandidateIsAfterVP; // before vpStart, if negative scroll; after vpEnd, else
@@ -1026,17 +1026,17 @@ namespace UnityEngine.UI.Extension.Tools
 					nlvIndexInView += neg1_posMinus1;
 					nlvSize = _ItemsDesc[nlvIndexInView];
 					//if (negativeScroll)
-					//	negCurrentVrtInsetFromCTSToUseForNLV_posCurrentVrtInsetFromCTEToUseForNLV = _InternalState.GetItemVirtualInsetFromParentStartUsingItemIndexInView(nlvIndexInView);
+					//	negCurrentVrtInsetFromCTSToUseForNLV_posCurrentVrtInsetFromCTEToUseForNLV = _InternalState.GetItemVirtualInsetFromParentStartUsingcellIndex(nlvIndexInView);
 					//else
-					//	negCurrentVrtInsetFromCTSToUseForNLV_posCurrentVrtInsetFromCTEToUseForNLV = _InternalState.GetItemVirtualOffsetFromParentEndUsingItemIndexInView(nlvIndexInView);
+					//	negCurrentVrtInsetFromCTSToUseForNLV_posCurrentVrtInsetFromCTEToUseForNLV = _InternalState.GetItemVirtualOffsetFromParentEndUsingcellIndex(nlvIndexInView);
 
 					//if (negativeScroll)
-					//	Debug.Log(currentVrtInset + ", " + _InternalState.GetItemVirtualInsetFromParentStartUsingItemIndexInView(nlvIndexInView));
+					//	Debug.Log(currentVrtInset + ", " + _InternalState.GetItemVirtualInsetFromParentStartUsingcellIndex(nlvIndexInView));
 					negCurrentVrtInsetFromCTSToUseForNLV_posCurrentVrtInsetFromCTEToUseForNLV = currentItemVrtInset_negStart_posEnd;
 					negNLVCandidateIsBeforeVP_posNLVCandidateIsAfterVP = negCTVrtInsetFromVPS_posCTVrtInsetFromVPE + (negCurrentVrtInsetFromCTSToUseForNLV_posCurrentVrtInsetFromCTEToUseForNLV + nlvSize) <= 0d;
 					if (negNLVCandidateIsBeforeVP_posNLVCandidateIsAfterVP)
 					{
-						if (nlvIndexInView == endItemIndexInView) // all items are outside viewport => abort
+						if (nlvIndexInView == endcellIndex) // all items are outside viewport => abort
 						{
 							breakBigLoop = true;
 							break;
@@ -1098,7 +1098,7 @@ namespace UnityEngine.UI.Extension.Tools
 
 				// Update its index
 				nlvHolder.ItemIndex = nlvRealIndex;
-				nlvHolder.itemIndexInView = nlvIndexInView;
+				nlvHolder.cellIndex = nlvIndexInView;
 
 				//// Cache its height
 				//nlvHolder.cachedSize = _ItemsDescriptor.itemsSizes[nlvIndexInView];
@@ -1149,7 +1149,7 @@ namespace UnityEngine.UI.Extension.Tools
 				// Assure transversal size and transversal position based on parent's padding and width settings
 				nlvRT.SetInsetAndSizeFromParentEdgeWithCurrentAnchors(_Params.content, transvStartEdge, ctPadTransvStart, allItemsTransversalSizes);
 
-				currentLVItemIndexInView = nlvIndexInView;
+				currentLVcellIndex = nlvIndexInView;
 				currentItemVrtInset_negStart_posEnd += nlvSize + _InternalState.spacing;
 			}
 			while (true);
@@ -1245,7 +1245,7 @@ namespace UnityEngine.UI.Extension.Tools
 			for (int i = 0; i < _VisibleItemsCount; i++)
 			{
 				var vh = _VisibleItems[i];
-				float center = getCornerFn(vh.root) - _ItemsDesc[vh.itemIndexInView] / 2;
+				float center = getCornerFn(vh.root) - _ItemsDesc[vh.cellIndex] / 2;
 
 				float t01 = 1f - Mathf.Clamp01(Mathf.Abs(center - vpPivot) / halfVPSize);
 				vh.root.localScale = Vector3.Lerp(Vector3.one * (1f - _Params.galleryEffectAmount), Vector3.one, t01);

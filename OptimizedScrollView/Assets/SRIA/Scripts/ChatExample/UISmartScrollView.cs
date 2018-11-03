@@ -85,7 +85,7 @@ namespace UnityEngine.UI.Extension
                                             //newOrRecycled.contentSizeFitter.enabled = true;
             ScheduleComputeVisibilityTwinPass(true);
 
-            if (!newOrRecycled.IsPopupAnimationActive && newOrRecycled.itemIndexInView == GetItemsCount() - 1) // only animating the last one
+            if (!newOrRecycled.IsPopupAnimationActive && newOrRecycled.cellIndex == GetItemsCount() - 1) // only animating the last one
 				newOrRecycled.IsPopupAnimationActive = true;
 		}
 

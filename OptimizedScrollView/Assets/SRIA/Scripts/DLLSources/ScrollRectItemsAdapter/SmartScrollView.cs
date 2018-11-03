@@ -185,7 +185,7 @@ namespace UnityEngine.UI.Extension.Tools
 			{
 				curItemViewsHolder = _VisibleItems[curVisibleIndex];
 				curIndexInList = curItemViewsHolder.ItemIndex;
-				// Commented: with introduction of itemIndexInView, this check is no longer useful
+				// Commented: with introduction of cellIndex, this check is no longer useful
 				//if (curIndexInList > withItemIndex) // the requested item is before the visible ones, so no viewsHolder for it
 				//    break;
 				if (curIndexInList == withItemIndex)
@@ -311,9 +311,9 @@ namespace UnityEngine.UI.Extension.Tools
 
 			_Params.scrollRect.StopMovement(); // we don't want a ComputeVisibility() during changing an item's size, so we cut off any inertia 
 
-			int itemIndexInView = _ItemsDesc.GetItemViewIndexFromRealIndex(itemIndex);
+			int cellIndex = _ItemsDesc.GetItemViewIndexFromRealIndex(itemIndex);
 			var viewsHolderIfVisible = GeUILoopSmartItemIfVisible(itemIndex);
-			float oldSize = _ItemsDesc[itemIndexInView];
+			float oldSize = _ItemsDesc[cellIndex];
 			bool vrtContentPanelIsAtOrBeforeEnd = _InternalState.ContentPanelVirtualInsetFromViewportEnd >= 0d;
 			if (requestedSize <= oldSize) // collapsing
 			{
@@ -327,7 +327,7 @@ namespace UnityEngine.UI.Extension.Tools
 			float resolvedSize = 
 				_InternalState.ChangeItemSizeAndUpdateContentSizeAccordingly(
 					viewsHolderIfVisible,
-					itemIndexInView, 
+					cellIndex, 
 					requestedSize, 
 					itemEndEdgeStationary
 				);
@@ -362,7 +362,7 @@ namespace UnityEngine.UI.Extension.Tools
 		/// <para>from the parent's left (respectively, top) edge</para>
 		/// </summary>
 		public double GetItemVirtualInsetFromParentStart(int itemIndex)
-		{ return _InternalState.GetItemVirtualInsetFromParentStartUsingItemIndexInView(_ItemsDesc.GetItemViewIndexFromRealIndex(itemIndex)); }
+		{ return _InternalState.GetItemVirtualInsetFromParentStartUsingcellIndex(_ItemsDesc.GetItemViewIndexFromRealIndex(itemIndex)); }
 		/// <summary>
 		/// <para>Used internally. Returns values in [0f, 1f] interval, 1 meaning the scrollrect is at start, and 0 meaning end.</para>
 		/// <para>It different approach when content size is smaller than viewport's size, so it can yield consistent results for <see cref="SmartScrollView{TParams, UILoopSmartItem}.ComputeVisibility(double)"/></para>
@@ -399,7 +399,7 @@ namespace UnityEngine.UI.Extension.Tools
 		/// don't forget to call the base implementation! Otherwise, call <see cref="ItemsDescriptor.ReinitializeSizes(ItemCountChangeMode, int, int, float?)"/> with the new default size as parameter.
 		/// Use <see cref="ItemsDescriptor.BeginChangingItemsSizes(int)"/> before and <see cref="ItemsDescriptor.EndChangingItemsSizes()"/> after
 		/// setting sizes. The indices of items for which you set custom sizes must be one after another (4,5,6,7.. etc). Gaps are not allowed.
-		/// Use "itemsDesc[itemIndexInView] = size" syntax for setting custom sizes. In this call, <see cref="AbstractViewsHolder.ItemIndex"/> will be the same as <see cref="BaseItemViewsHolder.itemIndexInView"/>, even if looping is enabled.
+		/// Use "itemsDesc[cellIndex] = size" syntax for setting custom sizes. In this call, <see cref="AbstractViewsHolder.ItemIndex"/> will be the same as <see cref="UILoopSmartItemBase.cellIndex"/>, even if looping is enabled.
 		/// </summary>
 		/// <param name="itemsDesc">The container for all the info related to items' sizes</param>
 		protected virtual void CollectItemsSizes(ItemCountChangeMode changeMode, int count, int indexIfInsertingOrRemoving, ItemsDescriptor itemsDesc)

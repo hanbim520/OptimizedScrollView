@@ -2,9 +2,9 @@
 namespace UnityEngine.UI.Extension.Tools
 {
     /// <summary>The minimal implementation of a Views Holder that can be used with <see cref="SmartScrollView{TParams, UILoopSmartItem}"/></summary>
-    public class BaseItemViewsHolder : AbstractViewsHolder
+    public class UILoopSmartItemBase : AbstractViewsHolder
     {
         /// <summary> Only used if the scroll rect is looping, otherwise it's the same as <see cref="AbstractViewsHolder.ItemIndex"/>; See <see cref="BaseParams.loopItems"/></summary>
-        public int itemIndexInView;
+        public int cellIndex;
     }
 }

@@ -27,12 +27,12 @@ namespace UnityEngine.UI.Extension.Tools
 		//public float DefaultSize { get; private set; }
 		public double CumulatedSizeOfAllItems { get { return itemsCount == 0 ? 0d : GetItemSizeCumulative(itemsCount - 1, false); } }
 
-		public float this[int itemIndexInView]
+		public float this[int cellIndex]
 		{
 			get
             {
                 float val;
-                if (_Sizes.TryGetValue(itemIndexInView, out val))
+                if (_Sizes.TryGetValue(cellIndex, out val))
                     return val;
 
                 return _DefaultSize;
@@ -41,29 +41,29 @@ namespace UnityEngine.UI.Extension.Tools
 			{
 				if (_ChangingItemsSizesInProgress)
 				{
-					if (itemIndexInView != _IndexInViewOfLastItemThatChangedSizeDuringSizesChange + 1)
+					if (cellIndex != _IndexInViewOfLastItemThatChangedSizeDuringSizesChange + 1)
 						throw new UnityException("Sizes can only be changed for items one by one, one after another(e.g. 3,4,5,6,7..), starting with the one passed to BeginChangingItemsSizes(int)!");
 
 
-					//if (this[itemIndexInView] == value)
+					//if (this[cellIndex] == value)
 					//	return;
 
 					//if (_IndexInViewOfLastItemThatChangedSize == -1 // the first size being set => add a new entry
-					//		|| itemIndexInView > _IndexInViewOfLastItemThatChangedSize + 1) // the current index skips some intermediary indices => analogous
-					//	_RangesOfIndicesInViewOfItemsWhichChangedSize.Add(itemIndexInView);
+					//		|| cellIndex > _IndexInViewOfLastItemThatChangedSize + 1) // the current index skips some intermediary indices => analogous
+					//	_RangesOfIndicesInViewOfItemsWhichChangedSize.Add(cellIndex);
 					//else // the current idx is immediately after
 					//{
-					//	if (itemIndexInView < _IndexInViewOfLastItemThatChangedSize + 1)
+					//	if (cellIndex < _IndexInViewOfLastItemThatChangedSize + 1)
 					//		throw new UnityException("Can only set sizes from smaller indices to bigger indices (3, 5, 8, 10.. not 5, 3, 6, 7, 1, 28)");
 
-					//	_RangesOfIndicesInViewOfItemsWhichChangedSize[_RangesOfIndicesInViewOfItemsWhichChangedSize.Count - 1] = itemIndexInView;
+					//	_RangesOfIndicesInViewOfItemsWhichChangedSize[_RangesOfIndicesInViewOfItemsWhichChangedSize.Count - 1] = cellIndex;
 					//}
-					//_IndexInViewOfLastItemThatChangedSize = itemIndexInView;
-					BinaryAddKeyToSortedListIfDoesntExist(itemIndexInView);
+					//_IndexInViewOfLastItemThatChangedSize = cellIndex;
+					BinaryAddKeyToSortedListIfDoesntExist(cellIndex);
 					_CumulatedSizesUntilNowDuringSizesChange += value;
-					_Sizes[itemIndexInView] = value;
-					_SizesCumulative[itemIndexInView] = _CumulatedSizesUntilNowDuringSizesChange;
-					_IndexInViewOfLastItemThatChangedSizeDuringSizesChange = itemIndexInView;
+					_Sizes[cellIndex] = value;
+					_SizesCumulative[cellIndex] = _CumulatedSizesUntilNowDuringSizesChange;
+					_IndexInViewOfLastItemThatChangedSizeDuringSizesChange = cellIndex;
 				}
 				else
 					throw new UnityException("Call BeginChangingItemsSizes() before");
@@ -305,17 +305,17 @@ namespace UnityEngine.UI.Extension.Tools
 		public int GetItemRealIndexFromViewIndex(int indexInView) { return (realIndexOfFirstItemInView + indexInView) % itemsCount; }
 		public int GetItemViewIndexFromRealIndex(int realIndex) { return (realIndex - realIndexOfFirstItemInView + itemsCount) % itemsCount; }
 
-		public double GetItemSizeCumulative(int itemIndexInView, bool allowInferringFromNeighborAfter = true)
+		public double GetItemSizeCumulative(int cellIndex, bool allowInferringFromNeighborAfter = true)
 		{
 			// No key in the dictionary. This also means that there's no size in 
 			// _Sizes either (assuming the things are done correctly - when a size is set, the cumm size is also set)
 			if (_Keys.Count > 0)
 			{
 				double result;
-				if (_SizesCumulative.TryGetValue(itemIndexInView, out result))
+				if (_SizesCumulative.TryGetValue(cellIndex, out result))
 					return result;
 
-				int indexOfNextKey = _Keys.BinarySearch(itemIndexInView);
+				int indexOfNextKey = _Keys.BinarySearch(cellIndex);
 				if (indexOfNextKey >= 0)
 					throw new InvalidOperationException("The sizes state was corrupted. key not in _SizesCumulative, but present in _Keys");
 
@@ -327,11 +327,11 @@ namespace UnityEngine.UI.Extension.Tools
 				if (indexOfNextKey < _Keys.Count && allowInferringFromNeighborAfter)
 				{
 					int indexInViewOfNextItemWithKnownSize = _Keys[indexOfNextKey];
-					int itemsCountDeltaRight = indexInViewOfNextItemWithKnownSize - itemIndexInView;
+					int itemsCountDeltaRight = indexInViewOfNextItemWithKnownSize - cellIndex;
 
 					// .. and: (size for none of prev items was set OR the next one is closer)  => searched item's cumm. size is 
 					// the current item's cumm. size minus <currentItemSize + numItemsBetween * defaultSize>
-					if ((indexOfPrevKey < 0 || itemsCountDeltaRight < (/*itemsCountDeltaLeft =*/ itemIndexInView - _Keys[indexOfPrevKey])))
+					if ((indexOfPrevKey < 0 || itemsCountDeltaRight < (/*itemsCountDeltaLeft =*/ cellIndex - _Keys[indexOfPrevKey])))
 						return _SizesCumulative[indexInViewOfNextItemWithKnownSize] - (this[indexInViewOfNextItemWithKnownSize] + (itemsCountDeltaRight - 1) * _DefaultSize);
 				}
 				// Case where there's no key after or can't use it, but there may be some before
@@ -345,13 +345,13 @@ namespace UnityEngine.UI.Extension.Tools
 					// b. there's no next key
 					// c. there's a prev key that's closer than the next key
 					// .. in all cases, => the prev item's data is generally more reliable
-					return _SizesCumulative[indexInViewOfPrevItemWithKnownSize] + (itemIndexInView - indexInViewOfPrevItemWithKnownSize) * _DefaultSize;
+					return _SizesCumulative[indexInViewOfPrevItemWithKnownSize] + (cellIndex - indexInViewOfPrevItemWithKnownSize) * _DefaultSize;
 				}
 			}
 
 			// At this point, there are no keys stored OR the inferring can't or shouldn't be done using the next key => return based on the default size
 
-			return (itemIndexInView + 1) * _DefaultSize; // same as if there were no keys
+			return (cellIndex + 1) * _DefaultSize; // same as if there were no keys
 		}
 
 		public void RotateItemsSizesOnScrollViewLooped(int newValueOf_RealIndexOfFirstItemInView)

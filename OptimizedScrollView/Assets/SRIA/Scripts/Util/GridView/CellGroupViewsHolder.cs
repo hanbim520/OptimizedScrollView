@@ -12,7 +12,7 @@ namespace UnityEngine.UI.Extension.Tools.Util.GridView
     /// <para>but only those of them that should be displayed will have their <see cref="CellViewsHolder.views"/> enabled</para>
     /// </summary>
     /// <typeparam name="TCellVH">The views holder type used for the cells in this group</typeparam>
-    public class CellGroupViewsHolder<TCellVH> : BaseItemViewsHolder where TCellVH : CellViewsHolder, new()
+    public class CellGroupViewsHolder<TCellVH> : UILoopSmartItemBase where TCellVH : CellViewsHolder, new()
     {
         /// <summary>Uses base's implementation, but also updates the indices of all containing cells each time the setter is called</summary>
         public override int ItemIndex

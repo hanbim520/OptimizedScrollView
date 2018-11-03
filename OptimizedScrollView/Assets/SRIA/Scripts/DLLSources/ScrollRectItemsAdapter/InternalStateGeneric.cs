@@ -159,7 +159,7 @@ namespace UnityEngine.UI.Extension.Tools
 
 		/// <summary><paramref name="viewsHolder"/> will be null if the item is not visible</summary>
 		/// <returns>the resolved size, as this may be a bit different than the passed <paramref name="requestedSize"/> for huge data sets (>100k items)</returns>
-		internal float ChangeItemSizeAndUpdateContentSizeAccordingly(UILoopSmartItem viewsHolder, int itemIndexInView, float requestedSize, bool itemEndEdgeStationary, bool rebuild = true)
+		internal float ChangeItemSizeAndUpdateContentSizeAccordingly(UILoopSmartItem viewsHolder, int cellIndex, float requestedSize, bool itemEndEdgeStationary, bool rebuild = true)
 		{
 			//LiveDebugger8.logR("ChangeItemCountInternal");
 			//if (itemsSizes == null)
@@ -178,12 +178,12 @@ namespace UnityEngine.UI.Extension.Tools
 				if (itemEndEdgeStationary)
 				{
 					edge = endEdge;
-					realInsetToSet = GetItemInferredRealInsetFromParentEnd(itemIndexInView);
+					realInsetToSet = GetItemInferredRealInsetFromParentEnd(cellIndex);
 				}
 				else
 				{
 					edge = startEdge;
-					realInsetToSet = GetItemInferredRealInsetFromParentStart(itemIndexInView);
+					realInsetToSet = GetItemInferredRealInsetFromParentStart(cellIndex);
 				}
 				viewsHolder.root.SetInsetAndSizeFromParentEdgeWithCurrentAnchors(_SourceParams.content, edge, realInsetToSet, requestedSize);
 
@@ -192,11 +192,11 @@ namespace UnityEngine.UI.Extension.Tools
 				//viewsHolder.cachedSize = resolvedSize;
 			}
 
-            _ItemsDesc.BeginChangingItemsSizes(itemIndexInView);
-			//var bef = _ItemsDesc.GetItemSizeCumulative(itemIndexInView+1);
-            _ItemsDesc[itemIndexInView] = resolvedSize;
+            _ItemsDesc.BeginChangingItemsSizes(cellIndex);
+			//var bef = _ItemsDesc.GetItemSizeCumulative(cellIndex+1);
+            _ItemsDesc[cellIndex] = resolvedSize;
             _ItemsDesc.EndChangingItemsSizes();
-			//var aft = _ItemsDesc.GetItemSizeCumulative(itemIndexInView+1);
+			//var aft = _ItemsDesc.GetItemSizeCumulative(cellIndex+1);
 
 			//Debug.Log(bef + "; aft=" + aft);
 
@@ -207,7 +207,7 @@ namespace UnityEngine.UI.Extension.Tools
 		}
 
 		/// <summary>
-		/// Assuming there vhs.Count is > 0. IMPORTANT: vhs should be in order (their itemIndexInView 
+		/// Assuming there vhs.Count is > 0. IMPORTANT: vhs should be in order (their cellIndex 
 		/// should be in ascending order - not necesarily consecutive)
 		/// </summary>
 		internal void OnItemsSizesChangedExternally(List<UILoopSmartItem> vhs, float[] sizes, bool itemEndEdgeStationary)
@@ -221,11 +221,11 @@ namespace UnityEngine.UI.Extension.Tools
 			//var insetEdge = itemEndEdgeStationary ? endEdge : startEdge;
 			//float currentSize;
 
-			_ItemsDesc.BeginChangingItemsSizes(vhs[0].itemIndexInView);
+			_ItemsDesc.BeginChangingItemsSizes(vhs[0].cellIndex);
 			for (int i = 0; i < vhsCount; ++i)
 			{
 				vh = vhs[i];
-				viewIndex = vh.itemIndexInView;
+				viewIndex = vh.cellIndex;
 				// Adapting to Unity 2017.2 breaking the ContentSizeFitter for us... when it's disabled, the object's size returns to the one before resizing. Pretty bad. Oh well..
 				// Now the sizes are retrieved before disabling the CSF and passed to this method
 				//currentSize = _GetRTCurrentSizeFn(vh.root);
@@ -260,18 +260,18 @@ namespace UnityEngine.UI.Extension.Tools
 			//else
 			//	getInferredRealOffsetFromParentStartOrEndFn = GetItemInferredRealOffsetFromParentStart;
 
-			double insetStartOfCurItem = GetItemVirtualInsetFromParentStartUsingItemIndexInView(vhs[0].itemIndexInView);
+			double insetStartOfCurItem = GetItemVirtualInsetFromParentStartUsingcellIndex(vhs[0].cellIndex);
 			float curSize;
 			for (int i = 0; i < count; ++i)
 			{
 				vh = vhs[i];
-				curSize = _ItemsDesc[vh.itemIndexInView];
+				curSize = _ItemsDesc[vh.cellIndex];
 				vh.root.SetInsetAndSizeFromParentEdgeWithCurrentAnchors(
 					_SourceParams.content,
 					//edge,
 					startEdge,
-					//getInferredRealOffsetFromParentStartOrEndFn(vh.itemIndexInView),
-					//GetItemInferredRealInsetFromParentStart(vh.itemIndexInView),
+					//getInferredRealOffsetFromParentStartOrEndFn(vh.cellIndex),
+					//GetItemInferredRealInsetFromParentStart(vh.cellIndex),
 					ConvertItemInsetFromParentStart_FromVirtualToReal(insetStartOfCurItem),
 					curSize
 				);
@@ -380,20 +380,20 @@ namespace UnityEngine.UI.Extension.Tools
 			//}
 		}
 
-		internal double GetItemVirtualInsetFromParentStartUsingItemIndexInView(int itemIndexInView)
+		internal double GetItemVirtualInsetFromParentStartUsingcellIndex(int cellIndex)
 		{
 			double cumulativeSizeOfAllItemsBeforePlusSpacing = 0d;
-			if (itemIndexInView > 0)
-				cumulativeSizeOfAllItemsBeforePlusSpacing = _ItemsDesc.GetItemSizeCumulative(itemIndexInView - 1) + itemIndexInView * (double)spacing;
+			if (cellIndex > 0)
+				cumulativeSizeOfAllItemsBeforePlusSpacing = _ItemsDesc.GetItemSizeCumulative(cellIndex - 1) + cellIndex * (double)spacing;
 
 			return paddingContentStart + cumulativeSizeOfAllItemsBeforePlusSpacing;
 		}
-		internal double GetItemVirtualInsetFromParentEndUsingItemIndexInView(int itemIndexInView)
-		{ return contentPanelVirtualSize - GetItemVirtualInsetFromParentStartUsingItemIndexInView(itemIndexInView) - _ItemsDesc[itemIndexInView]; }
-		internal float GetItemInferredRealInsetFromParentStart(int itemIndexInView)
-		{ return ConvertItemInsetFromParentStart_FromVirtualToReal(GetItemVirtualInsetFromParentStartUsingItemIndexInView(itemIndexInView)); }
-		internal float GetItemInferredRealInsetFromParentEnd(int itemIndexInView)
-		{ return contentPanelSize - GetItemInferredRealInsetFromParentStart(itemIndexInView) - _ItemsDesc[itemIndexInView]; }
+		internal double GetItemVirtualInsetFromParentEndUsingcellIndex(int cellIndex)
+		{ return contentPanelVirtualSize - GetItemVirtualInsetFromParentStartUsingcellIndex(cellIndex) - _ItemsDesc[cellIndex]; }
+		internal float GetItemInferredRealInsetFromParentStart(int cellIndex)
+		{ return ConvertItemInsetFromParentStart_FromVirtualToReal(GetItemVirtualInsetFromParentStartUsingcellIndex(cellIndex)); }
+		internal float GetItemInferredRealInsetFromParentEnd(int cellIndex)
+		{ return contentPanelSize - GetItemInferredRealInsetFromParentStart(cellIndex) - _ItemsDesc[cellIndex]; }
 
 		//internal double ConvertItemOffsetFromParentStart_FromRealToVirtual(float realOffsetFromParrentStart)
 		//{ return -contentPanelSkippedInsetDueToVirtualization + realOffsetFromParrentStart; }
