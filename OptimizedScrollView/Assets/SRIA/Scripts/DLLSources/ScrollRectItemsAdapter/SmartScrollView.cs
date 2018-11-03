@@ -130,7 +130,7 @@ namespace UnityEngine.UI.Extension.Tools
 
 			// Debug stuff
 #if UNITY_EDITOR && !UNITY_WSA && !UNITY_WSA_10_0 // UNITY_WSA uses .net core, which SRIADebugger is not compatible with
-			var debugger = GameObject.FindObjectOfType<SRIADebugger>();
+			var debugger = GameObject.FindObjectOfType<SmartScrollViewDebugger>();
 			if (debugger)
 				debugger.InitWithAdapter(this);
 #endif

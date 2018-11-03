@@ -10,7 +10,7 @@ using UnityEngine.UI.Extension.Other.Extensions;
 
 namespace UnityEngine.UI.Extension.Tools
 {
-	public class SRIADebugger : MonoBehaviour
+	public class SmartScrollViewDebugger : MonoBehaviour
 	{
         ISmartScrollView _AdapterImpl;
 		public Text debugText1, debugText2, debugText3, debugText4;
