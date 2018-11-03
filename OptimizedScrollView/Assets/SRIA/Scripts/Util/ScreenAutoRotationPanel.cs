@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace frame8.ScrollRectItemsAdapter.Util
+namespace UnityEngine.UI.Extension.Tools.Util
 {
     public class ScreenAutoRotationPanel : MonoBehaviour
     {

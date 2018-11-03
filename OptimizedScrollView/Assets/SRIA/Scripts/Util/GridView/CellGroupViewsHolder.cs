@@ -1,12 +1,11 @@
-﻿using frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter.Util.GridView
+namespace UnityEngine.UI.Extension.Tools.Util.GridView
 {
     /// <summary>
     /// <para>A views holder representing a group of cells (row or column). It instantiates the maximum number of cells it can contain,</para>

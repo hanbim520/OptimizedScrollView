@@ -1,9 +1,9 @@
-﻿using frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEditor;
+using UnityEngine.UI.Extension.Tools;
 
 namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter.Editor.CustomEditors
 {

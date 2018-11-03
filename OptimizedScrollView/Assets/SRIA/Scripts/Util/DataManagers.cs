@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using System.Collections;
-using frame8.ScrollRectItemsAdapter.Util;
 
-namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter.Util
+namespace UnityEngine.UI.Extension.Tools.Util
 {
 	/// <summary>
 	/// <para>Utility interface to implement in order to access some default functionality for data manipulation, which is created in</para>

@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter
+namespace UnityEngine.UI.Extension.Tools
 {
 	/// <summary>
 	/// <para>Input params to be passed to <see cref="SmartScrollView{TParams, SmartScrollViewItem}.Init()"/></para>

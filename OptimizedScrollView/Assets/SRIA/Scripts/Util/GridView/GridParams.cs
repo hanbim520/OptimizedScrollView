@@ -1,12 +1,11 @@
-﻿using frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter.Util.GridView
+namespace UnityEngine.UI.Extension.Tools.Util.GridView
 {
 	/// <summary> <para>Base class for params to beused with a <see cref="GridAdapter{TParams, TCellVH}"/></para>
 	/// </summary>

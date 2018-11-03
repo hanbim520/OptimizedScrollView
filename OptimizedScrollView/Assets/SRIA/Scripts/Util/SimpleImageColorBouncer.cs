@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using System;
 using frame8.Logic.Misc.Other.Extensions;
 
-namespace frame8.ScrollRectItemsAdapter.Util
+namespace UnityEngine.UI.Extension.Tools.Util
 {
     /// <summary>Smoothly fades back and forth between color a and b</summary>
     public class SimpleImageColorBouncer : MonoBehaviour

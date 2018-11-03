@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter
+namespace UnityEngine.UI.Extension.Tools
 {
     public class ReadOnlyAttribute : PropertyAttribute {}
 }

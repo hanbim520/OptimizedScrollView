@@ -7,7 +7,7 @@ using System;
 using frame8.Logic.Misc.Other.Extensions;
 using UnityEngine.UI.Extension.Other.Extensions;
 
-namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter
+namespace UnityEngine.UI.Extension.Tools
 {
 	public abstract partial class SmartScrollView<TParams, SmartScrollViewItem> : MonoBehaviour, ISmartScrollView
     where TParams : BaseParams

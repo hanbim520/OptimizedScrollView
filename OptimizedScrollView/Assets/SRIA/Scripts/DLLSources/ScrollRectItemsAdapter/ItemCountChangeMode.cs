@@ -8,7 +8,7 @@ using System;
 using frame8.Logic.Misc.Other.Extensions;
  
 
-namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter
+namespace UnityEngine.UI.Extension.Tools
 {
 	public enum ItemCountChangeMode
 	{

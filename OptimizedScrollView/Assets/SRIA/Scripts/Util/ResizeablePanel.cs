@@ -5,7 +5,7 @@ using System;
 using frame8.Logic.Misc.Other.Extensions;
 using UnityEngine.Events;
 
-namespace frame8.ScrollRectItemsAdapter.Util
+namespace UnityEngine.UI.Extension.Tools.Util
 {
 	public class ResizeablePanel : MonoBehaviour
 	{

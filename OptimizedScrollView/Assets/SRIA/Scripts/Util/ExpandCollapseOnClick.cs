@@ -5,7 +5,7 @@ using System;
 using frame8.Logic.Misc.Other.Extensions;
 using UnityEngine.Events;
 
-namespace frame8.ScrollRectItemsAdapter.Util
+namespace UnityEngine.UI.Extension.Tools.Util
 {
     /// <summary>Utility to expand an item when it's clicked, dispatching the size change request via <see cref="ISizeChangesHandler"/> for increased flexibility</summary>
     public class ExpandCollapseOnClick : MonoBehaviour

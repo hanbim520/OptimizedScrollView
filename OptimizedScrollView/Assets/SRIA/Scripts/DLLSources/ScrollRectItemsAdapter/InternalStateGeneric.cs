@@ -7,7 +7,7 @@ using System;
 using frame8.Logic.Misc.Other.Extensions;
 using UnityEngine.UI.Extension.Other.Extensions;
 
-namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter
+namespace UnityEngine.UI.Extension.Tools
 {
     /// <summary>
 	/// Contains cached variables, helper methods and generally things that are not exposed to inheritors. Note: the LayoutGroup component on content, if any, will be disabled.
@@ -78,21 +78,21 @@ namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter
 			if (lg && lg.enabled)
 			{
 				lg.enabled = false;
-				Debug.Log("LayoutGroup on GameObject " + lg.name + " has beed disabled in order to use ScrollRectItemsAdapter8");
+				Debug.Log("LayoutGroup on GameObject " + lg.name + " has beed disabled in order to use Tools");
 			}
 
 			var contentSizeFitter = sourceParams.content.GetComponent<ContentSizeFitter>();
 			if (contentSizeFitter && contentSizeFitter.enabled)
 			{
 				contentSizeFitter.enabled = false;
-				Debug.Log("ContentSizeFitter on GameObject " + contentSizeFitter.name + " has beed disabled in order to use ScrollRectItemsAdapter8");
+				Debug.Log("ContentSizeFitter on GameObject " + contentSizeFitter.name + " has beed disabled in order to use Tools");
 			}
 
 			var layoutElement = sourceParams.content.GetComponent<LayoutElement>();
 			if (layoutElement)
 			{
 				GameObject.Destroy(layoutElement);
-				Debug.Log("LayoutElement on GameObject " + contentSizeFitter.name + " has beed DESTROYED in order to use ScrollRectItemsAdapter8");
+				Debug.Log("LayoutElement on GameObject " + contentSizeFitter.name + " has beed DESTROYED in order to use Tools");
 			}
 
 			if (sourceParams.scrollRect.horizontal)

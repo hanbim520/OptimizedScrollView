@@ -2,10 +2,9 @@
 using System.Collections;
 using UnityEngine.UI;
 using System;
-using frame8.Logic.Misc.Other.Extensions;
 using UnityEngine.EventSystems;
 
-namespace frame8.ScrollRectItemsAdapter.Util
+namespace UnityEngine.UI.Extension.Tools.Util
 {
     /// <summary>
     /// Utility to delegate the "long click" event to <see cref="longClickListener"/>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter
+namespace UnityEngine.UI.Extension.Tools
 {
     public static class Utils
 	{

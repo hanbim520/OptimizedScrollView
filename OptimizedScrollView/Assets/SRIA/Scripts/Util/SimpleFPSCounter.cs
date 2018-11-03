@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace frame8.ScrollRectItemsAdapter.Util
+namespace UnityEngine.UI.Extension.Tools.Util
 {
     /// <summary>Uses GUILayout to display a FPS counter in top-left</summary>
     public class SimpleFPSCounter : MonoBehaviour

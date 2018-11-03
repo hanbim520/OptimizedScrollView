@@ -2,13 +2,12 @@
 using System.Collections;
 using UnityEngine.UI;
 using System;
-using frame8.Logic.Misc.Other.Extensions;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 using UnityEngine.UI.Extension;
-using UnityEngine.UI.Extension.ScrollRectItemsAdapter;
+using UnityEngine.UI.Extension.Tools;
 
-namespace frame8.ScrollRectItemsAdapter.Util.PullToRefresh
+namespace UnityEngine.UI.Extension.Tools.Util.PullToRefresh
 {
     /// <summary>
     /// Attach it to your ScrollRect where the pull to refresh functionality is needed.

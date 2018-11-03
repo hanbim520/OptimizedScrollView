@@ -2,10 +2,9 @@
 using System.Collections;
 using UnityEngine.UI;
 using System;
-using frame8.Logic.Misc.Other.Extensions;
 using UnityEngine.EventSystems;
 
-namespace frame8.ScrollRectItemsAdapter.Util.PullToRefresh
+namespace UnityEngine.UI.Extension.Tools.Util.PullToRefresh
 {
     /// <summary>
     /// <para> Implementation of <see cref="PullToRefreshGizmo"/> that uses a rotating image to show the pull progress. </para>

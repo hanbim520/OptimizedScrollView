@@ -6,7 +6,7 @@ using frame8.Logic.Misc.Other.Extensions;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-namespace frame8.ScrollRectItemsAdapter.Util
+namespace UnityEngine.UI.Extension.Tools.Util
 {
 	/// <summary>
 	/// Utility that allows dragging a ScrollRect even if the PointerDown event has started inside a child InputField (which cancels the dragging by default)

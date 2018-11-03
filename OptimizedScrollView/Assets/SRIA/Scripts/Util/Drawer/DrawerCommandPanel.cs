@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine.UI.Extension.Other.Extensions;
 
-namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter.Util.Drawer
+namespace UnityEngine.UI.Extension.Tools.Util.Drawer
 {
 	/// <summary>
 	/// Versatile context menu drawer that is programmatically configured for each demo scene to contain specific UI controls

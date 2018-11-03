@@ -8,7 +8,7 @@ using frame8.Logic.Misc.Other.Extensions;
 using UnityEngine.Events;
 using frame8.Logic.Misc.Other;
 
-namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter.Util.Drawer
+namespace UnityEngine.UI.Extension.Tools.Util.Drawer
 {
 	public class LabelWithToggles : MonoBehaviour
 	{

@@ -2,10 +2,9 @@
 using System.Collections;
 using UnityEngine.UI;
 using System;
-using frame8.Logic.Misc.Other.Extensions;
 using UnityEngine.EventSystems;
 
-namespace frame8.ScrollRectItemsAdapter.Util.PullToRefresh
+namespace UnityEngine.UI.Extension.Tools.Util.PullToRefresh
 {
     /// <summary> Base class for gizmos that can be used with <see cref="PullToRefreshBehaviour"/> (see it for more details). Attach it to your ScrollRect </summary>
     public class PullToRefreshGizmo : MonoBehaviour

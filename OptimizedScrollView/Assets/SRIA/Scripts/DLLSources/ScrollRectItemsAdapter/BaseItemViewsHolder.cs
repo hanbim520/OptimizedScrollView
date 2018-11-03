@@ -1,5 +1,5 @@
 ﻿
-namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter
+namespace UnityEngine.UI.Extension.Tools
 {
     /// <summary>The minimal implementation of a Views Holder that can be used with <see cref="SmartScrollView{TParams, SmartScrollViewItem}"/></summary>
     public class BaseItemViewsHolder : AbstractViewsHolder

@@ -6,7 +6,7 @@ using System;
 using UnityEngine.Events;
 using UnityEngine.UI.Extension.Other.Extensions;
 
-namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter.Util.Drawer
+namespace UnityEngine.UI.Extension.Tools.Util.Drawer
 {
 	public class ButtonsPanel : MonoBehaviour
 	{

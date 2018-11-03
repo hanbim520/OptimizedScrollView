@@ -6,7 +6,7 @@ using System;
 using frame8.Logic.Misc.Other.Extensions;
 using UnityEngine.Events;
 
-namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter.Util.Drawer
+namespace UnityEngine.UI.Extension.Tools.Util.Drawer
 {
 	public class LabelWithSliderPanel : MonoBehaviour
 	{

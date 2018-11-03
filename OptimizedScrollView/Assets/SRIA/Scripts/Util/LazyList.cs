@@ -1,12 +1,11 @@
-﻿using frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
 using System.Collections;
 
-namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter.Util
+namespace UnityEngine.UI.Extension.Tools.Util
 {
 	/// <summary>
 	/// <para>Very handy List implementation that delays object creation until it's accessed,</para>

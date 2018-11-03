@@ -2,9 +2,9 @@
 using System.Collections;
 using UnityEngine.UI;
 using System;
-using frame8.Logic.Misc.Other.Extensions;
+using UnityEngine.UI.Extension;
 
-namespace frame8.ScrollRectItemsAdapter.Util
+namespace UnityEngine.UI.Extension.Tools.Util
 {
     public class ShowOnlyOnPortraitOrientation : MonoBehaviour
     {

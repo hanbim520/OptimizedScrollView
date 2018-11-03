@@ -6,7 +6,7 @@ using frame8.Logic.Misc.Other.Extensions;
 using UnityEngine.EventSystems;
 using UnityEngine.UI.Extension.Other.Extensions;
 
-namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter.Util
+namespace UnityEngine.UI.Extension.Tools.Util
 {
 	public class RectTransformEdgeDragger : MonoBehaviour, IDragHandler, IPointerDownHandler
 	{

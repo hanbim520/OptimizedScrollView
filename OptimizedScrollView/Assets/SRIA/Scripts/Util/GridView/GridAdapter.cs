@@ -1,13 +1,11 @@
-﻿using frame8.Logic.Misc.Other.Extensions;
-using frame8.Logic.Misc.Visual.UI.ScrollRectItemsAdapter;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter.Util.GridView
+namespace UnityEngine.UI.Extension.Tools.Util.GridView
 {
     /// <summary>
     /// <para>An optimized adapter for a GridView </para>
@@ -151,10 +149,10 @@ namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter.Util.GridView
 		/// <summary>See <see cref="ScrollToGroup(int, float, float)"/></summary>
 		public virtual bool SmoothScrollToGroup(int groupIndex, float duration, float normalizedOffsetFromViewportStart = 0f, float normalizedPositionOfItemPivotToUse = 0f, Func<float, bool> onProgress = null, bool overrideAnyCurrentScrollingAnimation = false)
 		{ return base.SmoothScrollTo(groupIndex, duration, normalizedOffsetFromViewportStart, normalizedPositionOfItemPivotToUse, onProgress, overrideAnyCurrentScrollingAnimation); }
-		#endregion
-		
-        /// <summary> Creates the Group viewsholder which instantiates the group prefab using the provided params in <see cref="ScrollRectItemsAdapter8{TParams, SmartScrollViewItem}.Init(TParams)"/></summary>
-        /// <seealso cref="ScrollRectItemsAdapter8{TParams, SmartScrollViewItem}.CreateViewsHolder(int)"/>
+        #endregion
+
+        /// <summary> Creates the Group viewsholder which instantiates the group prefab using the provided params in <see cref="Tools{TParams, SmartScrollViewItem}.Init(TParams)"/></summary>
+        /// <seealso cref="Tools{TParams, SmartScrollViewItem}.CreateViewsHolder(int)"/>
         /// <param name="itemIndex">the index of the GROUP (attention, not the CELL) that needs creation</param>
         /// <returns>The created group views holder </returns>
         protected override CellGroupViewsHolder<TCellVH> CreateViewsHolder(int itemIndex)

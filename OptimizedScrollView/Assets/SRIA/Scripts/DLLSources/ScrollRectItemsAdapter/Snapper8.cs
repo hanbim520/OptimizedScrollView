@@ -1,13 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
-using System;
-using UnityEngine.UI.Extension;
-using UnityEngine.UI.Extension.ScrollRectItemsAdapter;
-using UnityEngine.EventSystems;
+﻿using System;
 using UnityEngine.UI.Extension.MonoBehaviours;
 
-namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter
+namespace UnityEngine.UI.Extension.Tools
 {
 	/// <summary>
 	/// Script that enables snapping on a ScrollRect. It's used in conjuction with a <see cref="SmartScrollView{TParams, SmartScrollViewItem}"/>. Attach it to the ScrollRect game object.
