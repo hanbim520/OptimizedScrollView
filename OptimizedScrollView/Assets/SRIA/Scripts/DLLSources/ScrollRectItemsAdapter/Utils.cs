@@ -51,11 +51,11 @@ namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter
 			Dictionary<int, PointerEventData> pointerEvents;
 			if (asCompatInterface == null)
 			{
-#if UNITY_WSA || UNITY_WSA_10_0 // WSA uses .net core, which doesn't have reflection. in this case we expect the current input module to implement ISRIAPointerInputModule
-				throw new UnityException("Your InputModule should extend ISRIAPointerInputModule. See Instructions.pdf");
+#if UNITY_WSA || UNITY_WSA_10_0 // WSA uses .net core, which doesn't have reflection. in this case we expect the current input module to implement ISmartScrollViewPointerInputModule
+				throw new UnityException("Your InputModule should extend ISmartScrollViewPointerInputModule. See Instructions.pdf");
 #else
-				// Dig into reflection and get the original pointer data
-				pointerEvents = eventSystemAsPointerInputModule
+                // Dig into reflection and get the original pointer data
+                pointerEvents = eventSystemAsPointerInputModule
 					.GetType()
 					.GetField("m_PointerData", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
 					.GetValue(eventSystemAsPointerInputModule)
