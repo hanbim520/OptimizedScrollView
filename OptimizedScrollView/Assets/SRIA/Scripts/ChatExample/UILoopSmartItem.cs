@@ -46,7 +46,7 @@ public class UILoopSmartItem : BaseItemViewsHolder
         colorAtInit = messageContentPanelImage.color;
     }
 
-    public void UpdateFromModel(IList datas, int index)
+    public virtual void UpdateFromModel(IList datas, int index)
     {
 
         timeText.text = datas[index].ToString();
