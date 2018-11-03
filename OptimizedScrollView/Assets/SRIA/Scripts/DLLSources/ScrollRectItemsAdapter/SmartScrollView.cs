@@ -291,9 +291,9 @@ namespace UnityEngine.UI.Extension.Tools
 		protected virtual void CollectItemsSizes(ItemCountChangeMode changeMode, int count, int indexIfInsertingOrRemoving, ItemsDescriptor itemsDesc)
 		{ itemsDesc.ReinitializeSizes(changeMode, count, indexIfInsertingOrRemoving, _Params.DefaultItemSize); }
 
-		protected abstract UILoopSmartItem CreateViewsHolder(int itemIndex);
+		protected abstract UILoopSmartItem CreateCellView(int itemIndex);
 
-		protected abstract void UpdateViewsHolder(UILoopSmartItem newOrRecycled);
+		protected abstract void UpdateCellView(UILoopSmartItem newOrRecycled);
 
 		protected virtual bool IsRecyclable(UILoopSmartItem potentiallyRecyclable, int indexOfItemThatWillBecomeVisible, float heightOfItemThatWillBecomeVisible)
 		{ return true; }

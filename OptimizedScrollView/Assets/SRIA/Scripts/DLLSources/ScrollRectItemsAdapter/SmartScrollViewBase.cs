@@ -756,7 +756,7 @@ namespace UnityEngine.UI.Extension.Tools
 					else
 					{
 						// Found no recyclable view with the requested height
-						nlvHolder = CreateViewsHolder(nlvRealIndex);
+						nlvHolder = CreateCellView(nlvRealIndex);
 						break;
 					}
 				}
@@ -776,8 +776,8 @@ namespace UnityEngine.UI.Extension.Tools
 				RectTransform nlvRT = nlvHolder.root;
 				nlvRT.SetParent(_Params.content, false);
 
-				// Update its views
-				UpdateViewsHolder(nlvHolder);
+                // Update its views
+                UpdateCellView(nlvHolder);
 
 				// Make sure it's GO is activated
 				nlvHolder.root.gameObject.SetActive(true);

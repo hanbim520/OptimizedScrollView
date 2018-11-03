@@ -32,7 +32,7 @@ namespace UnityEngine.UI.Extension
 
 		}
 
-		protected override UILoopSmartItem CreateViewsHolder(int itemIndex)
+		protected override UILoopSmartItem CreateCellView(int itemIndex)
 		{
             var instance = Activator.CreateInstance(cellType) as UILoopSmartItem;
 			instance.Init(_itemPrefab, itemIndex);
@@ -45,7 +45,7 @@ namespace UnityEngine.UI.Extension
 			base.OnItemHeightChangedPreTwinPass(vh);
 		}
 
-		protected override void UpdateViewsHolder(UILoopSmartItem newOrRecycled)
+		protected override void UpdateCellView(UILoopSmartItem newOrRecycled)
 		{
 			newOrRecycled.UpdateFromModel(_datas, newOrRecycled.ItemIndex);
 
@@ -69,7 +69,7 @@ namespace UnityEngine.UI.Extension
 		}
 		#endregion
 
-		#region events from DrawerCommandPanel
+		#region events
 		void OnAddItemRequested(bool atEnd)
 		{
 			int index = atEnd ? _datas.Count : 0;
