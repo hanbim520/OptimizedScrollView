@@ -185,7 +185,7 @@ namespace UnityEngine.UI.Extension.Tools.Util.Drawer
 
 			galleryEffectSetting = AddLabelWithSliderPanel("Gallery effect", "None", "Max");
 			galleryEffectSetting.slider.onValueChanged.AddListener((v) => DoForAllAdapters((adapter) => adapter.BaseParameters.galleryEffectAmount = v));
-			galleryEffectSetting.Set(0f, 1f, .1f);
+			galleryEffectSetting.Set(0f, 1f, 0f);
 
 			// Simulate low end device toggle
 			int vSyncCountBefore = QualitySettings.vSyncCount;
