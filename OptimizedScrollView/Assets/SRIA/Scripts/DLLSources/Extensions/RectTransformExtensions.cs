@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace UnityEngine.UI.Extension
 {
-    public static class RectTransformExtensions
+    public static class RectTransformHelper
 	{
 		static Dictionary<RectTransform.Edge, Func<RectTransform, RectTransform, float>> _GetInsetFromParentEdge_MappedActions =
 			new Dictionary<RectTransform.Edge, Func<RectTransform, RectTransform, float>>()

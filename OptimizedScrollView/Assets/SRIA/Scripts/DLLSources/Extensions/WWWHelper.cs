@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace UnityEngine.UI.Extension
 {
-    public static class WWWExtensions
+    public static class WWWHelper
     {
         /// <summary>
         /// 

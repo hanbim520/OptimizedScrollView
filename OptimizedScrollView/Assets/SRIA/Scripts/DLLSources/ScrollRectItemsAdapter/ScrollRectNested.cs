@@ -6,11 +6,7 @@ using UnityEngine.EventSystems;
 
 namespace UnityEngine.UI.Extension
 {
-	/// <summary>
-	/// ScrollRect that supports being nested inside another ScrollRect.
-	/// BASED ON: https://forum.unity3d.com/threads/nested-scrollrect.268551/#post-1906953
-	/// </summary>
-	public class ScrollRectNested : ScrollRect
+	public class ScrollRectHelper : ScrollRect
 	{
 		ScrollRect _ParentScrollRect;
 		bool _RouteToParent = false;

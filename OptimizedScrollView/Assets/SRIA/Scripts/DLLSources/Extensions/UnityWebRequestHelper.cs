@@ -7,7 +7,7 @@ using UnityEngine;
 namespace UnityEngine.UI.Extension
 {
 #if UNITY_5_2 || UNITY_5_3_OR_NEWER
-    public static class UnityWebRequestExtensions
+    public static class UnityWebRequestHelper
     {
         /// <summary>
         /// 

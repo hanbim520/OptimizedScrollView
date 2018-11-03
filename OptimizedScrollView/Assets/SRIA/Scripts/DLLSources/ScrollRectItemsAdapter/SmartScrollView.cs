@@ -158,9 +158,9 @@ namespace UnityEngine.UI.Extension.Tools
 		{
 			Func<RectTransform, float, RectTransform, float, float> getDistanceFn;
 			if (_Params.scrollRect.horizontal)
-				getDistanceFn = RectTransformExtensions.GetWorldSignedHorDistanceBetweenCustomPivots;
+				getDistanceFn = RectTransformHelper.GetWorldSignedHorDistanceBetweenCustomPivots;
 			else
-				getDistanceFn = RectTransformExtensions.GetWorldSignedVertDistanceBetweenCustomPivots;
+				getDistanceFn = RectTransformHelper.GetWorldSignedVertDistanceBetweenCustomPivots;
 
 			return GetViewsHolderOfClosestItemToViewportPoint(_VisibleItems, getDistanceFn, viewportPoint01, itemPoint01, out distance);
 		}

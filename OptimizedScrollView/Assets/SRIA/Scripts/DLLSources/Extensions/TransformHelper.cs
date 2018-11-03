@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace UnityEngine.UI.Extension
 {
-    public static class TransformExtensions
+    public static class TransformHelper
     {
         public static void GetComponentAtPath<T>(
             this Transform transform,

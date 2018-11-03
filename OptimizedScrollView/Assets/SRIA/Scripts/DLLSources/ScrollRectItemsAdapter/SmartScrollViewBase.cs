@@ -870,12 +870,12 @@ namespace UnityEngine.UI.Extension.Tools
 			if (_Params.scrollRect.horizontal)
 			{
 				hor1_vertMinus1 = 1;
-				getCornerFn = RectTransformExtensions.GetWorldRight;
+				getCornerFn = RectTransformHelper.GetWorldRight;
 			}
 			else
 			{
 				hor1_vertMinus1 = -1;
-				getCornerFn = RectTransformExtensions.GetWorldTop;
+				getCornerFn = RectTransformHelper.GetWorldTop;
 			}
 
             float halfVPSize = _InternalState.viewportSize / 2, 

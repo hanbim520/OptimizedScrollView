@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace UnityEngine.UI.Extension
+namespace UnityEngine.UI.Extension.Tools
 {
-    public static class StructsToNumArraysExtensions
+    public static class StructsToNumArraysHelper
     {
 
         public static float[] GetValues(this Vector2 val)

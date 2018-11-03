@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace UnityEngine.UI.Extension
+namespace UnityEngine.UI.Extension.Tools
 {
-    public static class StructsInfinityValuesExtensions
+    public static class StructsInfinityValuesHelper
     {
         public static Vector2 SetToInfinity(this Vector2 val)
         {
