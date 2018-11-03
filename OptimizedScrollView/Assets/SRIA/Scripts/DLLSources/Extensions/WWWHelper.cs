@@ -8,10 +8,6 @@ namespace UnityEngine.UI.Extension
 {
     public static class WWWHelper
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns>the size in bytes given by Content-Length header. -1 if N/A</returns>
         public static long GetContentLengthFromHeader(this WWW www)
         {
             string length;

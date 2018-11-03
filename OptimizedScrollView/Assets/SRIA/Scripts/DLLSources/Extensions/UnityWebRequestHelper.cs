@@ -9,10 +9,6 @@ namespace UnityEngine.UI.Extension
 #if UNITY_5_2 || UNITY_5_3_OR_NEWER
     public static class UnityWebRequestHelper
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns>the size in bytes given by Content-Length header. -1 if N/A</returns>
 #if UNITY_5_2 || UNITY_5_3
         public static long GetContentLengthFromHeader(this UnityEngine.Experimental.Networking.UnityWebRequest www)
 #else
