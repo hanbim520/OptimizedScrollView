@@ -8,7 +8,7 @@ using UnityEngine.UI.Extension.Tools;
 namespace UnityEngine.UI.Extension.ScrollRectItemsAdapter.Editor.CustomEditors
 {
 	[CustomEditor(typeof(SRIAStandaloneInputModule))]
-	public class SRIAStandaloneInputModuleCustomEditor : UnityEditor.Editor
+	public class SmartScrollViewStandaloneInputModuleCustomEditor : UnityEditor.Editor
 	{
 		public override void OnInspectorGUI()
 		{
