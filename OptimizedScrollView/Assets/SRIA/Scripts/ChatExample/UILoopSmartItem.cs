@@ -54,7 +54,6 @@ public class UILoopSmartItem : UILoopSmartItemBase
 
     public virtual void UpdateFromModel(IList datas, int index)
     {
-
         timeText.text = datas[index].ToString();
         text.text = GetRandomContent();
 

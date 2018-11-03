@@ -57,7 +57,6 @@ namespace UnityEngine.UI.Extension
             if (!newOrRecycled.IsPopupAnimationActive && newOrRecycled.cellIndex == GetItemsCount() - 1) 
 				newOrRecycled.IsPopupAnimationActive = true;
 		}
-
 		protected override void OnBeforeRecycleOrDisableViewsHolder(UILoopSmartItem inRecycleBinOrVisible, int newItemIndex)
 		{
 			inRecycleBinOrVisible.IsPopupAnimationActive = false;
