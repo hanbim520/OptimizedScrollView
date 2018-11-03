@@ -1,7 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine.UI.Extension.Tools;
-using UnityEngine.UI.Extension.Tools.Util;
-using UnityEngine.UI.Extension;
 using System;
 
 namespace UnityEngine.UI.Extension

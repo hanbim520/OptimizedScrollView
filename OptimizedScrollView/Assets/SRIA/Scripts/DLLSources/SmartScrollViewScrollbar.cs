@@ -12,14 +12,10 @@ namespace UnityEngine.UI.Extension
         public bool hideWhenNotNeeded = true;
         public bool autoHide = true;
 
-		[Tooltip("A CanvasGroup will be added to the Scrollbar, if not already present, and the fade effect will be achieved by changing its alpha property")]
 		public bool autoHideFadeEffect = true;
 
-		[Tooltip("The collapsing effect will change the localScale of the Scrollbar, so the pivot's position decides in what direction it'll grow/shrink.\n " +
-				 "Note that sometimes a really nice effect is achieved by placing the pivot slightly outside the rect (the minimized scrollbar will move outside while collapsing)")]
         public bool autoHideCollapseEffect = true;
 
-		[Tooltip("Used if autoHide is on. Duration in seconds")]
         public float autoHideTime = 1f;
 
 		public float autoHideFadeEffectMinAlpha = .8f;
@@ -31,13 +27,10 @@ namespace UnityEngine.UI.Extension
         [Range(0.015f, 2f)]
         public float sizeUpdateInterval = .05f;
 
-		[Tooltip("Used to prevent updates to be processed too often, in case this is a concern")]
 		public int skippedFramesBetweenPositionChanges;
 
-        [Tooltip("If not assigned, will try yo find one in the parent")]
         public ScrollRect scrollRect;
 
-        [Tooltip("If not assigned, will use the resolved scrollRect")]
         public RectTransform viewport;
 
 		/// <summary>
