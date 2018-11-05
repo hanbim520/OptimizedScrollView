@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UI.Extension;
-using UnityEngine.UI.Extension.Tools;
+using UnityEngine.UI.Extension.Collocation;
 
 
 namespace UnityEngine.UI.Extension

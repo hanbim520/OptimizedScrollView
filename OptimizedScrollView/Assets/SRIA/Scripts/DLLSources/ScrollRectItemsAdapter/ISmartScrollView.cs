@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace UnityEngine.UI.Extension.Tools
+namespace UnityEngine.UI.Extension.Collocation
 {
 	public interface ISmartScrollView : IScrollRectProxy
 	{

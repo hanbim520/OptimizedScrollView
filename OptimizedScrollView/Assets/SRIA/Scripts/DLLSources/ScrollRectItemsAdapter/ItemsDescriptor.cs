@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using System;
 using System.Linq;
 
-namespace UnityEngine.UI.Extension.Tools
+namespace UnityEngine.UI.Extension.Collocation
 {
     public class ItemsDescriptor
 	{

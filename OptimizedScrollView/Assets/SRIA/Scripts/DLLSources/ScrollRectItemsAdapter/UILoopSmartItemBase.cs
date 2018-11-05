@@ -1,5 +1,5 @@
 ﻿
-namespace UnityEngine.UI.Extension.Tools
+namespace UnityEngine.UI.Extension.Collocation
 {
     public class UILoopSmartItemBase : AbstractViewsBase
     {

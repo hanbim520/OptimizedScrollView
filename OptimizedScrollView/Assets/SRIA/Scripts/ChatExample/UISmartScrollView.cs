@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using UnityEngine.UI.Extension.Tools;
+using UnityEngine.UI.Extension.Collocation;
 using System;
 
 namespace UnityEngine.UI.Extension

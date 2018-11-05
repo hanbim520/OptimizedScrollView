@@ -5,8 +5,9 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using System;
 using UnityEngine.UI.Extension;
+using UnityEngine.UI.Extension.Tools;
 
-namespace UnityEngine.UI.Extension.Tools
+namespace UnityEngine.UI.Extension.Collocation
 {
 	public abstract partial class SmartScrollView<TParams> : MonoBehaviour, ISmartScrollView
     where TParams : BaseCollocation

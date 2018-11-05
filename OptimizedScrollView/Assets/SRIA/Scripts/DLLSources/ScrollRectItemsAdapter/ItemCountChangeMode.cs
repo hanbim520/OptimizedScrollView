@@ -9,7 +9,7 @@ using UnityEngine.UI.Extension;
 
 
 
-namespace UnityEngine.UI.Extension.Tools
+namespace UnityEngine.UI.Extension.Collocation
 {
 	public enum ItemCountChangeMode
 	{

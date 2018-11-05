@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 using System;
 using UnityEngine.UI.Extension;
 
-namespace UnityEngine.UI.Extension.Tools
+namespace UnityEngine.UI.Extension.Collocation
 {
     abstract class InternalStateGeneric<TParams> 
 		where TParams : BaseCollocation
