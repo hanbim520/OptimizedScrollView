@@ -3,7 +3,7 @@ using System;
 
 namespace UnityEngine.UI.Extension
 {
-    public static class ArraysExtensions
+    public static class ArraysHelper
     {
         public static bool IsBetween(
             this float[] arr,

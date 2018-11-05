@@ -88,13 +88,13 @@ public class Test : MonoBehaviour {
             datas.Add(dt);
         }
         uiSmartScrollView.AddItemRequested(true, preCount,2);
-        uiSmartScrollView.SmoothScrollTo(1,0);
+        uiSmartScrollView.SmoothScrollTo(datas.Count - 1, 0);
     }
     public void OnRemoveItemRequested()
     {
-        uiSmartScrollView.RemoveItemRequested(false, 2);
+        uiSmartScrollView.RemoveItemRequested(true, 2);
         int count = datas.Count;
         datas.RemoveRange(count - 3, 2);
-        uiSmartScrollView.SmoothScrollTo(1, 0);
+        uiSmartScrollView.SmoothScrollTo(datas.Count - 1, 0);
     }
 }
