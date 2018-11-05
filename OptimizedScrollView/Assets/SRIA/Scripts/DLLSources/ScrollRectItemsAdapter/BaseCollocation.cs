@@ -6,8 +6,8 @@ using UnityEngine.UI;
 namespace UnityEngine.UI.Extension.Tools
 {
 	[System.Serializable]
-	public class BaseParams
-	{
+	public class BaseCollocation
+    {
 		#region Configuration
 		[Header("Optimizing process")]
 		public int recycleBinCapacity = -1;
@@ -50,13 +50,13 @@ namespace UnityEngine.UI.Extension.Tools
 		RectTransform _ScrollViewRT;
 
 
-		public BaseParams() { }
+		public BaseCollocation() { }
 
-        public BaseParams(ScrollRect scrollRect)
+        public BaseCollocation(ScrollRect scrollRect)
             :this(scrollRect, scrollRect.transform as RectTransform, scrollRect.content)
         {}
 
-        public BaseParams(ScrollRect scrollRect, RectTransform viewport, RectTransform content)
+        public BaseCollocation(ScrollRect scrollRect, RectTransform viewport, RectTransform content)
         {
             this.scrollRect = scrollRect;
             this.viewport = viewport == null ? scrollRect.transform as RectTransform : viewport;

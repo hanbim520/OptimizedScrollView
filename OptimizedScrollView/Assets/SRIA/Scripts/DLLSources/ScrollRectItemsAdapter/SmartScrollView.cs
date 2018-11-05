@@ -10,11 +10,11 @@ namespace UnityEngine.UI.Extension.Tools
 {
 	
 	public abstract partial class SmartScrollView<TParams> : MonoBehaviour, ISmartScrollView, IBeginDragHandler, IEndDragHandler
-	where TParams : BaseParams
-	{
+	where TParams : BaseCollocation
+    {
 		#region Configuration
 		[SerializeField]
-		protected TParams _Params;
+		protected TParams _Collocation;
 		#endregion
 
 		#region IScrollRectProxy events implementaion
@@ -24,7 +24,7 @@ namespace UnityEngine.UI.Extension.Tools
         #region SmartScrollView events & properties implementaion
         public event Action<int, int> ItemsRefreshed;
 		public bool Initialized { get; private set; }
-		public BaseParams BaseParameters { get { return Parameters; } }
+		public BaseCollocation BaseParameters { get { return Parameters; } }
 		public MonoBehaviour AsMonoBehaviour { get { return this; } }
 		public double ContentVirtualSizeToViewportRatio { get { return _InternalState.contentPanelVirtualSize / _InternalState.viewportSize; } }
 		public double ContentVirtualInsetFromViewportStart { get { return _InternalState.ContentPanelVirtualInsetFromViewportStart; } }
@@ -35,7 +35,7 @@ namespace UnityEngine.UI.Extension.Tools
 		
 		#endregion
 
-		public TParams Parameters { get { return _Params; } }
+		public TParams Parameters { get { return _Collocation; } }
 
 		protected List<UILoopSmartItem> _VisibleItems;
 		protected int _VisibleItemsCount;
@@ -59,14 +59,14 @@ namespace UnityEngine.UI.Extension.Tools
 		#region IScrollRectProxy methods implementaion
 		public void SetNormalizedPosition(float normalizedPosition)
 		{
-			float abstractNormPos = _Params.scrollRect.horizontal ? 1f - normalizedPosition : normalizedPosition;
+			float abstractNormPos = _Collocation.scrollRect.horizontal ? 1f - normalizedPosition : normalizedPosition;
 			SetVirtualAbstractNormalizedScrollPosition(abstractNormPos, true);
 		}
 
 		public float GetNormalizedPosition()
 		{
 			float abstractVirtNormPos = (float)_InternalState.GetVirtualAbstractNormalizedScrollPosition();
-			return _Params.scrollRect.horizontal ? 1f - abstractVirtNormPos : abstractVirtNormPos;
+			return _Collocation.scrollRect.horizontal ? 1f - abstractVirtNormPos : abstractVirtNormPos;
 		}
 
 		public float GetContentSize() { return (float)Math.Min(_InternalState.contentPanelVirtualSize, float.MaxValue); }
@@ -81,13 +81,13 @@ namespace UnityEngine.UI.Extension.Tools
 		{
 			Canvas.ForceUpdateCanvases();
 
-			_Params.InitIfNeeded(this);
+			_Collocation.InitIfNeeded(this);
  
-			if (_Params.scrollRect.horizontalScrollbar != null || _Params.scrollRect.verticalScrollbar != null)
+			if (_Collocation.scrollRect.horizontalScrollbar != null || _Collocation.scrollRect.verticalScrollbar != null)
 				throw new UnityException("SmartScrollView only works with a "+typeof(SmartScrollViewScrollbar).Name + " component added to the Scrollbar and the ScrollRect shouldn't have any scrollbar set up in the inspector (it hooks up automatically)");
 
-			_ItemsDesc = new ItemsDescriptor(_Params.DefaultItemSize);
-            _InternalState = InternalState.CreateFromSourceParamsOrThrow(_Params, _ItemsDesc);
+			_ItemsDesc = new ItemsDescriptor(_Collocation.DefaultItemSize);
+            _InternalState = InternalState.CreateFromSourceParamsOrThrow(_Collocation, _ItemsDesc);
 
 			_VisibleItems = new List<UILoopSmartItem>();
 			_AVGVisibleItemsCount = 0;
@@ -95,7 +95,7 @@ namespace UnityEngine.UI.Extension.Tools
 			Refresh();
 			_InternalState.UpdateLastProcessedCTVirtualInsetFromParentStart();
 			SetVirtualAbstractNormalizedScrollPosition(1f, false); // scroll to start
-			_Params.scrollRect.onValueChanged.AddListener(OnScrollViewValueChanged);
+			_Collocation.scrollRect.onValueChanged.AddListener(OnScrollViewValueChanged);
 			
 			if (ScrollPositionChanged != null)
 				ScrollPositionChanged(GetNormalizedPosition());
@@ -157,7 +157,7 @@ namespace UnityEngine.UI.Extension.Tools
 		public virtual AbstractViewsBase GetViewsHolderOfClosestItemToViewportPoint(float viewportPoint01, float itemPoint01, out float distance)
 		{
 			Func<RectTransform, float, RectTransform, float, float> getDistanceFn;
-			if (_Params.scrollRect.horizontal)
+			if (_Collocation.scrollRect.horizontal)
 				getDistanceFn = RectTransformHelper.GetWorldSignedHorDistanceBetweenCustomPivots;
 			else
 				getDistanceFn = RectTransformHelper.GetWorldSignedVertDistanceBetweenCustomPivots;
@@ -220,7 +220,7 @@ namespace UnityEngine.UI.Extension.Tools
 			var skipCompute_oldValue = _SkipComputeVisibilityInUpdateOrOnScroll;
 			_SkipComputeVisibilityInUpdateOrOnScroll = true;
 
-			_Params.scrollRect.StopMovement(); 
+			_Collocation.scrollRect.StopMovement(); 
 
 			int cellIndex = _ItemsDesc.GetItemViewIndexFromRealIndex(itemIndex);
 			var viewsHolderIfVisible = GeUILoopSmartItemIfVisible(itemIndex);
@@ -289,7 +289,7 @@ namespace UnityEngine.UI.Extension.Tools
 		}
 
 		protected virtual void CollectItemsSizes(ItemCountChangeMode changeMode, int count, int indexIfInsertingOrRemoving, ItemsDescriptor itemsDesc)
-		{ itemsDesc.ReinitializeSizes(changeMode, count, indexIfInsertingOrRemoving, _Params.DefaultItemSize); }
+		{ itemsDesc.ReinitializeSizes(changeMode, count, indexIfInsertingOrRemoving, _Collocation.DefaultItemSize); }
 
 		protected abstract UILoopSmartItem CreateCellView(int itemIndex);
 
@@ -344,7 +344,7 @@ namespace UnityEngine.UI.Extension.Tools
 
 			Canvas.ForceUpdateCanvases();
 
-			_Params.InitIfNeeded(this);
+			_Collocation.InitIfNeeded(this);
 
 			_InternalState.CacheScrollViewInfo(); // update vp size etc.
             _ItemsDesc.maxVisibleItemsSeenSinceLastScrollViewSizeChange = 0;
@@ -375,7 +375,7 @@ namespace UnityEngine.UI.Extension.Tools
 
 			foreach (var vh in viewsHolders)
 			{
-				curDistance = Mathf.Abs(getDistanceFn(vh.root, itemPoint01, _Params.viewport, viewportPoint01));
+				curDistance = Mathf.Abs(getDistanceFn(vh.root, itemPoint01, _Collocation.viewport, viewportPoint01));
 				if (curDistance < minDistance)
 				{
 					result = vh;
@@ -390,8 +390,8 @@ namespace UnityEngine.UI.Extension.Tools
 		{
 			Initialized = false;
 
-			if (_Params != null && _Params.scrollRect)
-				_Params.scrollRect.onValueChanged.RemoveListener(OnScrollViewValueChanged);
+			if (_Collocation != null && _Collocation.scrollRect)
+				_Collocation.scrollRect.onValueChanged.RemoveListener(OnScrollViewValueChanged);
 
 			if (_SmoothScrollCoroutine != null)
 			{
@@ -406,7 +406,7 @@ namespace UnityEngine.UI.Extension.Tools
 			ClearVisibleItems();
 			_VisibleItems = null;
 
-			_Params = null;
+			_Collocation = null;
 			_InternalState = null;
 
 			if (ItemsRefreshed != null)

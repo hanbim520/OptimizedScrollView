@@ -9,8 +9,8 @@ using UnityEngine.UI.Extension;
 namespace UnityEngine.UI.Extension.Tools
 {
 	public abstract partial class SmartScrollView<TParams> : MonoBehaviour, ISmartScrollView
-    where TParams : BaseParams
-	{
+    where TParams : BaseCollocation
+    {
 		IEnumerator SmoothScrollProgressCoroutine(
 			int itemIndex, 
 			float duration, 
@@ -31,7 +31,7 @@ namespace UnityEngine.UI.Extension.Tools
 			var ignorOnScroll_lastValue = _SkipComputeVisibilityInUpdateOrOnScroll;
 			_SkipComputeVisibilityInUpdateOrOnScroll = true;
 
-			_Params.scrollRect.StopMovement();
+			_Collocation.scrollRect.StopMovement();
 			Canvas.ForceUpdateCanvases();
 
 			Func<double> getTargetVrtInset = () =>
@@ -65,13 +65,13 @@ namespace UnityEngine.UI.Extension.Tools
 				if (needToCalculateInitialInset)
 				{
 					initialVrtInsetFromParent = _InternalState.ContentPanelVirtualInsetFromViewportStart;
-					needToCalculateInitialInset = _Params.loopItems;
+					needToCalculateInitialInset = _Collocation.loopItems;
 				}
 
 				if (needToCalculateTargetInset || _InternalState.lastComputeVisibilityHadATwinPass)
 				{
 					targetVrtInsetFromParent = getTargetVrtInset();
-					needToCalculateTargetInset = _Params.loopItems || _InternalState.lastComputeVisibilityHadATwinPass;
+					needToCalculateTargetInset = _Collocation.loopItems || _InternalState.lastComputeVisibilityHadATwinPass;
 				}
 				value = initialVrtInsetFromParent * (1d - progress) + targetVrtInsetFromParent * progress; // Lerp for double
 			
@@ -133,7 +133,7 @@ namespace UnityEngine.UI.Extension.Tools
 
 		double ScrollToHelper_GetContentStartVirtualInsetFromViewportStart_Clamped(double minContentVirtualInsetFromVPAllowed, int itemIndex, float normalizedItemOffsetFromStart, float normalizedPositionOfItemPivotToUse)
 		{
-			float maxContentInsetFromVPAllowed = _Params.loopItems ? _InternalState.viewportSize/2 : 0f; // if looping, there's no need to clamp. in addition, clamping would cancel a scrollTo if the content is exactly at start or end
+			float maxContentInsetFromVPAllowed = _Collocation.loopItems ? _InternalState.viewportSize/2 : 0f; // if looping, there's no need to clamp. in addition, clamping would cancel a scrollTo if the content is exactly at start or end
 			minContentVirtualInsetFromVPAllowed -= maxContentInsetFromVPAllowed;
 			int itemViewIdex = _ItemsDesc.GetItemViewIndexFromRealIndex(itemIndex);
 			float itemSize = _ItemsDesc[itemViewIdex];
@@ -155,7 +155,7 @@ namespace UnityEngine.UI.Extension.Tools
 			_SkipComputeVisibilityInUpdateOrOnScroll = true;
 
 
-			_Params.scrollRect.StopMovement();
+			_Collocation.scrollRect.StopMovement();
 			_InternalState.SetContentVirtualInsetFromViewportStart(virtualInset);
 
 			ComputeVisibilityForCurrentPosition(true, true, false);
@@ -173,9 +173,9 @@ namespace UnityEngine.UI.Extension.Tools
 			_SkipComputeVisibilityInUpdateOrOnScroll = true;
 
 			int prevCount = _ItemsDesc.itemsCount;
-			var velocity = _Params.scrollRect.velocity;
+			var velocity = _Collocation.scrollRect.velocity;
 			if (!keepVelocity)
-				_Params.scrollRect.StopMovement();
+				_Collocation.scrollRect.StopMovement();
 
 			double sizeOfAllItemsBefore = _ItemsDesc.CumulatedSizeOfAllItems;
 
@@ -220,7 +220,7 @@ namespace UnityEngine.UI.Extension.Tools
 				CorrectPositionsOfVisibleItems(true);
 
 			if (keepVelocity)
-				_Params.scrollRect.velocity = velocity;
+				_Collocation.scrollRect.velocity = velocity;
 
 			if (ItemsRefreshed != null)
 				ItemsRefreshed(prevCount, count);
@@ -243,7 +243,7 @@ namespace UnityEngine.UI.Extension.Tools
 
 			if (_InternalState.updateRequestPending)
 			{
-				_InternalState.updateRequestPending = _Params.updateMode != BaseParams.UpdateMode.ON_SCROLL;
+				_InternalState.updateRequestPending = _Collocation.updateMode != BaseCollocation.UpdateMode.ON_SCROLL;
 				if (!_SkipComputeVisibilityInUpdateOrOnScroll)
 				{
 					ComputeVisibilityForCurrentPosition(false, true, false);
@@ -259,7 +259,7 @@ namespace UnityEngine.UI.Extension.Tools
 			if (_SkipComputeVisibilityInUpdateOrOnScroll)
 				return;
 
-			if (_Params.updateMode != BaseParams.UpdateMode.MONOBEHAVIOUR_UPDATE)
+			if (_Collocation.updateMode != BaseCollocation.UpdateMode.MONOBEHAVIOUR_UPDATE)
 			{
 				ComputeVisibilityForCurrentPosition(
 					false, // ScrollPositionChanged will be called below 
@@ -268,7 +268,7 @@ namespace UnityEngine.UI.Extension.Tools
 				);
 			}
 
-			if (_Params.updateMode != BaseParams.UpdateMode.ON_SCROLL) // ScrollPositionChanged will be called after the next ComputeVisibility
+			if (_Collocation.updateMode != BaseCollocation.UpdateMode.ON_SCROLL) // ScrollPositionChanged will be called after the next ComputeVisibility
 				_InternalState.updateRequestPending = true;
 
 			if (ScrollPositionChanged != null)
@@ -292,7 +292,7 @@ namespace UnityEngine.UI.Extension.Tools
 
 			double curPos = _InternalState.ContentPanelVirtualInsetFromViewportStart;
 			double delta = (curPos - _InternalState.lastProcessedCTVirtualInsetFromParentStart);
-			var velocityToSet = _Params.scrollRect.velocity;
+			var velocityToSet = _Collocation.scrollRect.velocity;
 			PointerEventData pev = null;
 			bool triedRetrievingPev = false;
 
@@ -313,7 +313,7 @@ namespace UnityEngine.UI.Extension.Tools
 			}
 
 			if (!IsDragging) // if dragging, the velocity is not needed
-				_Params.scrollRect.velocity = velocityToSet;
+				_Collocation.scrollRect.velocity = velocityToSet;
 
 			_InternalState.UpdateLastProcessedCTVirtualInsetFromParentStart();
 			
@@ -337,7 +337,7 @@ namespace UnityEngine.UI.Extension.Tools
 			float[] sizes = new float[_VisibleItemsCount];
 			UILoopSmartItem v;
 			// 2 fors are more efficient
-			if (_Params.scrollRect.horizontal)
+			if (_Collocation.scrollRect.horizontal)
 			{
 				for (int i = 0; i < _VisibleItemsCount; ++i)
 				{
@@ -364,7 +364,7 @@ namespace UnityEngine.UI.Extension.Tools
 			_SkipComputeVisibilityInUpdateOrOnScroll = ignoreOnScroll_valueBefore;
 
 			if (returnPointerEventDataIfNeeded)
-				pev = Utils.GetOriginalPointerEventDataByDrag(_Params.scrollRect.gameObject);
+				pev = Utils.GetOriginalPointerEventDataByDrag(_Collocation.scrollRect.gameObject);
 
 			_InternalState.lastComputeVisibilityHadATwinPass = true;
 		}
@@ -374,12 +374,12 @@ namespace UnityEngine.UI.Extension.Tools
 				return false;
 
 			int potentialResetDir = delta > 0d /*positive scroll -> going to start*/ ? 2 : 1;
-			float curRealAbstrNormPos = _Params.scrollRect.horizontal ? 1f - _Params.scrollRect.horizontalNormalizedPosition : _Params.scrollRect.verticalNormalizedPosition;
+			float curRealAbstrNormPos = _Collocation.scrollRect.horizontal ? 1f - _Collocation.scrollRect.horizontalNormalizedPosition : _Collocation.scrollRect.verticalNormalizedPosition;
 			int firstVisibleItem_IndexInView = _VisibleItems[0].cellIndex, lastVisibleItem_IndexInView = firstVisibleItem_IndexInView + _VisibleItemsCount - 1;
 			bool firstVisibleIsFirstIndexInView = firstVisibleItem_IndexInView == 0;
 			bool lastVisibleIsLastIndexInView = lastVisibleItem_IndexInView == _ItemsDesc.itemsCount - 1;
-			float contentInsetFromVPStart_Prev = _Params.content.GetInsetFromParentEdge(_Params.viewport, _InternalState.startEdge);
-			float contentInsetFromVPEnd_Prev = _Params.content.GetInsetFromParentEdge(_Params.viewport, _InternalState.endEdge);
+			float contentInsetFromVPStart_Prev = _Collocation.content.GetInsetFromParentEdge(_Collocation.viewport, _InternalState.startEdge);
+			float contentInsetFromVPEnd_Prev = _Collocation.content.GetInsetFromParentEdge(_Collocation.viewport, _InternalState.endEdge);
 			double sizeCummForLastVisibleItem = _ItemsDesc.GetItemSizeCumulative(lastVisibleItem_IndexInView);
 			double sizeCummForFirstVisibleItem = _ItemsDesc.GetItemSizeCumulative(firstVisibleItem_IndexInView);
 
@@ -410,7 +410,7 @@ namespace UnityEngine.UI.Extension.Tools
 
 				float contentNewInsetFromVPStart;
 				if (sizAft < sizVis
-					 && (!_Params.loopItems || !lastVisibleIsLastIndexInView)  
+					 && (!_Collocation.loopItems || !lastVisibleIsLastIndexInView)  
 				)
 				{
 					float sizAftPlusLastAmountOutside = (float)sizAft + lastVisibleItemAmountOutside;
@@ -418,7 +418,7 @@ namespace UnityEngine.UI.Extension.Tools
 				}
 				else
 				{
-					if ((!_Params.loopItems || !lastVisibleIsLastIndexInView) && curRealAbstrNormPos >= 1d - InternalState.proximityToLimitNeeded01ToResetPos)
+					if ((!_Collocation.loopItems || !lastVisibleIsLastIndexInView) && curRealAbstrNormPos >= 1d - InternalState.proximityToLimitNeeded01ToResetPos)
 						return false; 
 
 					contentNewInsetFromVPStart = -(firstVisibleItemAmountOutside + _InternalState.paddingContentStart);
@@ -443,7 +443,7 @@ namespace UnityEngine.UI.Extension.Tools
 
 				float contentNewInsetFromVPEnd;
 				if (sizBef < sizVis
-					&& (!_Params.loopItems || !firstVisibleIsFirstIndexInView) 
+					&& (!_Collocation.loopItems || !firstVisibleIsFirstIndexInView) 
 				)
 				{
 					float sizBefPlusFirstAmountOutside = (float)sizBef + firstVisibleItemAmountOutside;
@@ -451,7 +451,7 @@ namespace UnityEngine.UI.Extension.Tools
 				}
 				else
 				{
-					if ((!_Params.loopItems || !firstVisibleIsFirstIndexInView) && curRealAbstrNormPos <= InternalState.proximityToLimitNeeded01ToResetPos)
+					if ((!_Collocation.loopItems || !firstVisibleIsFirstIndexInView) && curRealAbstrNormPos <= InternalState.proximityToLimitNeeded01ToResetPos)
 						return false;
 
 					contentNewInsetFromVPEnd = -(lastVisibleItemAmountOutside + _InternalState.paddingContentEnd);
@@ -468,16 +468,16 @@ namespace UnityEngine.UI.Extension.Tools
 			_SkipComputeVisibilityInUpdateOrOnScroll = true;
 
 			if (returnPointerEventDataIfNeeded)
-				pev = Utils.GetOriginalPointerEventDataByDrag(_Params.scrollRect.gameObject);
-			_Params.content.SetInsetAndSizeFromParentEdgeWithCurrentAnchors(_Params.viewport, edgeToInsetContentFrom, contentNewInsetFromVPStartOrEnd, _InternalState.contentPanelSize);
-			_Params.scrollRect.Rebuild(CanvasUpdate.PostLayout);
+				pev = Utils.GetOriginalPointerEventDataByDrag(_Collocation.scrollRect.gameObject);
+			_Collocation.content.SetInsetAndSizeFromParentEdgeWithCurrentAnchors(_Collocation.viewport, edgeToInsetContentFrom, contentNewInsetFromVPStartOrEnd, _InternalState.contentPanelSize);
+			_Collocation.scrollRect.Rebuild(CanvasUpdate.PostLayout);
 			Canvas.ForceUpdateCanvases(); 
 
 			// Restore to normal
 			_SkipComputeVisibilityInUpdateOrOnScroll = ignoreOnScroll_valueBefore;
 
 			bool looped = false;
-			if (_Params.loopItems)
+			if (_Collocation.loopItems)
 			{
 				int newRealIndexOfFirstItemInView = -1;
 				if (potentialResetDir == 1) // going towards end
@@ -511,7 +511,7 @@ namespace UnityEngine.UI.Extension.Tools
 			}
 
 			if (!looped)
-				_InternalState.contentPanelSkippedInsetDueToVirtualization += contentInsetFromVPStart_Prev - _Params.content.GetInsetFromParentEdge(_Params.viewport, _InternalState.startEdge);
+				_InternalState.contentPanelSkippedInsetDueToVirtualization += contentInsetFromVPStart_Prev - _Collocation.content.GetInsetFromParentEdge(_Collocation.viewport, _InternalState.startEdge);
 
 			CorrectPositionsOfVisibleItems(alsoCorrectTransversalPositions);//delta > 0d);
 			_CorrectedPositionInCurrentComputeVisibilityPass = true;
@@ -631,7 +631,7 @@ namespace UnityEngine.UI.Extension.Tools
 			double currentItemVrtInset_negStart_posEnd = double.PositiveInfinity;
 			int estimatedAVGVisibleItems = -1;
 			if (Math.Abs(abstractDelta) > 10000d // huge jumps need optimization
-				&& (estimatedAVGVisibleItems = (int)Math.Round(Math.Min(_InternalState.viewportSize / ((_Params.DefaultItemSize + _InternalState.spacing)), _AVGVisibleItemsCount)))
+				&& (estimatedAVGVisibleItems = (int)Math.Round(Math.Min(_InternalState.viewportSize / ((_Collocation.DefaultItemSize + _InternalState.spacing)), _AVGVisibleItemsCount)))
 					< _ItemsDesc.itemsCount
 			){
 				int estimatedIndexInViewOfNewFirstVisible = (int)
@@ -774,7 +774,7 @@ namespace UnityEngine.UI.Extension.Tools
 
 				// Make sure it's parented to content panel
 				RectTransform nlvRT = nlvHolder.root;
-				nlvRT.SetParent(_Params.content, false);
+				nlvRT.SetParent(_Collocation.content, false);
 
                 // Update its views
                 UpdateCellView(nlvHolder);
@@ -788,14 +788,14 @@ namespace UnityEngine.UI.Extension.Tools
 					neg0_pos1 * (_InternalState.contentPanelVirtualSize - nlvSize) + neg1_posMinus1 * negCurrentVrtInsetFromCTSToUseForNLV_posCurrentVrtInsetFromCTEToUseForNLV;
 
 				nlvRT.SetInsetAndSizeFromParentEdgeWithCurrentAnchors(
-					_Params.content, 
+					_Collocation.content, 
 					_InternalState.startEdge, 
 					_InternalState.ConvertItemInsetFromParentStart_FromVirtualToReal(currentVirtualInsetFromCTSToUseForNLV), 
 					nlvSize
 				);
 
 				
-				nlvRT.SetInsetAndSizeFromParentEdgeWithCurrentAnchors(_Params.content, transvStartEdge, ctPadTransvStart, allItemsTransversalSizes);
+				nlvRT.SetInsetAndSizeFromParentEdgeWithCurrentAnchors(_Collocation.content, transvStartEdge, ctPadTransvStart, allItemsTransversalSizes);
 
 				currentLVcellIndex = nlvIndexInView;
 				currentItemVrtInset_negStart_posEnd += nlvSize + _InternalState.spacing;
@@ -843,17 +843,17 @@ namespace UnityEngine.UI.Extension.Tools
 
 		int GetMaxNumObjectsToKeepInMemory()
 		{
-			return _Params.recycleBinCapacity > 0 ?
-					  _Params.recycleBinCapacity + _VisibleItemsCount
+			return _Collocation.recycleBinCapacity > 0 ?
+					  _Collocation.recycleBinCapacity + _VisibleItemsCount
 					  : _ItemsDesc.maxVisibleItemsSeenSinceLastScrollViewSizeChange
 						+ _ItemsDesc.destroyedItemsSinceLastScrollViewSizeChange + 1;
 		}
 
 		void UpdateGalleryEffectIfNeeded()
 		{
-			if (_Params.galleryEffectAmount == 0f)
+			if (_Collocation.galleryEffectAmount == 0f)
 			{
-				if (_PrevGalleryEffectAmount == _Params.galleryEffectAmount)
+				if (_PrevGalleryEffectAmount == _Collocation.galleryEffectAmount)
 					return;
 
 				foreach (var recycled in _RecyclableItems)
@@ -865,9 +865,9 @@ namespace UnityEngine.UI.Extension.Tools
 				return;
 
 			Func<RectTransform, float> getCornerFn;
-			float viewportPivot_MinimumIsMinus1_MaximumIs1 = _Params.galleryEffectViewportPivot * 2 - 1f;
+			float viewportPivot_MinimumIsMinus1_MaximumIs1 = _Collocation.galleryEffectViewportPivot * 2 - 1f;
 			float hor1_vertMinus1;
-			if (_Params.scrollRect.horizontal)
+			if (_Collocation.scrollRect.horizontal)
 			{
 				hor1_vertMinus1 = 1;
 				getCornerFn = RectTransformHelper.GetWorldRight;
@@ -879,16 +879,16 @@ namespace UnityEngine.UI.Extension.Tools
 			}
 
             float halfVPSize = _InternalState.viewportSize / 2, 
-				 vpPivot = (getCornerFn(_Params.viewport) - halfVPSize) + (halfVPSize * (viewportPivot_MinimumIsMinus1_MaximumIs1 * hor1_vertMinus1));
+				 vpPivot = (getCornerFn(_Collocation.viewport) - halfVPSize) + (halfVPSize * (viewportPivot_MinimumIsMinus1_MaximumIs1 * hor1_vertMinus1));
 			for (int i = 0; i < _VisibleItemsCount; i++)
 			{
 				var vh = _VisibleItems[i];
 				float center = getCornerFn(vh.root) - _ItemsDesc[vh.cellIndex] / 2;
 
 				float t01 = 1f - Mathf.Clamp01(Mathf.Abs(center - vpPivot) / halfVPSize);
-				vh.root.localScale = Vector3.Lerp(Vector3.one * (1f - _Params.galleryEffectAmount), Vector3.one, t01);
+				vh.root.localScale = Vector3.Lerp(Vector3.one * (1f - _Collocation.galleryEffectAmount), Vector3.one, t01);
 			}
-			_PrevGalleryEffectAmount = _Params.galleryEffectAmount;
+			_PrevGalleryEffectAmount = _Collocation.galleryEffectAmount;
 		}
 		
 

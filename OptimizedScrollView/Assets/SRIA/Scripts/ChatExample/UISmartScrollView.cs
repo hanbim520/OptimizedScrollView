@@ -4,7 +4,7 @@ using System;
 
 namespace UnityEngine.UI.Extension
 {
-	public class UISmartScrollView : SmartScrollView<BaseParams>
+	public class UISmartScrollView : SmartScrollView<BaseCollocation>
 	{
         private IList _datas;
         private GameObject _itemPrefab;

@@ -12,7 +12,7 @@ namespace UnityEngine.UI.Extension.Tools
 		event Action<int, int> ItemsRefreshed;
 
 		bool Initialized { get; }
-		BaseParams BaseParameters { get; }
+        BaseCollocation BaseParameters { get; }
 		MonoBehaviour AsMonoBehaviour { get; }
 		double ContentVirtualSizeToViewportRatio { get; }
 		double ContentVirtualInsetFromViewportStart { get; }

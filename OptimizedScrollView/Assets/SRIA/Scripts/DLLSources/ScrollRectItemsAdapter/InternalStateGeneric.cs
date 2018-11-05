@@ -9,8 +9,8 @@ using UnityEngine.UI.Extension;
 namespace UnityEngine.UI.Extension.Tools
 {
     abstract class InternalStateGeneric<TParams> 
-		where TParams : BaseParams 
-	{
+		where TParams : BaseCollocation
+    {
 		#region Fields & Props
 		internal const double proximityToLimitNeeded01ToResetPos = 1d; 
 		internal readonly Vector2 constantAnchorPosForAllItems = new Vector2(0f, 1f); // top-left
