@@ -13,7 +13,7 @@ namespace UnityEngine.UI.Extension
         #region UISmartScrollView implementation
        
 
-        public void UpdateScrollView<T>(IList datas,GameObject prefab)where T: UILoopSmartItem
+        public void UpdateScrollView<T>(IList datas,GameObject prefab,bool isScrollBottom = true)where T: UILoopSmartItem
         {
             if(datas == null || prefab == null)
             {
@@ -24,7 +24,27 @@ namespace UnityEngine.UI.Extension
             _itemPrefab = prefab;
             cellType = typeof(T);
             OnItemCountChangeRequested(_datas.Count);
+            if(isScrollBottom)
+            {
+                StopCoroutine("ScrollToBottom");
+                StartCoroutine("ScrollToBottom", datas.Count);
+            } else
+            {
+                StopCoroutine("ScrollToUp");
+                StartCoroutine("ScrollToUp");
+            }
           
+        }
+
+        IEnumerator ScrollToUp()
+        {
+            yield return new WaitForEndOfFrame();
+            SmoothScrollTo(0, 0f);
+        }
+        IEnumerator ScrollToBottom(int count)
+        {
+            yield return new WaitForEndOfFrame();
+            SmoothScrollTo(count - 1, 0f);               
         }
 		protected override void Update()
 		{
@@ -70,12 +90,16 @@ namespace UnityEngine.UI.Extension
 		#endregion
 
 		#region events
-		void OnAddItemRequested(bool atEnd)
+	    public void AddItemRequested(bool atEnd,int preCount,int count)
 		{
-			int index = atEnd ? _datas.Count : 0;
-			InsertItems(index, 1, true);
+			InsertItems(preCount, count, true);
 		}
-		void OnItemCountChangeRequested(int newCount)
+        public void RemoveItemRequested(bool atEnd, int count)
+        {
+            int index = atEnd ? (_datas.Count - count): 0;
+            RemoveItems(index, count, true);
+        }
+        public void OnItemCountChangeRequested(int newCount)
 		{
 			ResetItems(_datas.Count, true);
 		}
