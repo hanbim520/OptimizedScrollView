@@ -94,6 +94,24 @@ namespace UnityEngine.UI.Extension
             }
         }
 
+        public static bool IsRectOverlap(Rect r1, Rect r2)
+        {
+            return !(((r1.xMax < r2.xMin) || (r1.yMax > r2.yMin)) ||
+                      ((r2.xMax < r1.xMin) || (r2.yMax > r1.yMin))
+                    );
+        }
+
+        public static bool IsRectIntersect(float x01, float x02, float y01, float y02, float x11, float x12, float y11, float y12)
+        {
+            float zx = Mathf.Abs(x01 + x02 - x11 - x12);
+            float x = Mathf.Abs(x01 - x02) + Mathf.Abs(x11 - x12);
+            float zy = Mathf.Abs(y01 + y02 - y11 - y12);
+            float y = Mathf.Abs(y01 - y02) + Mathf.Abs(y11 - y12);
+            if (zx <= x && zy <= y)
+                return true;
+            else
+                return false;
+        }
 
         public static int GetNumberOfAncestors(this Transform tr)
         {
