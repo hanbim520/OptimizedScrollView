@@ -8,20 +8,20 @@ namespace UnityEngine.UI.Extension
 {
     public static class RectTransformHelper
 	{
-		static Dictionary<RectTransform.Edge, Func<RectTransform, RectTransform, float>> _GetInsetFromParentEdge_MappedActions =
-			new Dictionary<RectTransform.Edge, Func<RectTransform, RectTransform, float>>()
+		static Dictionary<int, Func<RectTransform, RectTransform, float>> _GetInsetFromParentEdge_MappedActions =
+			new Dictionary<int, Func<RectTransform, RectTransform, float>>()
 		{
-			{ RectTransform.Edge.Bottom, GetInsetFromParentBottomEdge },
-			{ RectTransform.Edge.Top, GetInsetFromParentTopEdge },
-			{ RectTransform.Edge.Left, GetInsetFromParentLeftEdge },
-			{ RectTransform.Edge.Right, GetInsetFromParentRightEdge }
+			{ (int)RectTransform.Edge.Bottom, GetInsetFromParentBottomEdge },
+			{ (int)RectTransform.Edge.Top, GetInsetFromParentTopEdge },
+			{ (int)RectTransform.Edge.Left, GetInsetFromParentLeftEdge },
+			{ (int)RectTransform.Edge.Right, GetInsetFromParentRightEdge }
 		};
 
-		static Dictionary<RectTransform.Edge, Action<RectTransform, RectTransform, float, float>> _SetInsetAndSizeFromParentEdgeWithCurrentAnchors_MappedActions =
-			new Dictionary<RectTransform.Edge, Action<RectTransform, RectTransform, float, float>>()
+		static Dictionary<int, Action<RectTransform, RectTransform, float, float>> _SetInsetAndSizeFromParentEdgeWithCurrentAnchors_MappedActions =
+			new Dictionary<int, Action<RectTransform, RectTransform, float, float>>()
 		{
 			{
-				RectTransform.Edge.Bottom,
+                (int)RectTransform.Edge.Bottom,
 				(child, parentHint, newInset, newSize) => {
 					var offsetChange = newInset - child.GetInsetFromParentBottomEdge(parentHint);
 					var offsetMin = new Vector2(child.offsetMin.x, child.offsetMin.y + offsetChange); // need to store it before modifying anything, because the offsetmax will change the offsetmin and vice-versa
@@ -30,7 +30,7 @@ namespace UnityEngine.UI.Extension
 				}
 			},
 			{
-				RectTransform.Edge.Top,
+            (int)RectTransform.Edge.Top,
 				(child, parentHint, newInset, newSize) => {
 					var offsetChange = newInset - child.GetInsetFromParentTopEdge(parentHint);
 					var offsetMax = new Vector2(child.offsetMax.x, child.offsetMax.y - offsetChange);
@@ -39,7 +39,7 @@ namespace UnityEngine.UI.Extension
 				}
 			},
 			{
-				RectTransform.Edge.Left,
+                (int)RectTransform.Edge.Left,
 				(child, parentHint, newInset, newSize) => {
 					var offsetChange = newInset - child.GetInsetFromParentLeftEdge(parentHint);
 					var offsetMin = new Vector2(child.offsetMin.x + offsetChange, child.offsetMin.y);
@@ -48,7 +48,7 @@ namespace UnityEngine.UI.Extension
 				}
 			},
 			{
-				RectTransform.Edge.Right,
+                (int)RectTransform.Edge.Right,
 				(child, parentHint, newInset, newSize) => {
 					var offsetChange = newInset - child.GetInsetFromParentRightEdge(parentHint);
 					var offsetMax = new Vector2(child.offsetMax.x - offsetChange, child.offsetMax.y);
@@ -129,7 +129,7 @@ namespace UnityEngine.UI.Extension
 
 
         public static float GetInsetFromParentEdge(this RectTransform child, RectTransform parentHint, RectTransform.Edge parentEdge)
-		{ return _GetInsetFromParentEdge_MappedActions[parentEdge](child, parentHint); }
+		{ return _GetInsetFromParentEdge_MappedActions[(int)parentEdge](child, parentHint); }
 
         public static void SetSizeFromParentEdgeWithCurrentAnchors(this RectTransform child, RectTransform.Edge fixedEdge, float newSize)
         {
@@ -148,7 +148,7 @@ namespace UnityEngine.UI.Extension
         }
 
 		public static void SetInsetAndSizeFromParentEdgeWithCurrentAnchors(this RectTransform child, RectTransform parentHint, RectTransform.Edge fixedEdge, float newInset, float newSize)
-        { _SetInsetAndSizeFromParentEdgeWithCurrentAnchors_MappedActions[fixedEdge](child, parentHint, newInset, newSize); }
+        { _SetInsetAndSizeFromParentEdgeWithCurrentAnchors_MappedActions[(int)fixedEdge](child, parentHint, newInset, newSize); }
 
 
 
