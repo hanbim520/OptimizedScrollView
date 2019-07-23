@@ -1139,7 +1139,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 3.8120117, y: 0.000007786746}
+  m_AnchoredPosition: {x: 3.8120117, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.0000008046627, y: 0.5}
 --- !u!114 &847156963
@@ -1236,18 +1236,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44e790c2efca8bf4bad58426460858d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hideWhenNotNeeded: 1
-  autoHide: 1
-  autoHideFadeEffect: 1
-  autoHideCollapseEffect: 1
-  autoHideTime: 1
-  autoHideFadeEffectMinAlpha: 0.8
-  autoHideCollapseEffectMinScale: 0.2
-  minSize: 0.1
-  sizeUpdateInterval: 0.05
-  skippedFramesBetweenPositionChanges: 0
-  scrollRect: {fileID: 0}
-  viewport: {fileID: 0}
 --- !u!1 &922509691
 GameObject:
   m_ObjectHideFlags: 0
@@ -1559,7 +1547,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 980920365}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d83476fde1865764aabfdfb53d3ae98f, type: 3}
+  m_Script: {fileID: 11500000, guid: 8aaa5c6ff0a06aa43894e0c8c3147c05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _Collocation:
@@ -1572,7 +1560,7 @@ MonoBehaviour:
       m_Right: 0
       m_Top: 0
       m_Bottom: 0
-    contentGravity: 3
+    contentGravity: 1
     contentSpacing: 0
     galleryEffectAmount: 0
     galleryEffectViewportPivot: 0.5
@@ -2240,7 +2228,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000061035156, y: 0.0002473476}
+  m_AnchoredPosition: {x: -0.000061035156, y: 0.00023149651}
   m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0.5000001, y: 1.0000005}
 --- !u!1 &1678463015
